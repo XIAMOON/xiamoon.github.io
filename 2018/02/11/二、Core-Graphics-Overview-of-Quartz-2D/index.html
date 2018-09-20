@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="参考文章：百度搜索：”ios shading object”  https://www.jianshu.com/p/7be4c366c048http://blog.csdn.net/hello_hwc?viewmode=listhttp://blog.csdn.net/hello_hwc/article/details/49283275   2D 即two-dimensional drawing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二、Core Graphics - Overview of Quartz 2D">
+<meta property="og:url" content="http://yoursite.com/2018/02/11/二、Core-Graphics-Overview-of-Quartz-2D/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="参考文章：百度搜索：”ios shading object”  https://www.jianshu.com/p/7be4c366c048http://blog.csdn.net/hello_hwc?viewmode=listhttp://blog.csdn.net/hello_hwc/article/details/49283275   2D 即two-dimensional drawing">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/source/cg2_p_1.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg2_p_2.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg2_p_3.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg2_p_4.gif">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.418Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二、Core Graphics - Overview of Quartz 2D">
+<meta name="twitter:description" content="参考文章：百度搜索：”ios shading object”  https://www.jianshu.com/p/7be4c366c048http://blog.csdn.net/hello_hwc?viewmode=listhttp://blog.csdn.net/hello_hwc/article/details/49283275   2D 即two-dimensional drawing">
+<meta name="twitter:image" content="http://yoursite.com/source/cg2_p_1.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/11/二、Core-Graphics-Overview-of-Quartz-2D/"/>
+
+
+
+
+
+  <title>二、Core Graphics - Overview of Quartz 2D | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/11/二、Core-Graphics-Overview-of-Quartz-2D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">二、Core Graphics - Overview of Quartz 2D</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-11T00:00:00+08:00">
+                2018-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Core-Graphics/" itemprop="url" rel="index">
+                    <span itemprop="name">Core Graphics</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考文章：<br>百度搜索：”ios shading object”</p>
+<blockquote>
+<p><a href="https://www.jianshu.com/p/7be4c366c048" target="_blank" rel="noopener">https://www.jianshu.com/p/7be4c366c048</a><br><a href="http://blog.csdn.net/hello_hwc?viewmode=list" target="_blank" rel="noopener">http://blog.csdn.net/hello_hwc?viewmode=list</a><br><a href="http://blog.csdn.net/hello_hwc/article/details/49283275" target="_blank" rel="noopener">http://blog.csdn.net/hello_hwc/article/details/49283275</a></p>
+</blockquote>
+<ol>
+<li>2D 即two-dimensional drawing engine ：二维绘图引擎.</li>
+<li>可用于基于路径的绘图、透明、着色、绘制阴影、透明层、颜色管理、反锯齿渲染、PDF文档生成和PDF元数据访问。只要可能，Quartz 2D就会利用图形硬件的力量。</li>
+<li><p>图形上下文是一种不透明的数据类型(<code>CGContextRef</code>)，它封装了用于将图像绘制到输出设备上的信息，如PDF文件、位图或显示窗口的窗口。如下图：<br><img src="/source/cg2_p_1.gif" alt=""></p>
+</li>
+<li><p>bitmap图形的上下文允许你将RGB颜色，CMYK颜色，或灰度图转换成位图。位图是像素的矩形数组(或光栅)，每个像素代表图像中的一个点。位图图像也称为采样图像。请参见创建位图图形上下文。</p>
+<blockquote>
+<p>位图：像素点的矩形数组。即一个<strong>二维数组</strong>，里面的元素是像素点。</p>
+</blockquote>
+</li>
+<li><p>PDF图形的上下文允许您创建一个PDF文件。在PDF文件中，您的绘图是作为命令序列保存的。PDF文件和位图之间有一些显著的区别:</p>
+<blockquote>
+<ul>
+<li>与位图不同的是，PDF文件可能包含不止一个页面。</li>
+<li>当您从一个不同设备上的PDF文件中提取一个页面时，生成的图像将针对该设备的显示特性进行优化。</li>
+<li>PDF文件是独立于自然的分辨率，其大小可以在不牺牲图像细节的情况下增加或减少。位图图像的用户感知的质量与图所要查看的分辨率的分辨率有关。</li>
+</ul>
+</blockquote>
+</li>
+<li><p>一个层上下文(CGLayerRef)是一个与另一个图形上下文关联的离屏绘制目的地。它被设计是因为当把layer绘制到创建它的图形上下文时，它能表现出最优的性能。对于离屏绘制来说，相对于位图图形上下文，图层上下文可以是一个更好的选择。</p>
+</li>
+</ol>
+<h3 id="三、Quartz-2D-Opaque-Data-Types"><a href="#三、Quartz-2D-Opaque-Data-Types" class="headerlink" title="三、Quartz 2D Opaque Data Types"></a>三、Quartz 2D Opaque Data Types</h3><p>Quartz 2D通过应用程序操作的不透明数据类型创建对象，以实现特定的绘图输出。图1-3显示了当您将绘图操作应用到Quartz 2D所提供的三个对象时所能获得的结果。例如:</p>
+<ul>
+<li>您可以通过创建一个<code>PDF page</code>对象来旋转和显示一个PDF页面，将旋转操作应用到图形上下文，并要求Quartz 2D将页面绘制到图形上下文。</li>
+<li>您可以通过创建一个<code>pattern</code>(CGPattern用于重复绘制)对象来绘制一个图案，定义组成图案的形状，并设置Quartz 2D以在绘制图形上下文时使用该图案作为绘图颜料。</li>
+<li>您可以通过创建一个<code>shading</code>(CGShading用于绘制梯度)对象来填充一个轴向或径向阴影的区域，提供一个函数来确定阴影中每个点的颜色，然后要求Quartz 2D使用该阴影作为填充色</li>
+</ul>
+<p><em>Figure 1-3</em><br><img src="/source/cg2_p_2.gif" alt=""></p>
+<p>Quartz 2D中的opaque data types:</p>
+<ul>
+<li>CGPathRef</li>
+<li>CGImageRef：基于你提供的样本数据，来表示位图图像和位图图像遮罩。</li>
+<li>CGLayerRef</li>
+<li>CGPatternRef</li>
+<li>CGShadingRef</li>
+<li>CGFunctionRef</li>
+<li>CGColorRef</li>
+<li>CGImageSourceRef</li>
+<li>CGFontRef：用于绘制文本。</li>
+<li>CGPDFDictionaryRef</li>
+<li>CGPDFScannerRef</li>
+<li>CGPSConverterRef</li>
+</ul>
+<h3 id="四、Graphics-States"><a href="#四、Graphics-States" class="headerlink" title="四、Graphics States"></a>四、Graphics States</h3><p>当前图形状态的参数可以影响绘制操作的结果。图形状态包含了一些参数，否则这些参数将被用作绘制例程的参数。绘制到图形上下文的例程查询图形状态以确定如何呈现结果。例如，当您调用一个函数来设置填充颜色时，那么您正在修改存储在当前图形状态中的值。当前图形状态的其他常用元素包括行宽、当前位置和文本字体大小。</p>
+<p>图形上下文包含一堆图形状态。当Quartz创建一个图形上下文时，堆栈是空的。保存图形状态时，Quartz将当前图形状态的副本推送到堆栈上。当您恢复图形状态时，Quartz会弹出堆栈顶部的图形状态。弹出的状态变成当前的图形状态。</p>
+<p>为了保存当前的图形状态，使用函数CGContextSaveGState将当前图形状态的拷贝推到堆栈上。若要还原以前保存的图形状态，请使用函数CGContextRestoreGState来把置于堆栈顶部的图形状态替换为当前的图形状态。</p>
+<p>注意，并不是当前绘图环境的所有方面都是图形状态的元素。例如，当前路径不被认为是图形状态的一部分，因此当您调用函数CGContextSaveGState时，它不会被保存。表1-1列出了调用此函数时保存的图形状态参数。</p>
+<p>Table 1-1  Parameters that are associated with the graphics state</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameters</th>
+<th style="text-align:left">Discussed In this chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Current transformation matrix (CTM)</td>
+<td style="text-align:left">Transforms</td>
+</tr>
+<tr>
+<td style="text-align:left">Clipping area</td>
+<td style="text-align:left">Paths</td>
+</tr>
+<tr>
+<td style="text-align:left">Line: width, join, cap, dash, miter limit</td>
+<td style="text-align:left">Paths</td>
+</tr>
+<tr>
+<td style="text-align:left">Accuracy of curve estimation (flatness)</td>
+<td style="text-align:left">Paths</td>
+</tr>
+<tr>
+<td style="text-align:left">Anti-aliasing setting</td>
+<td style="text-align:left">Graphics Contexts</td>
+</tr>
+<tr>
+<td style="text-align:left">Color: fill and stroke settings</td>
+<td style="text-align:left">Color and Color Spaces</td>
+</tr>
+<tr>
+<td style="text-align:left">Alpha value (transparency)</td>
+<td style="text-align:left">Color and Color Spaces</td>
+</tr>
+<tr>
+<td style="text-align:left">Rendering intent</td>
+<td style="text-align:left">Color and Color Spaces</td>
+</tr>
+<tr>
+<td style="text-align:left">Color space: fill and stroke settings</td>
+<td style="text-align:left">Color and Color Spaces</td>
+</tr>
+<tr>
+<td style="text-align:left">Text: font, font size, character spacing, text drawing mode</td>
+<td style="text-align:left">Text</td>
+</tr>
+<tr>
+<td style="text-align:left">Blend mode</td>
+<td style="text-align:left">Paths and Bitmap Images and Image Masks</td>
+</tr>
+</tbody>
+</table>
+<h3 id="五、Quartz-2D-Coordinate-Systems"><a href="#五、Quartz-2D-Coordinate-Systems" class="headerlink" title="五、Quartz 2D Coordinate Systems"></a>五、Quartz 2D Coordinate Systems</h3><p>图1-4所示的坐标系统定义了用于表示在页面上绘制对象的位置和大小的位置的范围。您可以在用户空间坐标系统中指定图形的位置和大小，或者更简单地说，用户空间。坐标被定义为浮点值。</p>
+<p><em>Figure 1-4  The Quartz coordinate system</em><br><img src="/source/cg2_p_3.gif" alt=""></p>
+<p>由于不同的设备具有不同的底层成像能力，所以图形的位置和大小必须以设备独立的方式来定义。例如，屏幕显示设备可能能够显示每英寸不超过96个像素，而打印机可能能够显示300像素每英寸。如果在设备级别上定义了坐标系统(在本例中，是96个像素或300像素)，那么在该空间中绘制的对象不可能在复制到其他设备上后不出现明显的失真。它们会显得太大或太小。</p>
+<p>Quartz通过一个单独的坐标系统-用户空间，使用当前转换矩阵(或CTM)，把它映射到输出设备的坐标系统-设备空间，来实现设备的独立。矩阵是用来有效描述一组相关方程的数学构造。当前的转换矩阵是一种称为仿射变换的特殊类型的矩阵，它通过应用平移、旋转和缩放操作(计算移动、旋转和调整坐标系统)将点从一个坐标空间映射到另一个坐标空间。</p>
+<p>当前的转换矩阵有一个次要的用途:它允许您转换对象的绘制方式。例如，要画一个旋转45度的盒子，你在画这个盒子之前旋转这个页面的坐标系统(CTM)。Quartz通过旋转后的坐标系统来绘制到输出设备。</p>
+<p>用户空间中的一个点由坐标对(x,y)表示，其中x表示沿水平轴(左和右)的位置，y表示垂直轴(上下)。用户坐标空间的原点是点(0,0)。原点位于页面的左下角，如图1-4所示。在Quartz的默认坐标系统中，x轴从左向右移动。当y轴从底部移动到页面顶端时，它的值会增加。</p>
+<p>一些技术使用不同的默认坐标系统来设置它们的图形上下文，而不是Quartz所使用的。相对于Quartz，这样的坐标系统是一个改进的坐标系，在执行一些石英绘图操作时必须得到补偿。最常见的修改坐标系统将原点放在上下文的左上角，并更改y轴指向页面的底部。在一些地方，您可能会看到这个特定的坐标系使用如下:</p>
+<ul>
+<li>In Mac OS X, a subclass of NSView that overrides its isFlipped method to return YES.</li>
+<li>In iOS, a drawing context returned by an UIView.</li>
+<li>In iOS, a drawing context created by calling the UIGraphicsBeginImageContextWithOptions function.</li>
+</ul>
+<p>UIKit使用修改后的坐标系返回Quartz绘图上下文的原因是UIKit使用了一个不同的默认坐标约定；它将转换应用于它所创建的Quartz上下文，从而使它们与它的约定相匹配。如果您的应用程序要使用相同的绘图程序画一个UIView对象和一个PDF图形上下文(由Quartz创建并使用默认坐标系)，您需要应用一个变换，这样PDF格式的图形上下文可以接受相同的修改后的坐标系统。为此，应用转换将原点转换为PDF上下文的左上角，并按-1缩放y坐标。</p>
+<p>使用缩放变换来翻转y坐标，改变了一些在Quartz绘图中的约定。例如，如果您调用CGContextDrawImage来将图像绘制到上下文中，那么当它被绘制到目标中时，图像会被转换。类似地，路径绘制例程接受参数，该参数指定在默认坐标系统中是否以顺时针或逆时针方向绘制弧线。如果一个坐标系统被修改，结果也会被修改，就像在镜子里反射的图像一样。在图1-5中，当向Quartz中传递相同的参数时，在默认坐标系统中的结果是顺时针方向的，但是当y坐标因为变换被翻转后，结果是逆时针方向。</p>
+<p><em>Figure 1-5  Modifying the coordinate system creates a mirrored image.</em><br><img src="/source/cg2_p_4.gif" alt=""></p>
+<p>这取决于您的应用程序调整任何Quartz，使它具有一个应用于它的转换的上下文。例如，如果您希望图像或PDF能够正确地绘制到图形上下文中，您的应用程序可能需要临时调整图形上下文的CTM。在iOS中，如果你使用UIImage对象来包装你创建的CGImage对象，你不需要修改CTM。UIImage对象自动补偿UIKit应用的修改后的坐标系。</p>
+<blockquote>
+<p><strong>Important</strong>：上面的讨论对于理解如果您打算编写在iOS中直接针对Quartz的应用程序是非常必要的，但是这还不够。在ios3.2和之后，当UIKit为您的应用程序创建一个绘图上下文时，它还会对上下文进行额外的更改，以匹配默认的UIKit约定。具体来说，不受CTM影响的<code>Patterns</code>和<code>Shadows</code>会被单独调整，使它们的约定与UIKit的坐标系统相匹配。在这种情况下，您的应用程序可以用来更改由Quartz创建的上下文来匹配由UIKit提供的上下文的行为，因此没有与CTM相同的机制。您的应用程序必须认识到它所使用的上下文，并根据上下文的期望调整其行为。</p>
+</blockquote>
+<h3 id="六、Memory-Management-Object-Ownership"><a href="#六、Memory-Management-Object-Ownership" class="headerlink" title="六、Memory Management: Object Ownership"></a>六、Memory Management: Object Ownership</h3><p>Quartz使用了Core Foundation内存管理模型，在该模型中，对象是引用计数的。当Core Foundation对象被创建时，对象是以引用计数为1开始的。你可以通过调用一个方法来retain这个对象，以此来增加它的引用计数，也可以通过调用一个方法来release这个对象，从而减少它的引用计数。当引用计数被减为0时，这个对象就被释放了。这种模式使得对象可以安全的被其他对象所引用。</p>
+<p>有一些简单的规则需要记下：</p>
+<ul>
+<li>如果你创建或者复制一个对象，你就拥有它，所以你必须释放它。也就是说，在通常情况下，如果你通过一个方法名包含”Create”或者”Copy”的函数获得一个对象，你必须在使用完这个对象之后释放它。否则，将导致内存泄漏。</li>
+<li>如果你通过一个方法名不包含”Create”或者”Copy”的函数获得一个对象，那么你并没有持有这个对象，所以你不能释放它。这个对象将在未来的某个时间由它的拥有者释放。</li>
+<li>如果你没有拥有一个对象，但是你需要持有它，那么你必须在这样做的时候<code>retain</code>和<code>release</code>它。您使用特定于对象的Quartz 2D方法来保留和释放该对象。比如，如果你接收到一个CGColorSpace对象，你需要在合适的时候使用<code>CGColorSpaceRetain</code>和<code>CGColorSpaceRelease</code>方法去保留和释放该对象。你也可以使用Core Foundation提供的<code>CFRetain</code>和<code>CFRelease</code>方法，但是你必须要注意不要把NULL对象传给这些方法。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/11/一、Core-Graphics-Introduction/" rel="next" title="一、Core Graphics - Introduction">
+                <i class="fa fa-chevron-left"></i> 一、Core Graphics - Introduction
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/25/三、Core-Graphics-Graphics-Contexts/" rel="prev" title="三、Core Graphics - Graphics Contexts">
+                三、Core Graphics - Graphics Contexts <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Quartz-2D-Opaque-Data-Types"><span class="nav-number">1.</span> <span class="nav-text">三、Quartz 2D Opaque Data Types</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、Graphics-States"><span class="nav-number">2.</span> <span class="nav-text">四、Graphics States</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Quartz-2D-Coordinate-Systems"><span class="nav-number">3.</span> <span class="nav-text">五、Quartz 2D Coordinate Systems</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、Memory-Management-Object-Ownership"><span class="nav-number">4.</span> <span class="nav-text">六、Memory Management: Object Ownership</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

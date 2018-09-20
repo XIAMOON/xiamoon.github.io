@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="路径定义一个或多个形状或子路径。 子路径可以由直线，曲线或两者的组合。 它可以被打开或关闭。 子路径可以是简单的形状，例如线，圆，矩形或星形，或更复杂的形状，例如山脉或抽象涂鸦的轮廓。 图3-1显示了可以创建的一些路径。 直线（在图的左上方）可以是虚线; 线条也可以是实线。 波浪路径（中间顶部）由几条曲线组成，是一条开放的路径。 同心圆被填充，但没有边框色。 加利福尼亚州图形是一条封闭的路径，由许">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四、Core Graphics - Paths">
+<meta property="og:url" content="http://yoursite.com/2018/02/25/四、Core-Graphics-Paths/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="路径定义一个或多个形状或子路径。 子路径可以由直线，曲线或两者的组合。 它可以被打开或关闭。 子路径可以是简单的形状，例如线，圆，矩形或星形，或更复杂的形状，例如山脉或抽象涂鸦的轮廓。 图3-1显示了可以创建的一些路径。 直线（在图的左上方）可以是虚线; 线条也可以是实线。 波浪路径（中间顶部）由几条曲线组成，是一条开放的路径。 同心圆被填充，但没有边框色。 加利福尼亚州图形是一条封闭的路径，由许">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_1.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_2.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_3.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_4.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_5.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_6.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_7.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_8.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_9.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_10.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_11.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_12.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg4_p_13.gif">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.419Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="四、Core Graphics - Paths">
+<meta name="twitter:description" content="路径定义一个或多个形状或子路径。 子路径可以由直线，曲线或两者的组合。 它可以被打开或关闭。 子路径可以是简单的形状，例如线，圆，矩形或星形，或更复杂的形状，例如山脉或抽象涂鸦的轮廓。 图3-1显示了可以创建的一些路径。 直线（在图的左上方）可以是虚线; 线条也可以是实线。 波浪路径（中间顶部）由几条曲线组成，是一条开放的路径。 同心圆被填充，但没有边框色。 加利福尼亚州图形是一条封闭的路径，由许">
+<meta name="twitter:image" content="http://yoursite.com/source/cg4_p_1.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/25/四、Core-Graphics-Paths/"/>
+
+
+
+
+
+  <title>四、Core Graphics - Paths | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/四、Core-Graphics-Paths/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">四、Core Graphics - Paths</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T00:00:00+08:00">
+                2018-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Core-Graphics/" itemprop="url" rel="index">
+                    <span itemprop="name">Core Graphics</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>路径定义一个或多个形状或子路径。 子路径可以由直线，曲线或两者的组合。 它可以被打开或关闭。 子路径可以是简单的形状，例如线，圆，矩形或星形，或更复杂的形状，例如山脉或抽象涂鸦的轮廓。 图3-1显示了可以创建的一些路径。 直线（在图的左上方）可以是虚线; 线条也可以是实线。 波浪路径（中间顶部）由几条曲线组成，是一条开放的路径。 同心圆被填充，但没有边框色。 加利福尼亚州图形是一条封闭的路径，由许多曲线和线条组成，路径既有边框色又被填充。 星星说明了填充路径的两个选项，您将在本章后面阅读。</p>
+<p><em>图3-1 Quartz支持基于路径的绘图</em><br><img src="/source/cg4_p_1.gif" alt=""></p>
+<p>在本章中，您将了解组成路径的构建块，如何描绘和绘制路径以及影响路径外观的参数。</p>
+<h3 id="路径创建和路径绘画"><a href="#路径创建和路径绘画" class="headerlink" title="路径创建和路径绘画"></a>路径创建和路径绘画</h3><p>路径创建和路径绘制是两个分开的任务。 首先你创建一个路径。 当您要呈现(渲染)路径时，您要求Quartz来绘制它。 如图3-1所示，您可以选择给路径上边框色，填充路径，或者两个都要。 您还可以使用一条路径来约束在创建的路径范围内的其他对象的绘制，这实际上是一个剪切区域。</p>
+<p>图3-2显示了已绘制的路径，其中包含两个子路径。左边的子路径是一个矩形，右边的子路径是由直线和曲线组成的抽象形状。每个子路径都被填满了，它的轮廓也被描边了。</p>
+<p><em>Figure 3-2  A path that contains two shapes, or subpaths</em><br><img src="/source/cg4_p_2.gif" alt=""></p>
+<p>图3-3显示了单独绘制的多条路径。每条路径都包含一个随机生成的曲线，其中一些是填充的，另一些则是描边的。绘图用剪切区域限制到圆形区域。<br><em>Figure 3-3  A clipping area constrains drawing</em><br><img src="/source/cg4_p_3.gif" alt=""></p>
+<h3 id="The-Building-Blocks"><a href="#The-Building-Blocks" class="headerlink" title="The Building Blocks"></a>The Building Blocks</h3><p>子路径由线、弧和曲线组成。Quartz还提供了通过使用单个方法来添加矩形和椭圆的便捷方法。点也是路径的基本构建块，因为点定义了形状的开始和结束位置。</p>
+<h4 id="Points"><a href="#Points" class="headerlink" title="Points"></a>Points</h4><p>点是在用户空间中指定位置的x和y坐标。您可以调用函数<code>CGContextMoveToPoint</code>来指定新的子路径的起始位置。Quartz一直保持着对用于路径构造的最后一个位置的点(current point)的跟踪。例如，如果调用函数<code>CGContextMoveToPoint</code>来设置(10,10)的位置，则将当前点移动到(10,10)。如果你画一条长度为50的水平线，那么直线上的最后一点就是(60,10)，这个点将成为成为当前点。直线、弧线和曲线总是从当前点出发。</p>
+<p>在大多数情况下，您指定一个点，通过向Quartz函数传递两个浮点值来指定x和y坐标。一些函数要求您传递一个CGPoint数据结构，该结构包含两个浮点值。</p>
+<h4 id="Lines"><a href="#Lines" class="headerlink" title="Lines"></a>Lines</h4><p>线由它的终点定义。它的起始点总是假定为当前点(current point)，因此当您创建一个人Line时，您只需指定它的终点。您可以使用函数<code>CGContextAddLineToPoint</code>向子路径拼接一条Line。</p>
+<p>您可以通过调用函数<code>CGContextAddLines</code>向路径添加一系列连接的Lines。你向这个函数传入一个包含点的数组。第一个点必须是第一行的起点；其余的点是终点。Quartz在第一个点开始一个新的子路径，并将一条直线段连接到每个终点。</p>
+<h4 id="Arcs"><a href="#Arcs" class="headerlink" title="Arcs"></a>Arcs</h4><p>Arcs就是圆弧线，Quartz提供了两个创建arcs的函数。函数<code>CGContextAddArc</code>从一个圆创建一个曲线段。你指定圆心、半径和弧度。您可以通过指定2π的弧度来创建一个完整的圆。图3-4显示了单独绘制的多条路径。每个路径包含一个随机生成的圆；有的被填满，有的被描边。</p>
+<p><em>Figure 3-4  Multiple paths; each path contains a randomly generated circle</em><br><img src="/source/cg4_p_4.gif" alt=""><br>函数<code>CGContextAddArcToPoint</code>在您想要绕过一个矩形的角时非常理想。Quartz使用您提供的端点创建两条切线。圆弧的每个端点都是一条切线的切线点，如图3-5所示。这个圆的红色部分是画出来的。</p>
+<p><em>Figure 3-5  Defining an arc with two tangent lines and a radius</em><br><img src="/source/cg4_p_5.gif" alt=""><br>如果当前路径已经包含一条子路径，则Quartz将从当前点到弧段的起始点附加一条直线段。如果当前路径是空的，Quartz在起始点创建一个新的子路径，并且不会添加初始的直线段。</p>
+<h4 id="Curves"><a href="#Curves" class="headerlink" title="Curves"></a>Curves</h4><p>图3-6展示了通过单独绘制多条路径创建的各种曲线。每个路径包含一个随机生成的曲线;有的被填满，有的被描边。<br><em>Figure 3-6  Multiple paths; each path contains a randomly generated curve</em><br><img src="/source/cg4_p_6.gif" alt=""></p>
+<p>使用函数<code>CGContextAddCurveToPoint</code>从当前点添加一个立方体Bezier曲线，使用控制点和指定的终点。图3-7显示了由图中显示的当前点、控制点和终点所产生的立方体Bezier曲线。两个控制点的位置决定了曲线的几何形状。如果控制点都在起止点以上，则曲线向上拱起。如果控制点都在起始点和结束点以下，则曲线向下弯曲。</p>
+<p><em>Figure 3-7  A cubic Bézier curve uses two control points</em><br><img src="/source/cg4_p_7.gif" alt=""></p>
+<p>你可以通过调用函数<code>CGContextAddQuadCurveToPoint</code>从当前点添加一个二次贝塞尔曲线，并指定一个控制点和一个终点。图3-8显示了使用相同端点但不同控制点的两个曲线。控制点决定曲线拱的方向。不可能用一个二次曲线来创造出很多有趣的形状，因为二次曲线只使用一个控制点。例如，不可能使用单个控制点来创建交叉。</p>
+<p><em>Figure 3-8  A quadratic Bézier curve uses one control point</em><br><img src="/source/cg4_p_8.gif" alt=""></p>
+<h4 id="Closing-a-Subpath"><a href="#Closing-a-Subpath" class="headerlink" title="Closing a Subpath"></a>Closing a Subpath</h4><p>要关闭当前的子路径，您的应用程序应该调用<code>CGContextClosePath</code>。该函数从当前点添加一条线段到子路径的起始点，并关闭子路径。在子路径的起始点结束的行、弧和曲线实际上并没有关闭子路径。您必须显式地调用<code>CGContextClosePath</code>来关闭子路径。一些Quartz函数处理路径的子路径，就像它们被应用程序关闭一样。这些命令处理每个子路径，就像您的应用程序调用CGContextClosePath来关闭它，隐式地将一条线段添加到子路径的起始点。关闭子路径之后，如果您的应用程序发出额外的调用，以添加行、弧线或曲线到路径，Quartz在您刚刚关闭的子路径的起点开始一条新的子路径。</p>
+<h4 id="Ellipses（椭圆）"><a href="#Ellipses（椭圆）" class="headerlink" title="Ellipses（椭圆）"></a>Ellipses（椭圆）</h4><p>椭圆本质上是一个压扁的圆。你通过定义两个焦点来创建一个点，然后画出所有的点，这些点在一个距离上，从椭圆的任意一点到一个焦点到另一个焦点的距离都是相同的值。图3-9显示了单独绘制的多条路径。每个路径包含一个随机生成的椭圆;有的被填满，有的被描边。</p>
+<p><em>Figure 3-9  Multiple paths; each path contains a randomly generated ellipse</em><br><img src="/source/cg4_p_9.gif" alt=""></p>
+<p>您可以通过调用<code>CGContextAddEllipseInRect</code>函数在当前路径添加一个椭圆。您需要提供一个定义椭圆边界的矩形。Quartz使用一系列贝塞尔曲线来描绘椭圆。椭圆的中心是矩形的中心。如果矩形的宽度和高度是相等(即正方形)，那么椭圆就是圆形的，半径等于矩形宽度(或高度)的一半。如果矩形的宽度和高度不相等，则定义椭圆的主要和小轴。</p>
+<p>添加到路径上的椭圆以一个移动操作开始，以一个近子路径操作结束，所有的动作都以顺时针方向移动。</p>
+<h4 id="Rectangles"><a href="#Rectangles" class="headerlink" title="Rectangles"></a>Rectangles</h4><p>您可以通过调用函数<code>CGContextAddRect</code>向当前路径添加一个矩形。您提供的CGRect结构包含矩形的原点及其宽度和高度。</p>
+<p>添加到路径上的矩形以一个移动操作开始，以一个关闭子路径操作结束，所有的动作都以逆时针方向移动。</p>
+<p>通过调用函数<code>CGContextAddRects</code>并提供CGRect结构的数组，可以向当前路径添加许多矩形。图3-10显示了单独绘制的多条路径。每个路径包含一个随机生成的矩形；有的被填满，有的被描边。</p>
+<p><em>Figure 3-10  Multiple paths; each path contains a randomly generated rectangle</em><br><img src="/source/cg4_p_10.gif" alt=""></p>
+<h3 id="Creating-a-Path"><a href="#Creating-a-Path" class="headerlink" title="Creating a Path"></a>Creating a Path</h3><p>当您希望在图形上下文中构造路径时，您通过调用函数<code>CGContextBeginPath</code>来对Quartz进行信号处理。接下来，通过调用函数<code>CGContextMoveToPoint</code>，为第一个形状(或子路径)设置起点。在你建立第一个点之后，你可以在路径上添加线条、弧线和曲线，记住以下几点：</p>
+<ul>
+<li>在开始新路径之前，请调用函数<code>CGContextBeginPath</code>。</li>
+<li>直线、弧线和曲线从当前点开始绘制。空路径没有当前点；您必须调用<code>CGContextMoveToPoint</code>来设置第一个子路径的起始点，或者调用一个隐式为您做这个的方便函数。</li>
+<li>当您想要关闭路径中的当前子路径时，调用函数CGContextClosePath将一个段连接到子路径的起点。随后的路径调用开始一个新的子路径，即使您没有显式地设置一个新的起始点。</li>
+<li>当你绘制弧线时，Quartz在当前点和弧线起始点之间画一条线。</li>
+<li>添加椭圆和矩形的石英例程为路径添加一个新的闭子路径。</li>
+<li>您必须调用一个绘图函数来填充或描出路径，因为创建路径不会绘制路径。请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_paths/dq_paths.html#//apple_ref/doc/uid/TP30001066-CH211-CJBEIHHJ" target="_blank" rel="noopener">Painting a Path</a>来获取详细信息。</li>
+</ul>
+<p>绘制路径之后，它将从图形环境中刷新。您可能不希望如此容易地丢失您的路径，特别是如果它描述了您希望一次又一次使用的复杂场景。出于这个原因，Quartz为创建可重用的paths-<code>CGPathRef</code>和<code>CGMutablePathRef</code>提供了两种数据类型。您可以调用函数<code>CGPathCreateMutable</code>来创建一个可变的CGPath对象，您可以添加线、弧线、曲线和矩形。Quartz提供了一组与构建块中讨论的函数并行的CGPath函数。路径函数在CGPath对象上运行，而不是在图形上下文中。这些函数是：</p>
+<ul>
+<li>用<code>CGPathCreateMutable</code>替换<code>CGContextBeginPath</code>。</li>
+<li>用<code>CGPathMoveToPoint</code>替换<code>CGContextMoveToPoint</code>。</li>
+<li>用<code>CGPathAddLineToPoint</code>替换<code>CGContextAddLineToPoint</code>。</li>
+<li>用<code>CGPathAddCurveToPoint</code>替换<code>CGContextAddCurveToPoint</code>。</li>
+<li>用<code>CGPathAddEllipseInRect</code>替换<code>CGContextAddEllipseInRect</code>。</li>
+<li>用<code>CGPathAddArc</code>替换<code>CGContextAddArc</code>。</li>
+<li>用<code>CGPathAddRect</code>替换<code>CGContextAddRect</code>。</li>
+<li>用<code>CGPathCloseSubpath</code>替换<code>CGContextClosePath</code>。</li>
+</ul>
+<p>有关路径函数的完整列表，请参阅Quartz 2D参考集合。</p>
+<p>当您想要添加到图形上下文的路径时，您调用函数<code>CGContextAddPath</code>。路径在图形环境中保持，直到Quartz绘制它为止。您可以通过调用<code>CGContextAddPath</code>来再次添加路径。</p>
+<blockquote>
+<p>注意：您可以通过调用<code>CGContextReplacePathWithStrokedPath</code>方法来替代路径的图形上下文的描边版本的路径。</p>
+</blockquote>
+<h3 id="Painting-a-Path"><a href="#Painting-a-Path" class="headerlink" title="Painting a Path"></a>Painting a Path</h3><p>你可以用描边或填充来绘制当前路径。Stroking画了一条横跨这条小路的线。填充物画出路径中包含的区域。Quartz有一些函数，可以让您描边路径、填充路径或同时描边或者填充路径。描边线的特征(宽度、颜色等)、填充色和Quartz用来计算填充区域的方法都是图形状态的一部分(见图表状态)。</p>
+<h4 id="Parameters-That-Affect-Stroking-（影响描边的参数）"><a href="#Parameters-That-Affect-Stroking-（影响描边的参数）" class="headerlink" title="Parameters That Affect Stroking （影响描边的参数）"></a>Parameters That Affect Stroking （影响描边的参数）</h4><p>您可以通过修改表3-1中列出的参数来影响路径。这些参数是图形状态的一部分，这意味着您为参数设置的值会影响所有后续的遍历，直到您将参数设置为另一个值。</p>
+<p><em>Table 3-1  Parameters that affect how Quartz strokes the current path</em><br>| Parameter | Function to set parameter value |<br>| :————| :———————————|<br>|Line Width|CGContextSetLineWidth|<br>|Line join |CGContextSetLineJoin|<br>|Line cap |CGContextSetLineCap|<br>|Miter limit|CGContextSetMiterLimit|<br>|Line dash pattern|CGContextSetStrokeColorSpace|<br>|Stroke color space|CGContextSetStrokeColorSpace|<br>|Stroke color|CGContextSetStrokeColor CGContextSetStrokeColorWithColor|<br>|Stroke pattern|CGContextSetStrokePattern|</p>
+<p><em>line width</em>是线的总宽度，表示为用户空间的单位。这条线横跨这条路，两边各有一半宽度。</p>
+<p><em>line join (线路连接)</em>指定了Quartz如何绘制连接线段之间的连接点。Quartz支持表3-2中描述的线条连接样式。默认样式是 <em>miter join</em>。</p>
+<p><em>Table 3-2 Line join style</em><br>| Style | Appearance | Description |<br>| :—: | :—: | :—: |<br>| Miter join | <img src="/source/cg4_p_11.gif" alt=""> | Quartz将两段笔画的外边缘延伸到一个角度，就像在画框中一样。如果线段以太尖的角度相交，则使用斜角连接。如果一个线段的长度除以线段的宽度大于斜线的限制，那么它的线段就太锋利了。 |<br>| Round join | <img src="/source/cg4_p_12.gif" alt=""> | Quartz画出一个半圆的圆弧，直径等于端点上的线宽。封闭的区域填满了。 |<br>| Bevel join | <img src="/source/cg4_p_13.gif" alt=""> | Quartz完成了两个部分的对接帽。在线段的两端所产生的缺口被一个三角形填满。 |</p>
+<p><em>line cap</em>指定了<code>CGContextStrokePath</code>用于绘制该行端点的方法。Quartz支持表3-3所述的线帽样式。默认样式是<em>butt cap</em>。</p>
+<p><em>Table 3-3 Line cap styles</em><br>| Style | Appearance | Description |<br>| :—: | :—: | :—:|<br>| Butt cap |||<br>| Round cap |||<br>| Projecting square cap |||</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/25/三、Core-Graphics-Graphics-Contexts/" rel="next" title="三、Core Graphics - Graphics Contexts">
+                <i class="fa fa-chevron-left"></i> 三、Core Graphics - Graphics Contexts
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/04/一-转场动画-初探/" rel="prev" title="(一)转场动画-初探">
+                (一)转场动画-初探 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#路径创建和路径绘画"><span class="nav-number">1.</span> <span class="nav-text">路径创建和路径绘画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Building-Blocks"><span class="nav-number">2.</span> <span class="nav-text">The Building Blocks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Points"><span class="nav-number">2.1.</span> <span class="nav-text">Points</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lines"><span class="nav-number">2.2.</span> <span class="nav-text">Lines</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Arcs"><span class="nav-number">2.3.</span> <span class="nav-text">Arcs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Curves"><span class="nav-number">2.4.</span> <span class="nav-text">Curves</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Closing-a-Subpath"><span class="nav-number">2.5.</span> <span class="nav-text">Closing a Subpath</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ellipses（椭圆）"><span class="nav-number">2.6.</span> <span class="nav-text">Ellipses（椭圆）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rectangles"><span class="nav-number">2.7.</span> <span class="nav-text">Rectangles</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Creating-a-Path"><span class="nav-number">3.</span> <span class="nav-text">Creating a Path</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Painting-a-Path"><span class="nav-number">4.</span> <span class="nav-text">Painting a Path</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Parameters-That-Affect-Stroking-（影响描边的参数）"><span class="nav-number">4.1.</span> <span class="nav-text">Parameters That Affect Stroking （影响描边的参数）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="首先需要注意的一点是：对于只有一个target的iOS应用（大部分小公司都是如此）来说，一般的环境配置就是根据一个宏定义来定义开发环境，测试环境、线上环境等等。因为只有一个target，所以我们在第三方网页上只需注册一个我们的应用。然后拿到appKey等信息，在用第三方提供的库进行app端的注册。 以极光推送（JPush）为例极光推送的注册提供了如下方法：12345+(void)setupWith">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三方推送配置需要注意的事情">
+<meta property="og:url" content="http://yoursite.com/2018/07/05/第三方推送配置需要注意的事情/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="首先需要注意的一点是：对于只有一个target的iOS应用（大部分小公司都是如此）来说，一般的环境配置就是根据一个宏定义来定义开发环境，测试环境、线上环境等等。因为只有一个target，所以我们在第三方网页上只需注册一个我们的应用。然后拿到appKey等信息，在用第三方提供的库进行app端的注册。 以极光推送（JPush）为例极光推送的注册提供了如下方法：12345+(void)setupWith">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/source/qita_tuisong1_p_1.png">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.420Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第三方推送配置需要注意的事情">
+<meta name="twitter:description" content="首先需要注意的一点是：对于只有一个target的iOS应用（大部分小公司都是如此）来说，一般的环境配置就是根据一个宏定义来定义开发环境，测试环境、线上环境等等。因为只有一个target，所以我们在第三方网页上只需注册一个我们的应用。然后拿到appKey等信息，在用第三方提供的库进行app端的注册。 以极光推送（JPush）为例极光推送的注册提供了如下方法：12345+(void)setupWith">
+<meta name="twitter:image" content="http://yoursite.com/source/qita_tuisong1_p_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/05/第三方推送配置需要注意的事情/"/>
+
+
+
+
+
+  <title>第三方推送配置需要注意的事情 | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/05/第三方推送配置需要注意的事情/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第三方推送配置需要注意的事情</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-05T00:00:00+08:00">
+                2018-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>首先需要注意的一点是：对于只有一个target的iOS应用（大部分小公司都是如此）来说，一般的环境配置就是根据一个宏定义来定义开发环境，测试环境、线上环境等等。因为只有一个target，所以我们在第三方网页上只需注册一个我们的应用。然后拿到appKey等信息，在用第三方提供的库进行app端的注册。</p>
+<h3 id="以极光推送（JPush）为例"><a href="#以极光推送（JPush）为例" class="headerlink" title="以极光推送（JPush）为例"></a>以极光推送（JPush）为例</h3><p>极光推送的注册提供了如下方法：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+(<span class="keyword">void</span>)setupWithOption:(<span class="built_in">NSDictionary</span> *)launchingOption</span><br><span class="line">appKey:(<span class="built_in">NSString</span> *)appKey</span><br><span class="line">channel:(<span class="built_in">NSString</span> *)channel</span><br><span class="line">apsForProduction:(<span class="built_in">BOOL</span>)isProduction</span><br><span class="line">advertisingIdentifier:(<span class="built_in">NSString</span> *)advertisingId</span><br></pre></td></tr></table></figure></p>
+<h4 id="1-如何设置isProduction的值？"><a href="#1-如何设置isProduction的值？" class="headerlink" title="1. 如何设置isProduction的值？"></a>1. 如何设置<code>isProduction</code>的值？</h4><p>其中的<code>isProduction</code>字段是最容易出错的。<code>isProduction</code>表示是否是发布版本，也就是只要我们的target的scheme切换为release时，都代表发布版本。这个跟我们代码的宏定义定义的线上环境是两个不同的概念。 也就是说，即便我们把环境配置为开发环境，但是scheme切位release，那么我们的版本就是环境为开发环境的发布版本，这一点必须要搞清楚。<br>那么知道了这个就很好配置了，只需要这样定义<code>isProduction</code>的值：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> isProduction = <span class="literal">YES</span>;</span><br><span class="line"><span class="meta">#if DEBUG</span></span><br><span class="line">isProduction = <span class="literal">NO</span>;</span><br><span class="line"><span class="meta">#endif</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="2-服务端怎么配置？"><a href="#2-服务端怎么配置？" class="headerlink" title="2. 服务端怎么配置？"></a>2. 服务端怎么配置？</h4><p><img src="/source/qita_tuisong1_p_1.png" alt=""><br>以上是JPush官网里截取的一段话，注意蓝色框里面的文字。<br>我想，所有的第三方平台的设置应该都差不多。</p>
+<p>这里的<code>apns_production</code>字段的设置非常容易出错。<br>因为，这个字段是与iOS客户端的环境配置无关，而与其打包的配置有关。也就是说依赖于客户端。如果客户端安装的是DEBUG版本，则<code>apns_production</code>应该为<code>false</code>，如果客户端安装的是RELEASE版本，则为<code>true</code>。</p>
+<blockquote>
+<p>需要注意：客户端的RELEASE 和 DEBUG 指的是编译打包的版本，这个不是环境配置。<br>一般所说的环境指的是baseURL的不同所对应的：开发、测试、线上环境。</p>
+</blockquote>
+<p>一般来说，我们的服务端都是这样配置的：如果客户端所用的服务是线上环境，则<code>apns_production</code>为<code>ture</code>，否则为<code>false</code>。这样一来，一般就会出现我们用Xcode在手机上跑起来的应用，如果是开发环境的话可以收到推送，而如果是线上环境就不能收到推送，但是发布到appstore的线上版本又可以收到推送。</p>
+<blockquote>
+<p>这里的原因是：当客户端配置的线上环境时，服务端设置<code>apns_production</code>为<code>true</code>，而我们打包编译的一般是DEBUG版本，那么<code>apns_production</code>其实应该为<code>false</code>。这也就是为什么会出现上面那种情况的原因。</p>
+</blockquote>
+<p>那么，服务端到底应该怎么配置<code>apns_production</code>的值呢？我认为这个应该由客户端主动上传给服务端，而不是服务端自己来决定。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/26/关于-tintColor/" rel="next" title="关于 tintColor">
+                <i class="fa fa-chevron-left"></i> 关于 tintColor
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/19/Git-使用/" rel="prev" title="Git 基本使用">
+                Git 基本使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#以极光推送（JPush）为例"><span class="nav-number">1.</span> <span class="nav-text">以极光推送（JPush）为例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-如何设置isProduction的值？"><span class="nav-number">1.1.</span> <span class="nav-text">1. 如何设置isProduction的值？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-服务端怎么配置？"><span class="nav-number">1.2.</span> <span class="nav-text">2. 服务端怎么配置？</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

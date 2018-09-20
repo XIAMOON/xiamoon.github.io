@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="意思就是使用滤镜。 需要用到CIFilter和CIImage类。 如果想创建自己的渲染工作流，需要用到CIContext类。  Overview对图片使用滤镜的基本方法：The basics of applying a filter to an image12345678910import CoreImagelet context = CIContext()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一、Core Image – Processing Images">
+<meta property="og:url" content="http://yoursite.com/2018/03/17/一、Core-Image-–-Processing-Images/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="意思就是使用滤镜。 需要用到CIFilter和CIImage类。 如果想创建自己的渲染工作流，需要用到CIContext类。  Overview对图片使用滤镜的基本方法：The basics of applying a filter to an image12345678910import CoreImagelet context = CIContext()">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/source/CI1_p_1.png">
+<meta property="og:image" content="http://yoursite.com/source/CI1_p_2.png">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.417Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一、Core Image – Processing Images">
+<meta name="twitter:description" content="意思就是使用滤镜。 需要用到CIFilter和CIImage类。 如果想创建自己的渲染工作流，需要用到CIContext类。  Overview对图片使用滤镜的基本方法：The basics of applying a filter to an image12345678910import CoreImagelet context = CIContext()">
+<meta name="twitter:image" content="http://yoursite.com/source/CI1_p_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/17/一、Core-Image-–-Processing-Images/"/>
+
+
+
+
+
+  <title>一、Core Image – Processing Images | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/一、Core-Image-–-Processing-Images/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一、Core Image – Processing Images</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T00:00:00+08:00">
+                2018-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Core-Image/" itemprop="url" rel="index">
+                    <span itemprop="name">Core Image</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li>意思就是使用滤镜。</li>
+<li>需要用到<code>CIFilter</code>和<code>CIImage</code>类。</li>
+<li>如果想创建自己的渲染工作流，需要用到<code>CIContext</code>类。</li>
+</ol>
+<h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>对图片使用滤镜的基本方法：<br><em>The basics of applying a filter to an image</em><br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import CoreImage</span><br><span class="line"></span><br><span class="line">let context = <span class="built_in">CIContext</span>()                                           <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">let filter = <span class="built_in">CIFilter</span>(name: <span class="string">"CISepiaTone"</span>)!                         <span class="comment">// 2</span></span><br><span class="line">filter.setValue(<span class="number">0.8</span>, forKey: kCIInputIntensityKey)</span><br><span class="line">let image = <span class="built_in">CIImage</span>(contentsOfURL: myURL)                           <span class="comment">// 3</span></span><br><span class="line">filter.setValue(image, forKey: kCIInputImageKey)</span><br><span class="line">let result = filter.outputImage!                                    <span class="comment">// 4</span></span><br><span class="line">let cgImage = context.createCGImage(result, from: result.extent)    <span class="comment">// 5</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<ol>
+<li>创建<code>CIContext</code>对象。你并非每次都需要创建你自己的CIContext对象，通常，你可以集成其他的可以为你管理渲染过程的系统框架。使用自己的context可以让你更加精确地控制渲染过程和渲染所使用的资源。上下文(Context)是重量级的对象，如果你要使用它，那就尽早使用，并且在你每次想处理图片的时候重用它。</li>
+<li>创建一个滤镜</li>
+<li>通过一个URL创建一个<code>CIImage</code>对象</li>
+<li>从filter中输出一个CIImage对象。此时，滤镜其实并没有开始执行—image对象是一个“配方”，指定如何使用指定的过滤器、参数和输入创建图像。<strong>Core Image 只有在请求呈现时执行此方法</strong>。</li>
+<li>把输出图像渲染为一个<code>Core Graphics</code>图像，你可以把它展现出来或者村委一个文件。</li>
+</ol>
+</blockquote>
+<h3 id="图像是滤镜的输入和输出"><a href="#图像是滤镜的输入和输出" class="headerlink" title="图像是滤镜的输入和输出"></a>图像是滤镜的输入和输出</h3><ol>
+<li>一个<code>CIImage</code>对象是一个不可变对象，它代表着一个图片。这个对象并非直接代表图像的位图数据—相反，一个<code>CIImage</code>对象是一个生成图片的”配方”。一个配方可能是为了从一个文件中加载一个图片；另一个可能是为了代表滤镜的输出。Core Image只在您请求将图像呈现为显示或输出时执行这些方法。<br><br></li>
+<li><p>您可以从几乎任何图像数据来源创建Core Image图像对象，包括：</p>
+<blockquote>
+<ul>
+<li>引用着一个被加载的图片的URLs，或者包含图片文件数据的<code>NSData</code>对象。</li>
+<li><code>CGImageRef</code>、<code>UIImage</code>或者<code>NSBitmapImageRep</code>对象。</li>
+<li>Metal, OpenGL, or OpenGL ES textures，即纹理。</li>
+<li>CoreVideo image or pixel buffers (<code>CVImageBufferRef</code>or <code>CVPixelBufferRef</code>)</li>
+<li>IOSurfaceRef objects that share image data between processes</li>
+<li>Image bitmap data in memory (a pointer to such data, or a CIImageProvider object that provides data on demand)</li>
+</ul>
+</blockquote>
+</li>
+<li><p>当你访问<code>CIFilter</code>的<code>outputImage</code>属性时，Core Image只是仅仅标识和存储执滤镜所需的步骤。这些步骤只在您请求将图像渲染出来去显示或输出时才真正执行。<br><br></p>
+</li>
+<li>只有当渲染时才处理图像使得Core Image快速高效。在呈现时，Core Image可以看到是否需要将多个滤镜应用于图像。如果是这样，它会自动连接多个“食谱”并组织它们以消除冗余操作，这样每个像素只处理一次而不是多次。</li>
+</ol>
+<p><code>CIFilter</code>的实例是可变对象，所以是非线程安全的，你不能在不同的线程中共享它。每个线程必须创建它自己的<code>CIFilter</code>对象。然而，一个filter的输入和输出的<code>CIFilter</code>对象是不可变的，所以可以线程共享。</p>
+<h3 id="滤镜描述了图像处理效果"><a href="#滤镜描述了图像处理效果" class="headerlink" title="滤镜描述了图像处理效果"></a>滤镜描述了图像处理效果</h3><h4 id="把滤镜串联起来可以创建复杂的效果"><a href="#把滤镜串联起来可以创建复杂的效果" class="headerlink" title="把滤镜串联起来可以创建复杂的效果"></a>把滤镜串联起来可以创建复杂的效果</h4><ol>
+<li>当串联了一系列的filter后，Core Image并非单个去执行这些filters，而是把这些filters重组在一起，最后高效的输出。<br>单独执行：<br><img src="/source/CI1_p_1.png" alt=""><br>重组为一个操作后执行：<br><img src="/source/CI1_p_2.png" alt=""><br>Core Image用的是后者，因为更快更搞笑。</li>
+</ol>
+<p>创建滤镜链：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">func applyFilterChain(to image: <span class="built_in">CIImage</span>) -&gt; <span class="built_in">CIImage</span> &#123;</span><br><span class="line"><span class="comment">// The CIPhotoEffectInstant filter takes only an input image</span></span><br><span class="line">let colorFilter = <span class="built_in">CIFilter</span>(name: <span class="string">"CIPhotoEffectProcess"</span>, withInputParameters:</span><br><span class="line">[kCIInputImageKey: image])!</span><br><span class="line"></span><br><span class="line">let coloredImage = colorFilter.outputImage!</span><br><span class="line"></span><br><span class="line"><span class="comment">// Pass the result of the color filter into the Bloom filter</span></span><br><span class="line"><span class="comment">// and set its parameters for a glowy effect.</span></span><br><span class="line">let bloomImage = coloredImage!.applyingFilter(<span class="string">"CIBloom"</span>,</span><br><span class="line">withInputParameters: [</span><br><span class="line">kCIInputRadiusKey: <span class="number">10.0</span>,</span><br><span class="line">kCIInputIntensityKey: <span class="number">1.0</span></span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment">// imageByCroppingToRect is a convenience method for</span></span><br><span class="line"><span class="comment">// creating the CICrop filter and accessing its outputImage.</span></span><br><span class="line">let cropRect = <span class="built_in">CGRect</span>(x: <span class="number">350</span>, y: <span class="number">350</span>, width: <span class="number">150</span>, height: <span class="number">150</span>)</span><br><span class="line">let croppedImage = bloomImage.cropping(to: cropRect)</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> croppedImage</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用特殊的滤镜类型以获得更多选项"><a href="#使用特殊的滤镜类型以获得更多选项" class="headerlink" title="使用特殊的滤镜类型以获得更多选项"></a>使用特殊的滤镜类型以获得更多选项</h4><ol>
+<li>大多数内置的滤镜的操作都是以一个图像作为输入，然后输出一个图像为主要过程。但是，系统也有一些其他类型的滤镜可以创造更有趣的效果，或者跟其他滤镜结合产出更复杂的效果。<blockquote>
+<ul>
+<li>一个混合滤镜可以通过一个预先设置的公式把两个图像结合。比如<blockquote>
+<ul>
+<li><code>CISourceInCompositing</code>滤镜可以结合图像，使得输出图像中只显示两个图像中都是不透明的部分。</li>
+<li><code>CIMultiplyBlendMode</code>滤镜从两个图像中复制像素颜色，产生一个黑暗的输出图像。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<ul>
+<li>一个generator滤镜不需要输入图像。相反，这些滤镜使用其他的输入参数来从头创建一个新的图像。比如：<blockquote>
+<ul>
+<li><code>CIQRCodeGenerator</code>和<code>CICode128BarcodeGenerator</code>，这些滤镜可以通过指定的输入数据生成二维码图片。</li>
+<li><code>CIConstantColorGenerator</code>，<code>CICheckboardGenerator</code>，<code>CILinerGradient</code>从指定的颜色生成简单的过程图像。你可以把这些跟其他滤镜结合起来创建更有趣的效果—比如<code>CIRadialGradient</code>滤镜可以为<code>CIMaskedVariableBlur</code>滤镜创建mask遮罩。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>一个reduction滤镜对输入图像进行操作，而不是在传统意义上创建输出图像，它的输出描述了关于输入图像的信息。<blockquote>
+<ul>
+<li><code>CIAreaMaximum</code></li>
+<li><code>CIAreaHistogram</code></li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>transition filter接受两个输入图像，并根据独立变量对它们的输出进行不同的输出。通常，这个变量是时间，所以您可以使用一个转换过滤器来创建一个<strong><code>动画</code></strong>，从一个图像开始，到另一个图像结束，然后使用一个有趣的视觉效果从一个到另一个。<blockquote>
+<ul>
+<li><code>CIDissolveTransition</code>滤镜</li>
+<li><code>CICopyMachineTransition</code>滤镜</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<h3 id="跟其他框架的集成"><a href="#跟其他框架的集成" class="headerlink" title="跟其他框架的集成"></a>跟其他框架的集成</h3><p>Core Image在iOS、macOS和tvOS中与其他几个技术交互。由于这种紧密的集成，您可以使用Core Image在您的应用程序的用户界面中轻松地添加视觉效果，而无需构建复杂的呈现代码。下面几节介绍了在应用程序中使用v的几种常见方法，以及每个应用程序的方便系统框架。</p>
+<h4 id="在UIKit和AppKit中处理静态图像"><a href="#在UIKit和AppKit中处理静态图像" class="headerlink" title="在UIKit和AppKit中处理静态图像"></a>在UIKit和AppKit中处理静态图像</h4><p>UIKit和AppKit提供了一些简单的方法，可以将核心图像处理添加到静态图像中，无论这些图像出现在你的应用程序的UI中还是它的工作流的一部分。例如:</p>
+<ul>
+<li>旅行应用程序可以在列表中显示目的地的股票照片，然后将过滤器应用到这些图像中，为每个目的地的细节页面创建一个微妙的背景。</li>
+<li>一个社交应用程序可以将过滤器应用到用户头像图片上，以显示每个帖子的情绪。</li>
+<li>一个摄影应用程序可以允许用户在捕捉时使用滤镜自定义图像，或者为用户照片库中的图片添加图片应用扩展。(看<a href="https://developer.apple.com/library/content/documentation/General/Conceptual/ExtensibilityPG/Photos.html#//apple_ref/doc/uid/TP40014214-CH17" target="_blank" rel="noopener">Photo Editing</a>)<blockquote>
+<p>注意：不要使用核心图像来创建模糊效果，因为不够高效和实时.</p>
+</blockquote>
+</li>
+</ul>
+<p>在iOS和tvOS中，你可以在任何<code>UIImage</code>对象上应用Core Image的滤镜。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> ViewController: <span class="built_in">UIViewController</span> &#123;</span><br><span class="line">let filter = <span class="built_in">CIFilter</span>(name: <span class="string">"CISepiaTone"</span>,</span><br><span class="line">withInputParameters: [kCIInputIntensityKey: <span class="number">0.5</span>])!</span><br><span class="line">@IBOutlet var imageView: <span class="built_in">UIImageView</span>!</span><br><span class="line"></span><br><span class="line">func displayFilteredImage(image: <span class="built_in">UIImage</span>) &#123;</span><br><span class="line"><span class="comment">// Create a Core Image image object for the input image.</span></span><br><span class="line">let inputImage = <span class="built_in">CIImage</span>(image: image)!</span><br><span class="line"><span class="comment">// Set that image as the filter's input image parameter.</span></span><br><span class="line">filter.setValue(inputImage, forKey: kCIInputImageKey)</span><br><span class="line"><span class="comment">// Get a UIImage representation of the filter's output and display it.</span></span><br><span class="line">imageView.image = <span class="built_in">UIImage</span>(<span class="built_in">CIImage</span>: filter.outputImage!)</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用AVFoundation处理视频"><a href="#使用AVFoundation处理视频" class="headerlink" title="使用AVFoundation处理视频"></a>使用AVFoundation处理视频</h4><p>AVFoundation框架提供了一些用于视频和音频内容的高级实用程序。其中包括<code>AVVideoComposition</code>类，您可以使用它将视频和音频文件组合或编辑成一个单独的文件。您可以使用<code>AVVideoComposition</code>对象在播放或导出期间将Core Image的滤镜应用到视频的每一帧中。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">let filter = <span class="built_in">CIFilter</span>(name: <span class="string">"CIGaussianBlur"</span>)!</span><br><span class="line">let composition = <span class="built_in">AVVideoComposition</span>(asset: asset, applyingCIFiltersWithHandler: &#123; request <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Clamp to avoid blurring transparent pixels at the image edges</span></span><br><span class="line">let source = request.sourceImage.clampingToExtent()</span><br><span class="line">filter.setValue(source, forKey: kCIInputImageKey)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Vary filter parameters based on video timing</span></span><br><span class="line">let seconds = <span class="built_in">CMTimeGetSeconds</span>(request.compositionTime)</span><br><span class="line">filter.setValue(seconds * <span class="number">10.0</span>, forKey: kCIInputRadiusKey)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Crop the blurred output to the bounds of the original image</span></span><br><span class="line">let output = filter.outputImage!.cropping(to: request.sourceImage.extent)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Provide the filter output to the composition</span></span><br><span class="line">request.finish(with: output, context: <span class="literal">nil</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>提示:清单1-4还展示了另一个有用的核心图像技术。默认情况下，模糊滤镜(blur filter)还可以通过模糊图像像素和透明像素(在过滤器的图像处理空间中)包围图像来软化图像的边缘。这种效果在某些情况下是不可取的，例如在过滤视频时。</p>
+<p>为了避免这种效果，请使用<code>imageByClampingToScope</code>方法(或CIAffineClamp过滤器)在模糊前向所有方向无限扩展图像的边缘像素。夹紧创建一个无限大小的图像，所以你也应该在模糊后裁剪图像。</p>
+</blockquote>
+<h4 id="使用SpriteKit和SceneKit处理游戏内容"><a href="#使用SpriteKit和SceneKit处理游戏内容" class="headerlink" title="使用SpriteKit和SceneKit处理游戏内容"></a>使用SpriteKit和SceneKit处理游戏内容</h4><h4 id="在macOS中处理Core-Animation-Layers"><a href="#在macOS中处理Core-Animation-Layers" class="headerlink" title="在macOS中处理Core Animation Layers"></a>在macOS中处理Core Animation Layers</h4><h3 id="使用Core-Image-Context构建你自己的工作流"><a href="#使用Core-Image-Context构建你自己的工作流" class="headerlink" title="使用Core Image Context构建你自己的工作流"></a>使用Core Image Context构建你自己的工作流</h3><p>在前面的部分使用Core Image时，哪些框架或自动为我们管理好使用过程中的资源。然而，在某些情况下，使用<code>CIContext</code>类来管理这些资源更为谨慎。通过直接管理核心图像上下文，您可以精确地控制您的应用程序的性能特征，或者将核心图像与底层呈现技术集成在一起。</p>
+<p>Core Image context用于执行筛选和生成图像所需的CPU或GPU计算技术、资源和设置。有几种上下文可供选择，因此您应该选择最适合您的应用程序工作流的选项，以及您可能正在使用的其他技术。下面的部分讨论一些常见的场景;</p>
+<blockquote>
+<p>重点：核心图像上下文是管理大量资源和状态的重量级对象。重复创建和销毁上下文具有很大的性能成本，因此，如果您计划执行多个图像处理操作，那么在早期创建一个上下文并存储它以备将来重用。</p>
+</blockquote>
+<h4 id="使用自动的Context来渲染呈现"><a href="#使用自动的Context来渲染呈现" class="headerlink" title="使用自动的Context来渲染呈现"></a>使用自动的Context来渲染呈现</h4><p>创建一个Core Image Context是很简单的：直接使用基本的<code>init</code>或者<code>initWithOptions:</code>初始化方法。当你创建之后，Core Image自动在内部管理你的资源，它会基于你当前的设备和你指定的options来选择最合适或者最佳的CPU或者GPU渲染技术。这种方法非常适合于将处理后的图像呈现给文件（例如，使用<code>writeJPEGRepresentationOfImage:toURL:colorSpace:options:error:</code>方法）。</p>
+<blockquote>
+<p>注意:没有显式指定的上下文呈现目的地不能使用<code>drawImage:inRect:fromRect:</code>方法，因为该方法的行为变化取决于正在使用的渲染目的地。相反，使用方法名以<code>render</code>或者<code>create</code>开头的<code>CIContext</code>方法来指定明确的目的地。</p>
+</blockquote>
+<p>当你想实时的渲染Core Image的结果（例如：对过滤器参数进行动画修改，生成动画转换效果，或处理视频或其它已经每秒多次渲染的可视内容）。那么请谨慎使用此方法。尽管使用此方法创建的<code>CIContext</code>对象可以使用GPU自动呈现，但呈现所渲染的结果可能涉及CPU和GPU内存之间的昂贵的复制操作。</p>
+<h4 id="使用Metal来实现实时的渲染"><a href="#使用Metal来实现实时的渲染" class="headerlink" title="使用Metal来实现实时的渲染"></a>使用Metal来实现实时的渲染</h4><p>Metal framework提供了对GPU的低开销访问，为图形呈现和并行计算工作流提供了高性能。这样的工作流是图像处理的一部分，所以Core Image尽可能地建立在Metal之上。如果你正在构建一个用Metal来渲染图形的应用程序，或者你想利用Metal来获得实时的动画效果，比如过滤输出或过滤动画输入(比如视频)，使用Metal设备来创建你的核心图像上下文。</p>
+<p>下面的代码展示了使用MetalKit视图(MTKView)去渲染一个Core Image 的输出。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> ViewController: <span class="built_in">UIViewController</span>, <span class="built_in">MTKViewDelegate</span> &#123;  <span class="comment">// 1</span></span><br><span class="line"><span class="comment">// Metal resources</span></span><br><span class="line">var device: <span class="built_in">MTLDevice</span>!</span><br><span class="line">var commandQueue: <span class="built_in">MTLCommandQueue</span>!</span><br><span class="line">var sourceTexture: <span class="built_in">MTLTexture</span>!                         <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Core Image resources</span></span><br><span class="line">var context: <span class="built_in">CIContext</span>!</span><br><span class="line">let filter = <span class="built_in">CIFilter</span>(name: <span class="string">"CIGaussianBlur"</span>)!</span><br><span class="line">let colorSpace = <span class="built_in">CGColorSpaceCreateDeviceRGB</span>()</span><br><span class="line"></span><br><span class="line">override func viewDidLoad() &#123;</span><br><span class="line"><span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">device = <span class="built_in">MTLCreateSystemDefaultDevice</span>()            <span class="comment">// 3</span></span><br><span class="line">commandQueue = device.newCommandQueue()</span><br><span class="line"></span><br><span class="line">let view = <span class="keyword">self</span>.view as! <span class="built_in">MTKView</span>                   <span class="comment">// 4</span></span><br><span class="line">view.delegate = <span class="keyword">self</span></span><br><span class="line">view.device = device</span><br><span class="line">view.framebufferOnly = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">context = <span class="built_in">CIContext</span>(mtlDevice: device)             <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// other setup</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用OpenGL或者OpenGL-ES实现实时的渲染"><a href="#使用OpenGL或者OpenGL-ES实现实时的渲染" class="headerlink" title="使用OpenGL或者OpenGL ES实现实时的渲染"></a>使用OpenGL或者OpenGL ES实现实时的渲染</h4><p>Core Image也可以使用OpenGL来达到高性能的，基于GPU的渲染。如果你想支持更老的、<code>Metal</code>无法支持的硬件；或者如果你想把Core Image集成到一个已经存在的OpenGL或者OpenGL ES中，你可以使用这个选项。</p>
+<ul>
+<li>如果你想使用OpenGL ES，你可以使用<code>contextWithEAGLContext:options:</code>方法，配合你用来渲染的<code>EAGLContext</code>来初始化和创建一个Core Image上下文。</li>
+</ul>
+<p>在这两种场景中，使用<code>imageWithTexture:size:flipped:colorSpace:</code>方法从OpenGL或者OpenGL ES纹理中初始化创建<code>CIImage</code>对象。使用已经在GPU内存中的图像数据可以通过删除冗余的复制操作来提高性能。</p>
+<p>为了能在OpenGL或者OpenGL ES中渲染一个Core Image的output，你得让你的GL context为current context，然后设置一个framebuffer，然后调用<code>drawImage:inRect:fromRect:</code>方法。</p>
+<h4 id="使用Quartz-2D来实现基于CPU的渲染"><a href="#使用Quartz-2D来实现基于CPU的渲染" class="headerlink" title="使用Quartz 2D来实现基于CPU的渲染"></a>使用Quartz 2D来实现基于CPU的渲染</h4><p>如果你的app不需要实时的性能，然后使用CoreGraphic（比如，在UIKit或者APPKit的view里的<code>drawRect:</code>方法里 ），使用<code>contextWithCGContext:options:</code>初始化创建一个Core Image context，这个context会与你已经用来作其他绘制的Core Graphics context一起工作。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/17/二、Core-Image-–-Detecting-Faces-in-an-Image（在图片中检测人脸/" rel="next" title="二、Core Image – Detecting Faces in an Image（在图片中检测人脸">
+                <i class="fa fa-chevron-left"></i> 二、Core Image – Detecting Faces in an Image（在图片中检测人脸
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/18/三、Core-Image-–-Auto-Enhancing-Image（自动增强图片）/" rel="prev" title="三、Core Image – Auto Enhancing Image（自动增强图片）">
+                三、Core Image – Auto Enhancing Image（自动增强图片） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像是滤镜的输入和输出"><span class="nav-number">2.</span> <span class="nav-text">图像是滤镜的输入和输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#滤镜描述了图像处理效果"><span class="nav-number">3.</span> <span class="nav-text">滤镜描述了图像处理效果</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#把滤镜串联起来可以创建复杂的效果"><span class="nav-number">3.1.</span> <span class="nav-text">把滤镜串联起来可以创建复杂的效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用特殊的滤镜类型以获得更多选项"><span class="nav-number">3.2.</span> <span class="nav-text">使用特殊的滤镜类型以获得更多选项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跟其他框架的集成"><span class="nav-number">4.</span> <span class="nav-text">跟其他框架的集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在UIKit和AppKit中处理静态图像"><span class="nav-number">4.1.</span> <span class="nav-text">在UIKit和AppKit中处理静态图像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用AVFoundation处理视频"><span class="nav-number">4.2.</span> <span class="nav-text">使用AVFoundation处理视频</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用SpriteKit和SceneKit处理游戏内容"><span class="nav-number">4.3.</span> <span class="nav-text">使用SpriteKit和SceneKit处理游戏内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在macOS中处理Core-Animation-Layers"><span class="nav-number">4.4.</span> <span class="nav-text">在macOS中处理Core Animation Layers</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Core-Image-Context构建你自己的工作流"><span class="nav-number">5.</span> <span class="nav-text">使用Core Image Context构建你自己的工作流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用自动的Context来渲染呈现"><span class="nav-number">5.1.</span> <span class="nav-text">使用自动的Context来渲染呈现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Metal来实现实时的渲染"><span class="nav-number">5.2.</span> <span class="nav-text">使用Metal来实现实时的渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用OpenGL或者OpenGL-ES实现实时的渲染"><span class="nav-number">5.3.</span> <span class="nav-text">使用OpenGL或者OpenGL ES实现实时的渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Quartz-2D来实现基于CPU的渲染"><span class="nav-number">5.4.</span> <span class="nav-text">使用Quartz 2D来实现基于CPU的渲染</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

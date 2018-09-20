@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1、IBOutlet连出来的视图属性为什么可以被设置成weak?答：IBOutlet是连接在ViewController控制器中的，当IBOutlet对象是ViewController的直接拥有者时(如self.view，控制器必须持有它)，属性必须设置为strong。而一般我们的控件是添加在self.view中的，self.view直接持有这些控件，所以控件在控制器中的IBOutlet可以设置为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第八篇、小问题小总结">
+<meta property="og:url" content="http://yoursite.com/2017/05/10/第八篇、小问题小总结/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="1、IBOutlet连出来的视图属性为什么可以被设置成weak?答：IBOutlet是连接在ViewController控制器中的，当IBOutlet对象是ViewController的直接拥有者时(如self.view，控制器必须持有它)，属性必须设置为strong。而一般我们的控件是添加在self.view中的，self.view直接持有这些控件，所以控件在控制器中的IBOutlet可以设置为">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/source/summary8_p_1.png">
+<meta property="og:image" content="http://yoursite.com/source/summary8_p_2.png">
+<meta property="og:image" content="http://yoursite.com/source/summary8_p_3.png">
+<meta property="og:image" content="http://yoursite.com/source/summary8_p_4.png">
+<meta property="og:image" content="http://yoursite.com/source/summary8_p_5.jpg">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.422Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第八篇、小问题小总结">
+<meta name="twitter:description" content="1、IBOutlet连出来的视图属性为什么可以被设置成weak?答：IBOutlet是连接在ViewController控制器中的，当IBOutlet对象是ViewController的直接拥有者时(如self.view，控制器必须持有它)，属性必须设置为strong。而一般我们的控件是添加在self.view中的，self.view直接持有这些控件，所以控件在控制器中的IBOutlet可以设置为">
+<meta name="twitter:image" content="http://yoursite.com/source/summary8_p_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/10/第八篇、小问题小总结/"/>
+
+
+
+
+
+  <title>第八篇、小问题小总结 | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/10/第八篇、小问题小总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第八篇、小问题小总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-10T00:00:00+08:00">
+                2017-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS面试总结及研究/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS面试总结及研究</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>1、IBOutlet连出来的视图属性为什么可以被设置成weak?<br>答：IBOutlet是连接在ViewController控制器中的，当IBOutlet对象是ViewController的直接拥有者时(如self.view，控制器必须持有它)，属性必须设置为strong。而一般我们的控件是添加在self.view中的，self.view直接持有这些控件，所以控件在控制器中的IBOutlet可以设置为weak，即不持有，这样的另一个好处是，当控制器dealloc时，我们不需要手动把这些控件的指针置为nil，因为他们weak属性的，会自动置为nil，这会给我们省了很多事情。而且我们向nil发送消息的时候不会崩溃</p>
+<hr>
+<p>2、什么是野指针？与空指针有什么不同<br>答：假设指针p指向对象a的地址，然后对象a被释放了，但是p还是指向着a释放前的地址，那么a就是野指针。野指针指向着一块不可用的内存区域，如果对野指针进行操作的话，会使程序发生不可预知的错误。一般造成野指针的原因有两个：一个是指针在初始化的时候未赋值，此时的指针会乱指一气。另一个就是指针所指向的对象释放后，未把指针置空。</p>
+<p>空指针就是指向内存地址首位，也就是指针值为NULL的指针。</p>
+<hr>
+<p>3、<code>strong</code>关键字在声明属性时表明了一种拥有关系，当为这种属性设置新值时，设置方法会先释放旧值，即解除之前对旧值得持有关系(引用计数减一)，然后持有新值(新值得引用计数加一)，最后保存指针的值。<br><code>weak</code>关键字在声明属性时与<code>strong</code>相反，为这总属性赋值时，是不会持有任何对象的，所以自然不存在释放旧值和持有新值一说，只是单纯的保存指针值而已。而且最关键的是，这个属性所指向的对象在释放后，属性指针会自动清空成为空指针。<br><code>assign</code>关键字在修饰属性时跟<code>weak</code>会有一点类似，只是单纯地保存指针的值而已。一般用这个来声明简单数据类型，如果用这个属性保存对象时，对象释放后，属性会成为野指针。<br><code>copy</code>关键字在声明属性时，当为属性赋值时，也会先解除对旧值(对象)的持有关系，然后把新值(对象)拷贝一份，并持有这个拷贝后的值，而且保存拷贝后的值得指针。</p>
+<blockquote>
+<p>综上：<code>strong</code>和<code>copy</code>声明的属性不仅会保存新值，而且还会持有新值，在赋新值时会解除对之前旧值的持有关系。但是<code>weak</code>和<code>assign</code>仅仅只会保存新值，并不会持有它。</p>
+</blockquote>
+<hr>
+<p>4、block为什么要使用copy，为什么会引起循环引用，怎么解决?<br>答：block一开始在创建的时候，是放在栈区的，是可能随时会被释放的，如果不用copy给它赋值的话，那么，block在回调的时候可能已经找不到了，程序会崩溃：Thread1:EXC_BAD_ACCESS，也就是说block已经被销毁了。<br>所以声明block属性时，得用copy，那么在给block赋值的时候，会把block拷贝到堆区，这样block就不会被编译器自动释放了。<br><code>注</code>：ARC下，block有三种，一种是全部block，一种是栈区block(即：内存地址在栈区)，一种是堆区block(即：内存地址在堆区)。<br>看代码：一个很常见的viewcontroller跳转到viewcontroller2，在2中声明了一个block。<br>viewcontroller.m<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"ViewController.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"ViewController2.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">IBAction</span>)present:(<span class="built_in">UIButton</span> *)sender &#123;    </span><br><span class="line">ViewController2 *vc = [ViewController2 new];</span><br><span class="line">vc.callback = ^(<span class="built_in">NSString</span> *str) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"^^^^^^^^^%@, str);</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string">[self presentViewController:vc animated:YES completion:nil];</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">NSLog(@"</span>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;block : %<span class="string">@", vc.callback);</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>viewcontroller2.h<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController2</span> : <span class="title">UIViewController</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">void</span> (^callback) (<span class="built_in">NSString</span> *str);</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>viewcontroller2.m<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"ViewController2.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController2</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController2</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)init &#123;</span><br><span class="line"><span class="built_in">UIStoryboard</span> *sb = [<span class="built_in">UIStoryboard</span> storyboardWithName:<span class="string">@"Main"</span> bundle:<span class="literal">nil</span>];</span><br><span class="line"><span class="keyword">self</span> = [sb instantiateViewControllerWithIdentifier:<span class="string">@"ViewController2"</span>];</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">self</span>) &#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line"><span class="keyword">self</span>.view.backgroundColor = [<span class="built_in">UIColor</span> purpleColor];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">IBAction</span>)back:(<span class="built_in">UIButton</span> *)sender &#123;</span><br><span class="line"><span class="keyword">self</span>.callback(<span class="string">@"你好"</span>);</span><br><span class="line">[<span class="keyword">self</span> dismissViewControllerAnimated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;block : &lt;__NSGlobalBlock__: <span class="number">0x1018530c0</span>&gt;</span><br><span class="line">&gt;^^^^^^^^^^你好</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>block内部并没有访问到外部变量，所以这个block是<code>__NSGlobalBlock__</code>全局block，大家注意到viewcontroller.h中我声明block是用的assign，这是无关紧要的。</p>
+</blockquote>
+<p>然后改一下代码：<br>看代码：一个很常见的viewcontroller跳转到viewcontroller2，在2中声明了一个block。<br>viewcontroller.m<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">IBAction</span>)present:(<span class="built_in">UIButton</span> *)sender &#123;</span><br><span class="line"><span class="keyword">self</span>.name = <span class="string">@"123456"</span>;</span><br><span class="line"></span><br><span class="line">ViewController2 *vc = [ViewController2 new];</span><br><span class="line">__<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line">vc.callback = ^(<span class="built_in">NSString</span> *str) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"^^^^^^^^^%@, name:%@"</span>, str, weakSelf.name);</span><br><span class="line">&#125;;</span><br><span class="line">[<span class="keyword">self</span> presentViewController:vc animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;block : %@"</span>, vc.callback);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;block : &lt;__NSStackBlock__: <span class="number">0x7fff5c233620</span>&gt;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/source/summary8_p_1.png" alt=""></p>
+<blockquote>
+<p>然后就崩溃了，说block已经被释放了，因为现在的block是<code>__NSStackBlock__</code>栈区block，因为它内部访问了self.name。此时声明block应该声明为copy。<br>viewcontroller2.h<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController2</span> : <span class="title">UIViewController</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="keyword">void</span> (^callback) (<span class="built_in">NSString</span> *str);</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>输出<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;block : &lt;__NSMallocBlock__: <span class="number">0x608000044da0</span>&gt;</span><br><span class="line">^^^^^^^^^你好, name:<span class="number">123456</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>大家看到此时的block是堆区的block，<code>__NSMallocBlock__</code>，很显然block从栈区被copy到了堆区。</p>
+</blockquote>
+<p>引起循环引用的原因是：self-&gt;vc-&gt;vc.callback-&gt;self，即self持有vc，vc<br>持有block，block内部又持有self，所以用__weak来声明一个weakSelf，当在block里访问weakSelf时，block就不会持有self，就避免了循环引用。</p>
+<p>为什么修改block外部的变量，需要用__block？</p>
+<blockquote>
+<p>我们都知道：Block不允许修改外部变量的值，这里所说的外部变量的值，指的是栈中指针的内存地址。__block 所起到的作用就是只要观察到该变量被 block 所持有，就将“外部变量”在栈中的内存地址放到了堆中。进而在block内部也可以修改外部变量的值。<br>引用：<a href="http://www.jianshu.com/p/a1c8532e172d" target="_blank" rel="noopener">在block内如何修改block外部变量引发的思考
+</a></p>
+</blockquote>
+<blockquote>
+<p>block 使用 copy 是从 MRC 遗留下来的“传统”,在 MRC 中,方法内部的 block 是在栈区的,使用 copy 可以把它放到堆区.在 ARC 中写不写都行：对于 block 使用 copy 还是 strong 效果是一样的，但写上 copy 也无伤大雅，还能时刻提醒我们：编译器自动对 block 进行了 copy 操作。如果不写 copy ，该类的调用者有可能会忘记或者根本不知道“编译器会自动对 block 进行了 copy 操作”，他们有可能会在调用之前自行拷贝属性值。这种操作多余而低效。你也许会感觉我这种做法有些怪异，不需要写依然写。如果你这样想，其实是你“日用而不知”，你平时开发中是经常在用我说的这种做法的，比如下面的属性不写copy也行，但是你会选择写还是不写呢？</p>
+</blockquote>
+<hr>
+<p>5、@property的本质是什么？<br>答：想要了解这个问题的话，就得动脑筋想一下。首先它一定对应着一个实例变量ivar，这是毋庸置疑的，因为这是对应着一个类所具有的属性。就如同汽车类一定具有方向盘、轮子这些属性一样，类也必须有变量来保存它所具有的属性。<br>如果只是想达到这个目的，那么只用实例变量ivar不就可以了吗？但是明显，这种实例变量不具备设置实例变量的值和获取实例变量的值这些两个方法。所以，苹果就引入了@property，它不仅仅是一个实例变量，而且自动具有对应的setter和getter方法。<br>所以 @property = ivar + setter + getter<br>而且，property中还可以设置内存管理语义：strong、weak、copy、assign等</p>
+<blockquote>
+<p>property要想保存这么多的设置项，其实可以猜到，property其实是个结构体指针，指向着一个结构体。property在runtime中是objc_property_t，定义如下:<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_property *objc_property_t;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 而objc_property是一个结构体，包括name和attributes，定义如下：</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> property_t objc_property;</span><br><span class="line"><span class="keyword">struct</span> property_t &#123;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *name;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">而attributes本质是objc_property_attribute_t，定义了property的一些属性，定义如下：</span><br><span class="line"><span class="comment">/// Defines a property attribute</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</span><br><span class="line"><span class="comment">/**&lt; The name of the attribute */</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *name;     </span><br><span class="line"><span class="comment">/**&lt; The value of the attribute (usually empty) */</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *value;    </span><br><span class="line">&#125; objc_property_attribute_t;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>而attributes的具体内容是什么呢？其实，包括：类型，原子性，内存语义和对应的实例变量。</p>
+</blockquote>
+<blockquote>
+<p>例如：我们定义一个string的property@property (nonatomic, copy) NSString *string;，通过 property_getAttributes(property)获取到attributes并打印出来之后的结果为T@”NSString”,C,N,V_string</p>
+</blockquote>
+<blockquote>
+<p>其中T就代表类型，可参阅Type Encodings，C就代表Copy，N代表nonatomic，V就代表对于的实例变量。</p>
+</blockquote>
+<hr>
+<p>6、weak的实现原理及 runtime 如何实现 weak 变量的自动置nil？</p>
+<blockquote>
+<p>runtime 对注册的类， 会进行布局，对于 weak 对象会放入一个 hash 表中。 用 weak 指向的对象内存地址作为 key，当此对象的引用计数为0的时候会 dealloc，假如 weak 指向的对象内存地址是a，那么就会以a为键， 在这个 weak 表中搜索，找到所有以a为键的 weak 对象，从而设置为 nil。<br>一些参考文章，还没来得及看<br><a href="http://www.jianshu.com/p/ed65d71554d8" target="_blank" rel="noopener">如何使用 Runtime 给现有的类添加 weak 属性</a><br><a href="https://github.com/Magic-Unique/Runtime" target="_blank" rel="noopener">Runtime基础技能</a><br>答：</p>
+</blockquote>
+<hr>
+<p>7、一个小问题<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSDictionary</span> *dict = @&#123;<span class="string">@"key"</span> : <span class="string">@"value"</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSString</span> *key1 = <span class="string">@"key"</span>;</span><br><span class="line"><span class="built_in">NSString</span> *key2 = [<span class="string">@"ke"</span> stringByAppendingString:<span class="string">@"y"</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSString</span> *value1 = dict[key1];</span><br><span class="line"><span class="built_in">NSString</span> *value2 = dict[key2];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印出来的的这两个值会有不同吗？为什么？</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>8、</p>
+<blockquote>
+<p>_objc_msgForward是一个函数指针（和 IMP 的类型一样），是用于消息转发的：当向一个对象发送一条消息，但它并没有实现的时候，_objc_msgForward会尝试做消息转发。</p>
+<p>objc_msgSend在“消息传递”中的作用。在“消息传递”过程中，objc_msgSend的动作比较清晰：首先在 Class 中的缓存查找 IMP （没缓存则初始化缓存），如果没找到，则向父类的 Class 查找。如果一直查找到根类仍旧没有实现，则用_objc_msgForward函数指针代替 IMP 。最后，执行这个 IMP 。</p>
+</blockquote>
+<hr>
+<p>9、在多线程中使用block时要注意什么？<br>答：一般，我们在使用block时，为了避免发生循环引用，在block中使用self时，要把它转换为weakSelf弱引用。但是如果在多线程中使用weakSelf时，self可能在其他的线程中被释放了，此时weakSelf就为空了，程序执行到这个block时，就会造成不可预知的问题。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Person *p = [Person new];</span><br><span class="line">__<span class="keyword">weak</span> <span class="keyword">typeof</span>(p)weakP = p;</span><br><span class="line">p.name = <span class="string">@"张三"</span>;</span><br><span class="line">p.myBlock = ^ &#123;</span><br><span class="line">__<span class="keyword">strong</span> <span class="keyword">typeof</span>(weakP)strongP = weakP;</span><br><span class="line">dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(<span class="number">5</span> * <span class="built_in">NSEC_PER_SEC</span>)), dispatch_get_main_queue(), ^&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"****: %@"</span>, strongP.name);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">p.myBlock();</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>上述代码如果不加strongP的话，代码待因处理为null，因为weakP是弱引用的，5秒过后就已经被释放了。</p>
+</blockquote>
+<hr>
+<p>10、Autorelease对象什么时候释放？<br>答：这个问题拿来做面试题，问过很多人，没有几个能答对的。很多答案都是“当前作用域大括号结束时释放”，显然木有正确理解Autorelease机制。<br>在没有手加Autorelease Pool的情况下，Autorelease对象是在当前的runloop迭代结束时释放的，而它能够释放的原因是系统在每个runloop迭代中都加入了自动释放池Push和Pop</p>
+<p>11、autorelease对象<br>按照苹果的编程约定，由非alloc,copy返回的对象都是autorelease的，所以对于以下代码，虽然变量number是__weak的，但是由于[NSNumber numberWithInt:100]返回的对象是autorelase的，所以仍然能通过NSLog打印出来。</p>
+<p>__weak NSNumber *number = [NSNumber numberWithInt:100];<br>NSLog(@”number = %@”, number);</p>
+<p>从汇编代码中看，以上代码在创建number变量时，是通过objc_loadWeak方法进行的。而根据 Clang的官方文档，objc_loadWeak方法会retain并autorelease这个对象。所以给一个weak对象赋值，它并不会马上释放，而是会放到autorelease pool中，与autorelease pool一起释放。</p>
+<p>如下是objc_loadWeak的代码示例：</p>
+<p>id objc_loadWeak(id *object) {<br>return objc_autorelease(objc_loadWeakRetained(object));<br>}<br>为了验证这个回答，我们又做了一个有趣的例子来验证，如下所示：</p>
+<p>__weak NSNumber *number;<br>@autoreleasepool {<br>number = [NSNumber numberWithInt:100];<br>}<br>NSLog(@”number = %@”, number);<br>在上面这个例子中，果然如我们所料，number在通过NSLog查看值时，变成了nil。</p>
+<hr>
+<p>12、下面的代码会造成什么问题？<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"><span class="built_in">CGRect</span> frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="keyword">self</span>.view.bounds.size.width * <span class="number">0.5</span>, <span class="keyword">self</span>.bounds.size.height * <span class="number">0.5</span>);</span><br><span class="line"><span class="built_in">UIView</span> *view = [[<span class="built_in">UIView</span> alloc] initWithFrame:frame];</span><br><span class="line">[<span class="keyword">self</span>.view addSubview:view];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一般不会有什么问题，但是在这样用的时候会出问题：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TestViewController *vc = [[TestViewController alloc] init];</span><br><span class="line">vc.view.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure></p>
+<p>主要是考 viewcontroller的生命周期<br>在外部给vc.view赋值frame时，这时候view还没被创建。此时会这样执行：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">UIView</span> *)view &#123;</span><br><span class="line"><span class="keyword">if</span> (!_view) &#123;</span><br><span class="line">[<span class="keyword">self</span> loadView];</span><br><span class="line">[<span class="keyword">self</span> viewDidLoad];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也就是设置vc.view.frame = CGRectMake(0, 0, 100, 100);的代码会在viewDidLoad之后调用。</p>
+<hr>
+<p>13、iOS事件传递<br>（1）发生触摸事件后，系统会把点击事件加入一个队列（先进先出，后进后出）。当前的UIApplication(单例)从队列中取出事件然后在视图层次结构找到合适的视图来处理触摸事件。<br>（2）触摸事件的传递是从父控件传递到子控件的，即UIApplication -&gt; window -&gt; view。如果父控件不能响应用户交互，那么子控件就不可能接收到事件。<br>这也就是为什么在UIImageView上面添加一个Button后，Button不能响应事件。<br>（3）影响用户交互的几种可能：</p>
+<ul>
+<li>userInterfaceEnable = NO;</li>
+<li>hidden = NO;</li>
+<li>alpha = 0.0;</li>
+</ul>
+<p>（4）经常会碰到的手势冲突问题<br>如下图：视图的层级是最下面是：window -&gt; view -&gt; maskView -&gt; tableView<br>maskView和tableView构成整个弹出视图。<br>在maskView上添加了一个点击手势，当点击背景maskView时，弹出视图消失。<br>可是，现在会遇到这样一个问题：当点击在tableView上时，不会响应tableView的点击手势，而还是会响应点击手势。<br>结合上面的触摸事件的传递大概就会知道原因：点击在tableView上点击时，事件会先传到UIApplication，然后再到window，… 先到maskView，系统会发现maskView很符合点击手势，所以就不会再往上遍历了，tableView的点击就不会响应了<br><img src="/source/summary8_p_2.png" alt=""></p>
+<p>解决办法：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//消除手势冲突：手势只作为点击非tableView区域可以收起menu的作用，如果不屏蔽，则点击cell时不会响应didSelectRowAtIndexPath方法，只会响应点击手势</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)gestureRecognizer:(<span class="built_in">UIGestureRecognizer</span> *)gestureRecognizer shouldReceiveTouch:(<span class="built_in">UITouch</span> *)touch</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> ([<span class="built_in">NSStringFromClass</span>([touch.view <span class="keyword">class</span>]) isEqualToString:<span class="string">@"UITableViewCellContentView"</span>]) &#123;</span><br><span class="line"><span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>14、代理和通知的区别<br>代理只能一对一<br>通知可以一对多</p>
+<p>代理是委托设计模式，用于两个对象之间的交互。可用于一个对象向外传递信息，也可用于从外部回传信息(如：tableView的代理，tableView内部的样式已经排版好了，只是需要数据而已)。  从外部回传信息是通知所不具备的。</p>
+<p>通知是观察者模式。</p>
+<p>kvo<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cc监听了aa的name属性的改变</span></span><br><span class="line">[aa addObserver:cc forKeyPath:<span class="string">@"name"</span> options: <span class="built_in">NSKeyValueObservingOptionOld</span> context:<span class="literal">nil</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// cc得实现监听方法</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 当监听到object的keyPath属性发生了改变</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)observeValueForKeyPath:(<span class="built_in">NSString</span> *)keyPath ofObject:(<span class="keyword">id</span>)object change:(<span class="built_in">NSDictionary</span> *)change context:(<span class="keyword">void</span> *)context</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"监听到%@对象的%@属性发生了改变， %@"</span>, object, keyPath, change);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>15、如何解决NSTimer在当前页面UIScrollView滑动时，timer会停止的问题。<br>答：NSTimer的运行实际上timer被加入到一个RunLoop中而已。默认的用schduled开头的类方法创建的timer都是已经被加到RunLoop中的，所以timer创建之后，timer就已经开启了。一个RunLoop在同一时间段只能处在一种RunLoopModel下。当更换了mode时，之前的mode就会被停止。<br><strong>NSRunLoopMode</strong>：</p>
+<blockquote>
+<ul>
+<li>NSDefaultRunLoopMode：默认状态，空闲状态</li>
+<li>NSTrackingRunLoopMode：滑动滚动视图</li>
+<li>UIInitializationRunLoopMode；私有，App启动时</li>
+<li>NSRunLoopCommonMode：默认包括上面的第一和第二</li>
+</ul>
+</blockquote>
+<p>NSTimer的mode是上面的额第一种，而UIScrollView的mode是第二种，无法同事存在。所以滑动scrollView时，timer是停止的。<br>解决办法：把timer加到NSRunLoopCommonMode的RunLoop中：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">__block <span class="keyword">int</span> i = <span class="number">0</span>;   </span><br><span class="line"><span class="built_in">NSTimer</span> *timer = [<span class="built_in">NSTimer</span> timerWithTimeInterval:<span class="number">0.5</span> repeats:<span class="literal">YES</span> block:^(<span class="built_in">NSTimer</span> * _Nonnull timer) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"时间打印：%d"</span>, i);</span><br><span class="line">i ++;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[[<span class="built_in">NSRunLoop</span> currentRunLoop] addTimer:timer forMode:<span class="built_in">NSRunLoopCommonModes</span>];</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>16、Struct 和Class的区别<br>答：Class的本质是一个结构体指针，所以它是一个引用类型。而结构体只是一个复杂的数据类型，是值类型。<br>Class是面向对象编程的，可以继承。<br>Struct是面向过程编程的。</p>
+<p>17、介绍一下观察者模式<br>答：观察者模式提供一种在程序中进行广播的机制，而它的本质其实就是一个通知分发表。这个分发表负责维护各个通知注册的观察者，在对应的通知到达时，去查找相应的观察者，讲通知转发给它们进行处理。</p>
+<p><code>NotificationCenter</code>在多线程中需要注意什么问题？<br>答：官方文档解释：In a multithreaded application, notifications are always delivered in the thread in which the notification was posted, which may not be the same thread in which an observer registered itself.<br>翻译：在多线程应用中，通知的传递和通知的发送是在同一个线程中，但是可能会跟通知的注册不在一个线程中。<br>这里涉及到三个线程：注册通知的线程、发送通知的线程、转发通知的线程。其中后两个一定是在同一个线程中。<br>看代码：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"注册通知的线程：%@"</span>, [<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line"></span><br><span class="line">[[<span class="built_in">NSNotificationCenter</span> defaultCenter] addObserver:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(handelNtf) name:kTESTNTF object:<span class="literal">nil</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">dispatch_async</span>(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>), ^&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"发出通知的线程：%@"</span>, [<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">[[<span class="built_in">NSNotificationCenter</span> defaultCenter] postNotificationName:kTESTNTF object:<span class="literal">nil</span>];</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>) handelNtf &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"执行通知事件的线程：%@"</span>, [<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>打印如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">注册通知的线程：&lt;NSThread: 0x170262880&gt;&#123;number = 1, name = main&#125;</span><br><span class="line">发出通知的线程：&lt;NSThread: 0x174265400&gt;&#123;number = 3, name = (null)&#125;</span><br><span class="line">执行通知事件的线程：&lt;NSThread: 0x174265400&gt;&#123;number = 3, name = (null)&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>虽然我们在主线程中注册了通知及其触发后执行的事件：handelNtf，但是由于通知是在另一个线程中post的，所以，最终导致handelNtf事件的处理也在另一个线程中了。</p>
+</blockquote>
+<blockquote>
+<p>所以以后在注册通知更新UI时，一定要保证更新的方法在主线程中，即：加上代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void) upDateUI &#123;</span><br><span class="line">dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">NSLog(@&quot;执行通知事件的线程：%@&quot;, [NSThread currentThread]);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><a href="http://www.cocoachina.com/ios/20150316/11335.html" target="_blank" rel="noopener">Notification与多线程</a></p>
+<p>附带问题：NSNotificationCenter为什么要手动移除？(iOS9以后不需要手动移除了)<br>答：因为观察者注册通知时，通知中心会对观察者进行unsafe_unretained引用，通知中心不会持有观察者。当观察者销毁时，如果不移除通知，那么这个通知依然存在，”观察者”还能接收到通知，但是实际上“观察者”已经销毁，此时，通知的接受者其实已经是个野指针了，会引起崩溃。iOS9以后，我们不需要手动移除通知了，因为iOS9以后通知中心对观察者的引用是用的weak弱引用。</p>
+<hr>
+<p>18、HTTPS = HTTP + SSL/TLS。在HTTP上又加了一层处理加密信息的模块。<br>客户端用HTTPS协议访问客户端时，客户端和服务端是怎么进行通讯的？<br><img src="/source/summary8_p_3.png" alt=""></p>
+<blockquote>
+<ul>
+<li>客户端发起一个HTTPS请求</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>服务端的配置<br>采用HTTPS协议的服务器必须要有一套数字证书，可以自己制作，也可以向组织申请。区别就是自己颁发的证书需要客户端验证通过，才可以继续访问，而使用受信任的公司申请的证书则不会弹出提示页面(startssl就是个不错的选择，有1年的免费服务)。这套证书其实就是一对公钥和私钥。如果对公钥和私钥不太理解，可以想象成一把钥匙和一个锁头，只是全世界只有你一个人有这把钥匙，你可以把锁头给别人，别人可以用这个锁把重要的东西锁起来，然后发给你，因为只有你一个人有这把钥匙，所以只有你才能看到被这把锁锁起来的东西。</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>传送证书<br>这个证书其实就是公钥，只是包含了很多信息，如证书的颁发机构，过期时间等等。</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>客户端解析证书<br>这部分工作是有客户端的TLS来完成的，首先会验证公钥是否有效，比如颁发机构，过期时间等等，如果发现异常，则会弹出一个警告框，提示证书存在问题。如果证书没有问题，那么就生成一个随即值。然后用证书对该随机值进行加密。就好像上面说的，把随机值用锁头锁起来，这样除非有钥匙，不然看不到被锁住的内容。</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>传送加密信息<br>这部分传送的是用证书加密后的随机值，目的就是让服务端得到这个随机值，以后客户端和服务端的通信就可以通过这个随机值来进行加密解密了。</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>服务端解密信息<br>服务端用私钥解密后，得到了客户端传过来的随机值(私钥)，然后把内容通过该值进行对称加密。所谓对称加密就是，将信息和私钥通过某种算法混合在一起，这样除非知道私钥，不然无法获取内容，而正好客户端和服务端都知道这个私钥，所以只要加密算法够彪悍，私钥够复杂，数据就够安全。</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>传输加密后的信息<br>这部分信息是服务段用私钥加密后的信息，可以在客户端被还原</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>客户端解密信息<br>客户端用之前生成的私钥解密服务段传过来的信息，于是获取了解密后的内容。整个过程第三方即使监听到了数据，也束手无策。</li>
+</ul>
+</blockquote>
+<hr>
+<p>19、RunLoop<br><a href="http://www.cocoachina.com/ios/20150601/11970.html" target="_blank" rel="noopener">猛戳</a></p>
+<hr>
+<p>20、你在项目中遇到过哪些坑，你是如何解决的？<br>答：</p>
+<hr>
+<p>21、如何正常的销毁一个NSTimer？<br>答：当在控制器中创建NSTimer时指定其repeats属性为YES，则timer计时器就会强引用(持有)self，如果timer不invalidate的话，其dealloc方法就不会被调用。换句话说，我们不能在dealloc中去调用[timer invalidate]方法，这样会造成dealloc方法永远无法执行。<br>应该这样写：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line">_timer = [<span class="built_in">NSTimer</span> scheduledTimerWithTimeInterval:<span class="number">1.0</span> target:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(handelTimer) userInfo:<span class="literal">nil</span> repeats:<span class="literal">YES</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handelTimer &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"我在打印"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>)viewDidDisappear:(<span class="built_in">BOOL</span>)animated &#123;</span><br><span class="line">[<span class="keyword">super</span> viewDidDisappear:animated];</span><br><span class="line"></span><br><span class="line">[_timer invalidate];</span><br><span class="line">_timer = <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line"><span class="comment">// 不能再这里面执行timer销毁的方法。</span></span><br><span class="line"><span class="comment">//    [_timer invalidate];</span></span><br><span class="line"><span class="comment">//  _timer = nil;</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"----------dealloc--------"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>22、有哪些常用的iOS系统原生的框架？<br>答：<br>| 框架名称      |    功能 |<br>| :——– | :——–|<br>| AddressBook.framework  | 提供访问存储核心数据库中用户联系人信息的功能|<br>| AddressBookUI.framework     |   提供一个用户界面，用于显示存储在地址簿中的联系人信息 |<br>| AudioToolbox.framework      |   提供音频录制和回放的底层API，同时也负责管理音频硬件 |<br>| AudioUnit.framework |   提供一个接口，让我们的应用程序可以对音频进行处理|<br>| AVFoundation.framework |  提供音频录制和回放的底层API，同时也负责管理音频硬件|<br>| CFNetwork.framework |  访问和配置网络，像HTTP、FTP和Bonjour Services|<br>| CoreFoundation.framework |  提供抽象的常用数据类型，如 Unicode strings、XML、URL等 |<br>| CoreGraphics.framework | 提供2D绘制的基于C的API |</p>
+<p><a href="http://blog.csdn.net/yuhuangc/article/details/7575519" target="_blank" rel="noopener">iOS的主要框架介绍</a></p>
+<p><a href="http://www.cnblogs.com/ygm900/p/3599081.html" target="_blank" rel="noopener">IOS 整体框架类图值得收藏</a></p>
+<hr>
+<p>23、关于performSelector调用和直接调用区别？<br>答：<br>下面两段代码都在主线程中运行，我们在看别人代码时会发现有时会直接调用，有时会利用performSelector调用，今天看到有人在问这个问题，我便做一下总结<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[delegate imageDownloader:self didFinishWithImage:image];</span><br><span class="line">[delegate performSelector:@selector(imageDownloader:didFinishWithImage:)withObject:self withObject:image];</span><br></pre></td></tr></table></figure></p>
+<p>（1）erformSelector<code>是运行时系统负责去找方法的，在编译时候不做任何校验；如果直接调用编译是会自动校验。如果</code>imageDownloader:didFinishWithImage:imag: <code>不存在，那么直接调用 在编译时候就能够发现（借助Xcode可以写完就发现），但是使用performSelector的话一定是在运行时候才能发现（此时程序崩溃）；Cocoa支持在运行时向某个类添加方法，即方法编译时不存在，但是运行时候存在，这时候必然需要使用performSelector去调用。所以有时候如果使用了performSelector，为了程序的健壮性，会使用检查方法</code>- (BOOL)respondsToSelector:(SEL)aSelector`;<br>（2）、直接调用方法时候，一定要在头文件中声明该方法的使用，也要将头文件import进来。而使用performSelector时候， 可以不用import头文件包含方法的对象，直接用performSelector调用即可。</p>
+<hr>
+<p>24、简单模拟FMDB在多线程是的执行顺序。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line"><span class="built_in">dispatch_queue_t</span> serialQueue = dispatch_queue_create(<span class="string">"com.default"</span>, DISPATCH_QUEUE_SERIAL);</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"1"</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">dispatch_async</span>(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>), ^&#123;</span><br><span class="line"><span class="built_in">dispatch_sync</span>(serialQueue, ^&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"2"</span>);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">dispatch_async</span>(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>), ^&#123;</span><br><span class="line"><span class="built_in">dispatch_sync</span>(serialQueue, ^&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"我要睡眠5s了！"</span>);</span><br><span class="line">sleep(<span class="number">5</span>);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"3"</span>);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">dispatch_async</span>(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>), ^&#123;</span><br><span class="line"><span class="built_in">dispatch_sync</span>(serialQueue, ^&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"4"</span>);</span><br><span class="line">&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"5"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>打印：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">2017-05-22 18:11:55.354354 timer[12001:5652713] 1</span><br><span class="line">2017-05-22 18:11:55.354553 timer[12001:5652713] 5</span><br><span class="line">2017-05-22 18:11:55.354607 timer[12001:5652744] 2</span><br><span class="line">2017-05-22 18:11:55.354759 timer[12001:5652744] 我要睡眠5s了！</span><br><span class="line">2017-05-22 18:12:00.360118 timer[12001:5652744] 3</span><br><span class="line">2017-05-22 18:12:00.360426 timer[12001:5652746] 4</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可以看出，你用FMDBDataBaseQueue提交SQL请求时，请求是在同步队列中按顺序同步执行的。所以不会出现资源抢夺问题。</p>
+</blockquote>
+<hr>
+<p>25、NSOperation和GCD</p>
+<blockquote>
+<p><code>NSOperation</code>和<code>NSOperationQueue</code>是提供的面向对象的多线程接口，在项目中使用的时候会使项目结构更好，建议在复杂的项目中使用。而且它可以很好地管理线程总数以及线程中各个操作的依赖关系，可以控制操作的执行顺序。  </p>
+</blockquote>
+<blockquote>
+<p><code>GCD</code>(Grand Central Dispatch)，是iOS SDK提供的一个系统级别的多线程api，能充分利用多核硬件。它与<code>NSOperation</code>最大的区别是它是用C语言开发的，是面向过程的。它的抽象度很高，所以使用起来也最方便。可以在简单的多线程项目中使用。</p>
+</blockquote>
+<hr>
+<p>26、<code>viewDidUnLoad</code>，在iOS6以前，当系统受到Memory Warning时，当前未在界面上显示的ViewController的view会被Unload掉，viewDidUnLoad就会被自动调用。view的子视图也会被置为nil，此时因为那些子视图在Controller中是弱引用的(参考IBOutlet连接的属性)，所以子视图就会被成功释放。<br>iOS6以后，<code>viewDidUnLoad</code>被废弃了。当系统受到Memory Warning时，是不会把view Unload掉的。</p>
+<ol>
+<li>UIView 有一个 CALayer 的成员变量，CALayer 是具体用于将自己画到屏幕上的。</li>
+<li>CALayer 是一个 bitmap 图象的容器类，当 UIView 调用自身的 drawRect 时，CALayer 才会创建这个 bitmap 图象类。</li>
+<li>具体占内存的其实是一个 bitmap 图象类，CALayer 只占 48bytes, UIView 只占 96bytes。而一个 iPad 的全屏 UIView 的 bitmap 类会占到 12M 的大小！</li>
+<li>在 iOS6 时，当系统发出 MemoryWarning 时，系统会自动回收 bitmap 类。但是不回收 UIView 和 CALayer 类。这样即回收了大部分内存，又能在需要 bitmap 类时，通过调用 UIView 的 drawRect: 方法重建。</li>
+</ol>
+<blockquote>
+<p>也就是说view的生命周期是跟ViewController是一样的了，所以我们在声明view的子视图时，也没有必要把子视图设置为<code>weak</code>了，因为view是强引用属性的，而view的生命周期跟ViewController是一样的，所以不存在iOS6以前那种收到<code>MemoryWarning</code>时view被销毁，子视图被销毁，但是ViewController依然存在的情况。要么一同存在，要么都被销毁。</p>
+</blockquote>
+<p>下图实线表示强引用，虚线表示弱引用。<br><img src="/source/summary8_p_4.png" alt=""><br>具体可以看唐巧的这一片文章：<a href="http://blog.devtang.com/2016/07/30/ios-memory-management/" target="_blank" rel="noopener">理解 iOS 的内存管理</a></p>
+<hr>
+<p>27、理解OC的动态语言特性，了解runtime，请看下面两篇文章：<br>(1)王巍：<a href="https://onevcat.com/2012/04/objective-c-runtime/" target="_blank" rel="noopener">深入Objective-C的动态特性</a><br>(2) <a href="http://www.jianshu.com/p/bbeada1e75af" target="_blank" rel="noopener">oc语言的特性 动态类型识别，动态绑定，动态加载</a></p>
+<hr>
+<p>28、对anchorPoint的理解。<br><img src="/source/summary8_p_5.jpg" alt=""><br>中心点position跟锚点anchorPoint是有关系的。一般来说anchorPoint是(0.5, 0.5)。你可以想象当把这个图层进行旋转的时候是根据中心点position来的。当改变anchorPoint为(0, 0)的时候，其实position的坐标是没有改变的，但是旋转中心点坐标是必须要改变的。</p>
+<blockquote>
+<p>你可以理解为：改变anchorPoint就是改变的layer的旋转中心点坐标(这个旋转中心点坐标是针对自身坐标系的)，但是却不会改变图层的中心点的坐标(图层中心点坐标是针对父图层坐标系的)。而这两个中心点又必须是同一点。这样的话，只有把图片向右下角移动才能满足以上条件。<br>anchorPoint只是决定以“身体”的哪一个点来作为旋转中心点。<br>一个时钟的项目会用到anchorPoint。</p>
+</blockquote>
+<p>29、一个视图或者layer的frame与它的bounds、center(position)和transform有关。因为frame始终代表的是一个水平放置的矩形区域，所以当视图发生旋转时，frame时会改变的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/01/第七篇、《OC高级编程》读后笔记，未完待续…/" rel="next" title="第七篇、《OC高级编程》读后笔记，未完待续…">
+                <i class="fa fa-chevron-left"></i> 第七篇、《OC高级编程》读后笔记，未完待续…
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/12/第十篇、小代码测试/" rel="prev" title="第十篇、小代码测试">
+                第十篇、小代码测试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一般来说，我们如何定义一个全局变量以供其他类有权限使用它的值？  在.h文件中定义一个属性，并且在.m文件中要赋值。 在.h文件中定义一个宏：#define。 用extern。   通常情况下，除非要创建一个类，一般我们不会使用方法1。方法2也不用说了，很明白。  一、现在说一下方法3：extern表示变量可以被外部访问和赋值。用法如下：.h文件中1extern NSString * const">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于OC中extern的使用场景">
+<meta property="og:url" content="http://yoursite.com/2018/04/03/关于OC中extern的使用场景/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="一般来说，我们如何定义一个全局变量以供其他类有权限使用它的值？  在.h文件中定义一个属性，并且在.m文件中要赋值。 在.h文件中定义一个宏：#define。 用extern。   通常情况下，除非要创建一个类，一般我们不会使用方法1。方法2也不用说了，很明白。  一、现在说一下方法3：extern表示变量可以被外部访问和赋值。用法如下：.h文件中1extern NSString * const">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.419Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于OC中extern的使用场景">
+<meta name="twitter:description" content="一般来说，我们如何定义一个全局变量以供其他类有权限使用它的值？  在.h文件中定义一个属性，并且在.m文件中要赋值。 在.h文件中定义一个宏：#define。 用extern。   通常情况下，除非要创建一个类，一般我们不会使用方法1。方法2也不用说了，很明白。  一、现在说一下方法3：extern表示变量可以被外部访问和赋值。用法如下：.h文件中1extern NSString * const">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/03/关于OC中extern的使用场景/"/>
+
+
+
+
+
+  <title>关于OC中extern的使用场景 | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/03/关于OC中extern的使用场景/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于OC中extern的使用场景</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T00:00:00+08:00">
+                2018-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一般来说，我们如何定义一个全局变量以供其他类有权限使用它的值？</p>
+<ol>
+<li>在.h文件中定义一个属性，并且在.m文件中要赋值。</li>
+<li>在.h文件中定义一个宏：#define。</li>
+<li>用<code>extern</code>。</li>
+</ol>
+<blockquote>
+<p>通常情况下，除非要创建一个类，一般我们不会使用方法<code>1</code>。<br>方法<code>2</code>也不用说了，很明白。</p>
+</blockquote>
+<h3 id="一、现在说一下方法3："><a href="#一、现在说一下方法3：" class="headerlink" title="一、现在说一下方法3："></a>一、现在说一下方法<code>3</code>：</h3><p><code>extern</code>表示变量可以被外部访问和赋值。<br>用法如下：<br>.h文件中<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> accepterSendText;</span><br></pre></td></tr></table></figure></p>
+<p>.m文件中：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> accepterSendText = <span class="string">@"hi~我领到了你的愿望~"</span>;</span><br></pre></td></tr></table></figure></p>
+<h3 id="二、extern与-define的区别"><a href="#二、extern与-define的区别" class="headerlink" title="二、extern与#define的区别"></a>二、extern与#define的区别</h3><p><code>define</code>只是简单地替换，又称作宏定义、预处理命令。其不能保证在共享单例中取得一样的内存地址。<br><code>extern</code>会分配内存空间，提示编译器遇到此变量和函数时在其他模块寻找其定义。</p>
+<blockquote>
+<p>所以如果需要作为dictionary的key的话，使用extern NSString * const的写法，要比@””的写法（也就是用#define）更好。前者比较时用<code>isEqual:</code>就行了，直接比较地址；后者需要<code>isEqualToString:</code>即比较字符串的所有字符是否相等。</p>
+</blockquote>
+<p>参考：<a href="https://blog.csdn.net/gaoyuqiang30/article/details/48389369" target="_blank" rel="noopener">extern与define 区别</a></p>
+<h3 id="三、OC中的FOUNDATION-EXTERN、FOUNDATION-EXPORT"><a href="#三、OC中的FOUNDATION-EXTERN、FOUNDATION-EXPORT" class="headerlink" title="三、OC中的FOUNDATION_EXTERN、FOUNDATION_EXPORT"></a>三、OC中的FOUNDATION_EXTERN、FOUNDATION_EXPORT</h3><p>这个其实跟extern、import差不多。不过OC中兼容了C和C++，见代码：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#if defined(__cplusplus)</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXTERN extern <span class="meta-string">"C"</span></span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXTERN extern</span></span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#if TARGET_OS_WIN32</span></span><br><span class="line"><span class="meta">#if defined(NSBUILDINGFOUNDATION)</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXPORT FOUNDATION_EXTERN __declspec(dllexport)</span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXPORT FOUNDATION_EXTERN __declspec(dllimport)</span></span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"><span class="meta">#define FOUNDATION_IMPORT FOUNDATION_EXTERN __declspec(dllimport)</span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXPORT  FOUNDATION_EXTERN</span></span><br><span class="line"><span class="meta">#define FOUNDATION_IMPORT FOUNDATION_EXTERN</span></span><br><span class="line"><span class="meta">#endif</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="四、引申：比较-”abc”和用NSString生成的abc"><a href="#四、引申：比较-”abc”和用NSString生成的abc" class="headerlink" title="四、引申：比较@”abc”和用NSString生成的abc"></a>四、引申：比较@”abc”和用NSString生成的abc</h3><p>写了一段代码测试：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *str1 = <span class="string">@"abc"</span>;</span><br><span class="line"><span class="built_in">NSString</span> *str2 = [[<span class="built_in">NSString</span> alloc] initWithString:<span class="string">@"abc"</span>];</span><br><span class="line"><span class="built_in">NSString</span> *str3 = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"abc"</span>];</span><br><span class="line"><span class="built_in">NSString</span> *str4 = [[<span class="built_in">NSString</span> alloc] initWithFormat:<span class="string">@"abc"</span>];</span><br><span class="line"><span class="built_in">NSMutableString</span> *str5 = [[<span class="built_in">NSMutableString</span> alloc] initWithString:<span class="string">@"a"</span>];</span><br><span class="line">[str5 appendString:<span class="string">@"bc"</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> (^logString) (<span class="built_in">NSString</span> *str) = ^(<span class="built_in">NSString</span> *str) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"&gt;&gt;&gt;%p, %p"</span>, &amp;str, str);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">logString(str1);</span><br><span class="line">logString(str2);</span><br><span class="line">logString(str3);</span><br><span class="line">logString(str4);</span><br><span class="line">logString(str5);</span><br></pre></td></tr></table></figure></p>
+<p>log如下：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0x100b18820</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0x100b18820</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0xa000000006362613</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0xa000000006362613</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0x107b2d880</span></span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>str2与str1完全相同：编译器也警告：让我用声明str1的方式声明str2。</li>
+<li>所有的字符串在内存中的地址都是一样的，也就是说，如果用<code>isEqual:</code>来比较的话他们都相等。</li>
+<li>所以，用任何一种方法声明都可以。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/18/四、Core-Image-–-Querying-the-System-for-Filters（获取系统滤镜）/" rel="next" title="四、Core Image – Querying the System for Filters（获取系统滤镜）">
+                <i class="fa fa-chevron-left"></i> 四、Core Image – Querying the System for Filters（获取系统滤镜）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/06/CollectionView的一些注意点/" rel="prev" title="CollectionView的一些注意点">
+                CollectionView的一些注意点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、现在说一下方法3："><span class="nav-number">1.</span> <span class="nav-text">一、现在说一下方法3：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、extern与-define的区别"><span class="nav-number">2.</span> <span class="nav-text">二、extern与#define的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、OC中的FOUNDATION-EXTERN、FOUNDATION-EXPORT"><span class="nav-number">3.</span> <span class="nav-text">三、OC中的FOUNDATION_EXTERN、FOUNDATION_EXPORT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、引申：比较-”abc”和用NSString生成的abc"><span class="nav-number">4.</span> <span class="nav-text">四、引申：比较@”abc”和用NSString生成的abc</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

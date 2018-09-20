@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原文 今天，我从编译器的角度查看了blocks内部的工作原理。对于blocks来说，我认为是Apple添加到C语言的闭包。而且现在已经从clang/LLVM的角度将其作为C语言的一部分而正式确立。我一直就想知道什么是”block”，它为什么这么神奇的看起来像一个Objective-C对象(，你可以像对待实例一样，对它进行copy、retain、release)。这篇博客对blocks进行了一些探索">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一集：看看blocks的内部是什么">
+<meta property="og:url" content="http://yoursite.com/2017/05/24/第一集：看看blocks的内部是什么/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="原文 今天，我从编译器的角度查看了blocks内部的工作原理。对于blocks来说，我认为是Apple添加到C语言的闭包。而且现在已经从clang/LLVM的角度将其作为C语言的一部分而正式确立。我一直就想知道什么是”block”，它为什么这么神奇的看起来像一个Objective-C对象(，你可以像对待实例一样，对它进行copy、retain、release)。这篇博客对blocks进行了一些探索">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.420Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第一集：看看blocks的内部是什么">
+<meta name="twitter:description" content="原文 今天，我从编译器的角度查看了blocks内部的工作原理。对于blocks来说，我认为是Apple添加到C语言的闭包。而且现在已经从clang/LLVM的角度将其作为C语言的一部分而正式确立。我一直就想知道什么是”block”，它为什么这么神奇的看起来像一个Objective-C对象(，你可以像对待实例一样，对它进行copy、retain、release)。这篇博客对blocks进行了一些探索">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/24/第一集：看看blocks的内部是什么/"/>
+
+
+
+
+
+  <title>第一集：看看blocks的内部是什么 | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/24/第一集：看看blocks的内部是什么/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第一集：看看blocks的内部是什么</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-24T00:00:00+08:00">
+                2017-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS译文/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS译文</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="http://www.galloway.me.uk/blog/category/ios/" target="_blank" rel="noopener">原文</a></p>
+<p>今天，我从编译器的角度查看了blocks内部的工作原理。对于blocks来说，我认为是Apple添加到C语言的闭包。而且现在已经从clang/LLVM的角度将其作为C语言的一部分而正式确立。我一直就想知道什么是”block”，它为什么这么神奇的看起来像一个Objective-C对象(，你可以像对待实例一样，对它进行copy、retain、release)。这篇博客对blocks进行了一些探索。</p>
+<hr>
+<h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><p>下面是一个block:<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span>(^block)(<span class="keyword">void</span>) = ^&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"I'm a block!"</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码创建了一个叫<code>block</code>的变量，并且给他分配了一个很简单的块。这很简单。做完了吗？没有。我想知道编译器对这块代码究竟做了什么。</p>
+<p>此外，你还可以给block传递变量：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span>(^block)(<span class="keyword">int</span> a) = ^&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"I'm a block! a = %i"</span>, a);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>甚至从blocks里面返回值：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>(^block)(<span class="keyword">void</span>) = ^&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"I'm a block!"</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>而且，作为一个闭包，它包含了它所在的上下文：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">void</span>(^block)(<span class="keyword">void</span>) = ^&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"I'm a block! a = %i"</span>, a);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>那么编译器时如何对这些代码进行分类的呢？这就是我感兴趣的。</p>
+<hr>
+<h3 id="进入一个简单的例子"><a href="#进入一个简单的例子" class="headerlink" title="进入一个简单的例子"></a>进入一个简单的例子</h3><p>我的第一个想法是看编译器如何编译一个非常简单的块。看下以下代码：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;dispatch/dispatch.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span>(^BlockA)(<span class="keyword">void</span>);</span><br><span class="line"></span><br><span class="line">__attribute__((noinline))</span><br><span class="line"><span class="keyword">void</span> runBlockA(BlockA block) &#123;</span><br><span class="line">block();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> doBlockA() &#123;</span><br><span class="line">BlockA block = ^&#123;</span><br><span class="line"><span class="comment">// Empty block</span></span><br><span class="line">&#125;;</span><br><span class="line">runBlockA(block);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我之所以写这两个方法是因为我既想看一个block如何被调用，也想看一个block是如何设置的。如果这两个方法都是同样的功能的话，那么这个优化器可能太聪明了，我们将看不到任何有趣的东西。我不得不使<code>runBlockA</code>函数是<code>noinline</code>的，以便优化器不仅仅是将<code>doBlockA</code>中的功能内联到同一个问题上。</p>
+<p>这些相关的代码编译为（armv7, 03）：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.globl  _runBlockA</span><br><span class="line">.align  <span class="number">2</span></span><br><span class="line">.code   <span class="number">16</span>                      @ @runBlockA</span><br><span class="line">.thumb_func     _runBlockA</span><br><span class="line">_runBlockA:</span><br><span class="line">@ BB<span class="meta">#0:</span></span><br><span class="line">ldr     r1, [r0, <span class="meta">#12]</span></span><br><span class="line">bx      r1</span><br></pre></td></tr></table></figure></p>
+<p>这个就是<code>runBlockA</code>函数。所以，它是相当的简单。回顾一下源代码，该函数只是调起了这个block。<code>r0</code>(register 0，寄存器0)在ARM EABI中被设置为这个函数的第一个参数。因此，第一条指令意味着r1是从被存储在r0 + 12的地址中被加载出来的。考虑到这是一个指针的引用，所以往里面读取12个字节。然后我们分支到那个地址。注意到<code>r1</code>被用了，这意味着<code>r0</code>仍然是block本身。所以，这个调用的函数很可能把这个block作为它的第一个参数。</p>
+<p>由此我可以确信 block很可能是某种结构，这个block应该执行的功能被存储在这个结构的12个字节的空间里。当一个block被传递时，一个指向其中一个结构的指针就被传递了。</p>
+<p>现在去看<code>doBlockA</code>方法：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">.globl  _doBlockA</span><br><span class="line">.align  <span class="number">2</span></span><br><span class="line">.code   <span class="number">16</span>                      @ @doBlockA</span><br><span class="line">.thumb_func     _doBlockA</span><br><span class="line">_doBlockA:</span><br><span class="line">movw    r0, :lower16:(___block_literal_global-(LPC1_0+<span class="number">4</span>))</span><br><span class="line">movt    r0, :upper16:(___block_literal_global-(LPC1_0+<span class="number">4</span>))</span><br><span class="line">LPC1_0:</span><br><span class="line">add     r0, pc</span><br><span class="line">b.w     _runBlockA</span><br></pre></td></tr></table></figure></p>
+<p>好吧，这依然很简单。这是一个程序计数器的相对负载。您可以认为这是将名为<code>___block_literal_global</code>的变量的地址加载到<code>r0</code>中。然后<code>runBlockA</code>方法就被调用了。所以我们知道这个block对象被传到了<code>runBlockA</code>方法，这个<code>___block_literal_global</code>一定是这个block对象。</p>
+<p>现在我们摸到了一点门道！但是<code>___block_literal_global</code>到底是什么？好吧，通过assembly我们发现：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.align  <span class="number">2</span>                       @ @__block_literal_global</span><br><span class="line">___block_literal_global:</span><br><span class="line">.long   __NSConcreteGlobalBlock</span><br><span class="line">.long   <span class="number">1342177280</span>              @ <span class="number">0x50000000</span></span><br><span class="line">.long   <span class="number">0</span>                       @ <span class="number">0x0</span></span><br><span class="line">.long   ___doBlockA_block_invoke_0</span><br><span class="line">.long   ___block_descriptor_tmp</span><br></pre></td></tr></table></figure></p>
+<p>啊哈！这对我来说，看起来很像一个结构体。结构体中有5个值，每个值占4个字节(long型)。这个一定是<code>runBlockA</code>正在执行的block对象。继续看，结构体中的12个字节看起来很像一个函数指针，它叫做<code>___doBlockA_block_invoke_0</code>。记住，这正是<code>ruanBlock</code>函数要跳到的地方。</p>
+<p>但是<code>__NSConcreteGlobalBlock</code>是什么？好，我们会回来看的。<code>___doBlockA_block_invoke_0</code>和<code>___block_descriptor_tmp</code>也是我们感兴趣的，因为它们也出现在程序集中：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">.align  <span class="number">2</span></span><br><span class="line">.code   <span class="number">16</span>                      @ @__doBlockA_block_invoke_0</span><br><span class="line">.thumb_func     ___doBlockA_block_invoke_0</span><br><span class="line">___doBlockA_block_invoke_0:</span><br><span class="line">bx      lr</span><br><span class="line"></span><br><span class="line">.section        __DATA,__<span class="keyword">const</span></span><br><span class="line">.align  <span class="number">2</span>                       @ @__block_descriptor_tmp</span><br><span class="line">___block_descriptor_tmp:</span><br><span class="line">.long   <span class="number">0</span>                       @ <span class="number">0x0</span></span><br><span class="line">.long   <span class="number">20</span>                      @ <span class="number">0x14</span></span><br><span class="line">.long   L_.str</span><br><span class="line">.long   L_OBJC_CLASS_NAME_</span><br><span class="line"></span><br><span class="line">.section        __TEXT,__cstring,cstring_literals</span><br><span class="line">L_.str:                                 @ @.str</span><br><span class="line">.asciz   <span class="string">"v4@?0"</span></span><br><span class="line"></span><br><span class="line">.section        __TEXT,__objc_classname,cstring_literals</span><br><span class="line">L_OBJC_CLASS_NAME_:                     @ <span class="string">@"\01L_OBJC_CLASS_NAME_"</span></span><br><span class="line">.asciz   <span class="string">"\001"</span></span><br></pre></td></tr></table></figure></p>
+<p>这个<code>___doBlockA_block_invoke_0</code>看起来非常像block本身的实现，因为我们用的这个block是个空的block。这个函数只是简单的返回了，我们究竟怎样期待一个空函数被编译。</p>
+<p>然后再看<code>___block_descriptor_tmp</code>。这似乎是另一个结构体，这次他内部有4个值。第二个值是20，正好是<code>___block_literal_global</code>的大小。也许这是一个大小值呢？还有一个叫做<code>.str</code>的C字符串，它的值是<code>v4@?@</code>。这个看起来像是某种形式的编码类型。这有可能是block类型编码（即它返回空而且不需要参数）。另一个值我也不知道。</p>
+<hr>
+<h3 id="但是，源代码就在那儿，不是吗？"><a href="#但是，源代码就在那儿，不是吗？" class="headerlink" title="但是，源代码就在那儿，不是吗？"></a>但是，源代码就在那儿，不是吗？</h3><p>是的，源代码就在那儿，它是LLVM中<code>compiler-rt</code>项目的一部分。通过代码我在<a href="https://llvm.org/svn/llvm-project/compiler-rt/trunk/BlocksRuntime/Block_private.h" target="_blank" rel="noopener">Block_private.h</a>中找到如下定义：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> Block_descriptor &#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> reserved;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> size;</span><br><span class="line"><span class="keyword">void</span> (*<span class="keyword">copy</span>)(<span class="keyword">void</span> *dst, <span class="keyword">void</span> *src);</span><br><span class="line"><span class="keyword">void</span> (*dispose)(<span class="keyword">void</span> *);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> Block_layout &#123;</span><br><span class="line"><span class="keyword">void</span> *isa;</span><br><span class="line"><span class="keyword">int</span> flags;</span><br><span class="line"><span class="keyword">int</span> reserved;</span><br><span class="line"><span class="keyword">void</span> (*invoke)(<span class="keyword">void</span> *, ...);</span><br><span class="line"><span class="keyword">struct</span> Block_descriptor *descriptor;</span><br><span class="line"><span class="comment">/* Imported variables. */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这个看起来很熟悉！这个<code>Block_layout</code>正是我们的<code>___block_literal_global</code>，而这个<code>Block_descriptor</code>正是我们的<code>___block_descriptor_tmp</code>。继续看，关于descriptor中的第二个值的大小我的猜想是对的。有点奇怪的是<code>Block_descriptor</code>中的第三个和第四个值。这些看起来应该是函数指针，但是在我们的编译情况下，他们似乎是2个字符串。现在我会忽略这个小点。</p>
+<p><code>Block_layout</code>的<code>isa</code>是有趣的，因为它必须是_NSConcreteGlobalBlock是什么，也必须是块如何模拟为Objective-C对象。如果<code>_NSConcreteGlobalBlock</code>是一个<code>Class</code>，那么Objective-C消息分派系统将会很乐意将块对象视为普通对象。这与如何免费桥接的工作类似。有关这方面的更多信息，请阅读Mike Ash关于它的优秀<a href="http://www.mikeash.com/pyblog/friday-qa-2010-01-22-toll-free-bridging-internals.html" target="_blank" rel="noopener">博客文章</a>。</p>
+<p>将所有这些都拼接在一起，编译器看起来像将代码视为这样：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;dispatch/dispatch.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">__attribute__((noinline))</span><br><span class="line"><span class="keyword">void</span> runBlockA(<span class="keyword">struct</span> Block_layout *block) &#123;</span><br><span class="line">block-&gt;invoke();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> block_invoke(<span class="keyword">struct</span> Block_layout *block) &#123;</span><br><span class="line"><span class="comment">// Empty block function</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> doBlockA() &#123;</span><br><span class="line"><span class="keyword">struct</span> Block_descriptor descriptor;</span><br><span class="line">descriptor-&gt;reserved = <span class="number">0</span>;</span><br><span class="line">descriptor-&gt;size = <span class="number">20</span>;</span><br><span class="line">descriptor-&gt;<span class="keyword">copy</span> = <span class="literal">NULL</span>;</span><br><span class="line">descriptor-&gt;dispose = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> Block_layout block;</span><br><span class="line">block-&gt;isa = _NSConcreteGlobalBlock;</span><br><span class="line">block-&gt;flags = <span class="number">1342177280</span>;</span><br><span class="line">block-&gt;reserved = <span class="number">0</span>;</span><br><span class="line">block-&gt;invoke = block_invoke;</span><br><span class="line">block-&gt;descriptor = descriptor;</span><br><span class="line"></span><br><span class="line">runBlockA(&amp;block);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这很好知道。 现在在block的引擎盖下发生了什么事情变得更加有意义。</p>
+<hr>
+<h3 id="下一集讲什么？"><a href="#下一集讲什么？" class="headerlink" title="下一集讲什么？"></a>下一集讲什么？</h3><p>接下来我将看一个block，它接收一个参数和一个从封闭范围捕获变量的block。这些肯定会使事情有所不同！所以，watch this space for more.</p>
+<p>由Matt Galloway 在2012年8月11日发表 -  <a href="http://www.galloway.me.uk/blog/category/programming/" target="_blank" rel="noopener">rogramming</a>, <a href="http://www.galloway.me.uk/blog/category/ios/" target="_blank" rel="noopener">iOS</a></p>
+<p>还有一篇简书上写的貌似很好的<a href="http://www.jianshu.com/p/51d04b7639f1" target="_blank" rel="noopener">一篇文章</a>，还没来得及看</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/12/第十一篇、Objective-C中的消息与消息转发/" rel="next" title="第十一篇、Objective-C中的消息与消息转发">
+                <i class="fa fa-chevron-left"></i> 第十一篇、Objective-C中的消息与消息转发
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/28/iOS新功能系列-iOS10/" rel="prev" title="iOS新功能系列 - iOS10">
+                iOS新功能系列 - iOS10 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础"><span class="nav-number">1.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入一个简单的例子"><span class="nav-number">2.</span> <span class="nav-text">进入一个简单的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#但是，源代码就在那儿，不是吗？"><span class="nav-number">3.</span> <span class="nav-text">但是，源代码就在那儿，不是吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下一集讲什么？"><span class="nav-number">4.</span> <span class="nav-text">下一集讲什么？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

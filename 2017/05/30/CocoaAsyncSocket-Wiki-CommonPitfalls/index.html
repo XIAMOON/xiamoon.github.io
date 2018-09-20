@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原文链接  常见缺陷常见缺陷 - 不要成为受害者Over the years we&amp;#39;ve noticed that many issues arrise from general confusion about the TCP protocol. Arm yourself with knowledge so you don&amp;#39;t lose time in the future.多年">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CocoaAsyncSocket - Wiki - CommonPitfalls">
+<meta property="og:url" content="http://yoursite.com/2017/05/30/CocoaAsyncSocket-Wiki-CommonPitfalls/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="原文链接  常见缺陷常见缺陷 - 不要成为受害者Over the years we&amp;#39;ve noticed that many issues arrise from general confusion about the TCP protocol. Arm yourself with knowledge so you don&amp;#39;t lose time in the future.多年">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.415Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CocoaAsyncSocket - Wiki - CommonPitfalls">
+<meta name="twitter:description" content="原文链接  常见缺陷常见缺陷 - 不要成为受害者Over the years we&amp;#39;ve noticed that many issues arrise from general confusion about the TCP protocol. Arm yourself with knowledge so you don&amp;#39;t lose time in the future.多年">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/30/CocoaAsyncSocket-Wiki-CommonPitfalls/"/>
+
+
+
+
+
+  <title>CocoaAsyncSocket - Wiki - CommonPitfalls | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/CocoaAsyncSocket-Wiki-CommonPitfalls/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CocoaAsyncSocket - Wiki - CommonPitfalls</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T00:00:00+08:00">
+                2017-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS译文/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS译文</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><a href="https://github.com/robbiehanson/CocoaAsyncSocket/wiki/CommonPitfalls" target="_blank" rel="noopener">原文链接</a></p>
+</blockquote>
+<h3 id="常见缺陷"><a href="#常见缺陷" class="headerlink" title="常见缺陷"></a>常见缺陷</h3><p><strong>常见缺陷 - 不要成为受害者</strong><br><code>Over the years we&#39;ve noticed that many issues arrise from general confusion about the TCP protocol. Arm yourself with knowledge so you don&#39;t lose time in the future.</code><br>多年来，我们注意到许多问题源于对TCP协议的一般混淆。用自己的知识掌握自己，以便将来不会失去时间。</p>
+<h3 id="TCP是流"><a href="#TCP是流" class="headerlink" title="TCP是流"></a>TCP是流</h3><p><code>The TCP protocol is modeled on the concept of a single continuous stream of unlimited length. This is a very important concept to understand, and is the number one cause of confusion that we see.</code><br>TCP协议是以无限长度的<strong>单个连续流</strong>的概念建模的。这是一个非常重要的理解，是我们看到的<strong>第一个混乱的原因</strong>。</p>
+<p>这到底是什么意思，它是如何影响开发人员的？</p>
+<p>想像一下，您正试图通过socket发送一些消息。 所以你这样做（伪代码）：</p>
+<blockquote>
+<p>socket.write(“Hi Sandy.”);<br>socket.write(“Are you busy tonight?”);</p>
+</blockquote>
+<p><code>How does the data show up on the other end? If you think the other end will receive two separate sentences in two separate reads, then you&#39;ve just fallen victim to a common pitfall! Gasp! Read on.</code><br>数据如何显示在另一端？ 如果您认为另一端将以两个单独的读取方式接收两个单独的句子，那么您刚刚成为一个常见的陷阱的受害者！ 深呼吸！ 继续阅读。</p>
+<p>TCP不将写作视为单独的数据。 TCP将所有写入视为单个连续流的一部分。所以当你发出上面的写入时，TCP将简单地将数据复制到缓冲区中：</p>
+<blockquote>
+<p>TCP_Buffer = “Hi Sandy.Are you busy tonight?”</p>
+</blockquote>
+<p>然后尽快发送数据。为了通过网络发送数据，TCP和其他网络协议将需要把该数据分割成可通过介质（以太网，WiFi等）传输的小块。<br>为了这样做，TCP可能以任何其认为合适的方式分解数据。 以下是一些数据可能被拆分和发送的示例：</p>
+<ol>
+<li>“Hi San” , “dy.Ar” , “e you “ , “busy to” , “night?”</li>
+<li>“Hi Sandy.Are you busy” , “ tonight?”</li>
+<li>“Hi Sandy.Are you busy tonight?”</li>
+</ol>
+<p>上述示例还演示了数据将如何到达另一端。我们来考虑一下例子1。</p>
+<p>Sandy发出了一个socket.read()命令，并且正在等待数据到达。所以她第一次读取到的结果可能是“Hi San”。Sandy可能会开始处理这些数据。而当应用程序处理数据时，TCP流继续接收第二和第三个数据包。Sandy然后发出另一个socket.read()命令，这一次她得到“dy.Are you”。</p>
+<p>这突出了TCP的连续流性质。TCP协议在开发人员API级别上绝对没有数据包或数据分离的概念。</p>
+<p><code>But isn&#39;t this a major shortcoming? How do all those other protocols that use TCP work?</code><br>但这不是一个主要的缺点吗？所有使用TCP的其他协议如何工作？</p>
+<p>HTTP是一个很好的例子，因为它很简单，因为大多数人都看过它。当客户端连接到服务器并发送请求时，它以非常具体的方式执行。它发送一个HTTP头，头部的每一行都用CRLF（回车符，换行符）终止。就像这样：</p>
+<blockquote>
+<p>GET /page.html HTTP/1.1<br>Host: google.com</p>
+</blockquote>
+<p><code>Since the protocol specifies the terminators, it is easy to read data from a TCP socket until the terminators are reached.</code><br>此外，HTTP标头的结尾用两个连续的CRLF发出信号。由于协议规定了终结器，因此很容易从TCP socket读取数据，直到达到终止符。</p>
+<p>然后服务器发送响应：</p>
+<blockquote>
+<p>HTTP/1.1 200 OK<br>Content-Length: 216</p>
+</blockquote>
+<blockquote>
+<p>{ Exactly 216 bytes of data go here }</p>
+</blockquote>
+<p>再次，HTTP协议使得使用TCP变得容易。读取数据，直到您获得背靠背CRLF。 那是你的标题。然后从头解析内容长度，现在你可以简单地读取一定数量的字节。回到我们的原始示例，我们可以简单地使用指定的终止符来发送消息：</p>
+<blockquote>
+<p>socket.write(“Hi Sandy.\n”);<br>socket.write(“Are you busy tonight?\n”);</p>
+</blockquote>
+<p>而如果Sandy正在使用AsyncSocket，她会幸运的！因为AsyncSocket提供了真正易于使用的读取方法，允许您指定要查找的终止符。AsyncSocket为您提供其余的功能，并且会在两个单独的读取中提供两个单独的句子！</p>
+<h3 id="写（Writes）"><a href="#写（Writes）" class="headerlink" title="写（Writes）"></a>写（Writes）</h3><p><strong>当您将数据写入TCP套接字时会发生什么？</strong>当写入完成时，是否意味着对方收到该数据？我们至少可以假定计算机已经发送了数据？ 答案是NO和NO。</p>
+<p><code>Recall two things:</code><br>回想两件事情：</p>
+<ul>
+<li>发送和接收的所有数据必须分成小块，以便通过网络发送。</li>
+<li>TCP处理许多复杂的问题，如重新发送丢失的数据包，并提供按顺序的传送，以便信息以正确的顺序到达。</li>
+</ul>
+<blockquote>
+<p>a lot of <code>complicated</code> <code>issues</code>：许多<code>复杂的</code> <code>问题</code><br>providing <code>in-order</code> delivery：提供<code>按顺序的</code>传送</p>
+</blockquote>
+<p>因此，当您发出写入时，数据将被简单地复制到OS网络堆栈中的底层缓冲区中。在那一点上，TCP软件将开始其魔力，其中包括前面提到的所有酷的东西，如：</p>
+<ul>
+<li>将数据分成小块，以便可以通过网络发送数据</li>
+<li>确保丢失的碎片得到适当的重发</li>
+<li>确保您的数据以正确的顺序到达远程目标</li>
+<li>提防网络拥塞</li>
+<li>使用花式算法尽可能快地完成所有这些</li>
+</ul>
+<p>所以当你发出命令“写这个数据”时，操作系统会回应“我有你的数据，我将尽我力量把这个传递给远程目的地”。</p>
+<p>但是<strong>我怎么知道远程目的地何时收到我的数据？</strong></p>
+<p>这正是大多数人遇到问题的地方。下面有一个好的思考方式来理解它：</p>
+<p>想象一下，你想给朋友发一封信。不是电子邮件，而是传统的慢邮。你知道，通过邮局。所以你写信并把它放在你的邮箱里。然后邮递员来了，拿走你的邮件。<code>You can rest assured at this point that the post office will make every effort to deliver the letter to your friend.</code>在这一点上你可以放心，邮局会竭尽全力把信交给你的朋友。但是如果你的朋友收到信件，你是怎么知道的？我想如果这封信回来了，盖上“返回发件人”，你可以肯定你的朋友没有收到。但是如果这封信没有回来呢？是否足以知道它已经投递到您朋友的邮箱？(假设这是一封非常非常重要的信。) 答案是否定的。可能这封信从来都没有被拿出过邮箱。也可能它的室友收到它然后意外地把它扔掉了。如果这个室友负责任，并把信留在你的朋友桌上？那够了吗？如果你的朋友在度假，你的信在一堆垃圾邮件中丢失了怎么办？所以真正知道你的朋友收到这封信的唯一方法是当你收到他的答复。</p>
+<p>这是sockets的一个很好的比喻。当您将数据写入socket时，就像把信放在邮箱中。操作系统就像当地的邮递员一样，拿起这封信。将信件路由到目的地的巨型邮局系统就像网络。而向你的朋友邮箱中投递你的信的邮递员就像你的朋友的电脑上的操作系统。然后由朋友电脑上的应用程序读取操作系统中的数据并处理它（从邮箱中取出信件，并实际读取）。</p>
+<p>那么如何知道远程目的地何时收到我的数据？这不是TCP可以告诉你的。最多只能告诉你，这封信已经提交给他们的邮箱。它不能告诉你应用程序是否读取该数据并进行处理。也许远端的应用程序崩溃了。或者也许远程用户在有机会读取数据之前退出应用程序。或者远程用户可能会遭受停电。这是篇长篇小说，如果需要，由应用层来回答这个问题。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/28/iOS新功能系列-iOS10/" rel="next" title="iOS新功能系列 - iOS10">
+                <i class="fa fa-chevron-left"></i> iOS新功能系列 - iOS10
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/30/CocoaAsyncSocket-Wiki-Intro-GCDAsyncSocket/" rel="prev" title="CocoaAsyncSocket - Wiki - Intro_GCDAsyncSocket">
+                CocoaAsyncSocket - Wiki - Intro_GCDAsyncSocket <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见缺陷"><span class="nav-number">1.</span> <span class="nav-text">常见缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP是流"><span class="nav-number">2.</span> <span class="nav-text">TCP是流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写（Writes）"><span class="nav-number">3.</span> <span class="nav-text">写（Writes）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

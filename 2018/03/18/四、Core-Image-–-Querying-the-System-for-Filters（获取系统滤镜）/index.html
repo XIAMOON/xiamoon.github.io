@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、获取滤镜和属性列表使用filterNamesInCategory:和filterNamesInCategories:方法去精确发现可用的滤镜。滤镜是被分类的，使得列表更易于管理。使用后者时，你只需传入一个nil就可以获得所有分类的滤镜了。 一个滤镜可以是多个分类的成员，一个分类可以指定：  滤镜所产生的效果(颜色调节、失真等)。见表4 - 1。 滤镜的使用(静态图像，视频，动态范围，等等)。见">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四、Core Image – Querying the System for Filters（获取系统滤镜）">
+<meta property="og:url" content="http://yoursite.com/2018/03/18/四、Core-Image-–-Querying-the-System-for-Filters（获取系统滤镜）/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="一、获取滤镜和属性列表使用filterNamesInCategory:和filterNamesInCategories:方法去精确发现可用的滤镜。滤镜是被分类的，使得列表更易于管理。使用后者时，你只需传入一个nil就可以获得所有分类的滤镜了。 一个滤镜可以是多个分类的成员，一个分类可以指定：  滤镜所产生的效果(颜色调节、失真等)。见表4 - 1。 滤镜的使用(静态图像，视频，动态范围，等等)。见">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.419Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="四、Core Image – Querying the System for Filters（获取系统滤镜）">
+<meta name="twitter:description" content="一、获取滤镜和属性列表使用filterNamesInCategory:和filterNamesInCategories:方法去精确发现可用的滤镜。滤镜是被分类的，使得列表更易于管理。使用后者时，你只需传入一个nil就可以获得所有分类的滤镜了。 一个滤镜可以是多个分类的成员，一个分类可以指定：  滤镜所产生的效果(颜色调节、失真等)。见表4 - 1。 滤镜的使用(静态图像，视频，动态范围，等等)。见">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/18/四、Core-Image-–-Querying-the-System-for-Filters（获取系统滤镜）/"/>
+
+
+
+
+
+  <title>四、Core Image – Querying the System for Filters（获取系统滤镜） | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/18/四、Core-Image-–-Querying-the-System-for-Filters（获取系统滤镜）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">四、Core Image – Querying the System for Filters（获取系统滤镜）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-18T00:00:00+08:00">
+                2018-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Core-Image/" itemprop="url" rel="index">
+                    <span itemprop="name">Core Image</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、获取滤镜和属性列表"><a href="#一、获取滤镜和属性列表" class="headerlink" title="一、获取滤镜和属性列表"></a>一、获取滤镜和属性列表</h3><p>使用<code>filterNamesInCategory:</code>和<code>filterNamesInCategories:</code>方法去精确发现可用的滤镜。滤镜是被分类的，使得列表更易于管理。使用后者时，你只需传入一个<code>nil</code>就可以获得所有分类的滤镜了。</p>
+<p>一个滤镜可以是多个分类的成员，一个分类可以指定：</p>
+<ul>
+<li>滤镜所产生的效果(颜色调节、失真等)。见表4 - 1。</li>
+<li>滤镜的使用(静态图像，视频，动态范围，等等)。见表4 - 2。</li>
+<li>滤镜是否由核心图像(内置)提供。见表4 - 3。</li>
+</ul>
+<p><em>表4-1 效果类型对应的的过滤器类别常量</em><br>| 效果类型 | 解释 |<br>| :— | :— |<br>|kCICategoryDistortionEffect|扭曲效果，如bump, twirl, hole。|<br>|kCICategoryGeometryAdjustment|几何调整，如仿射变换、裁剪、透视变换。|<br>|kCICategoryCompositeOperation|合成, such as source over, minimum, source atop, color dodge blend mode<br>|<br>|kCICategoryHalftoneEffect|半色调效果，如屏幕，线屏，孵化。|<br>|kCICategoryColorAdjustment|调色，如伽玛调整，白点调整，曝光。|<br>|kCICategoryColorEffect|色彩效果，如色调调整，色调分离。|<br>|kCICategoryTransition|图像之间的转换，如溶解，与掩模的分离，滑动。|<br>|kCICategoryTileEffect|平铺效应，如平行四边形、三角形。|<br>|kCICategoryGenerator|图像发生器，如条纹，常色，棋盘格。|<br>|kCICategoryGradient|梯度，如轴向、径向、高斯分布。|<br>|kCICategoryStylize|如像素化，结晶化。|<br>|kCICategorySharpen|锐化，亮度。|<br>|kCICategoryBlur|模糊，如高斯，缩放，运动。|</p>
+<p><em>表4-2 滤镜的使用对应的滤镜分类常量</em><br>| 使用 | 解释 |<br>| :— | :— |<br>|kCICategoryStillImage|用于静态图像|<br>|kCICategoryVideo|用于视频|<br>|kCICategoryInterlaced|用于交错图像|<br>|kCICategoryNonSquarePixels|用于非平方像素|<br>|kCICategoryHighDynamicRange|用于高动态范围像素，即：HDR|</p>
+<p><em>表4-3 原始滤镜对应的滤镜分类常量</em><br>| 原始滤镜 | 解释 |<br>| :— | :— |<br>|kCICategoryBuiltIn|由 Core Image 提供的滤镜|</p>
+<p>获取滤镜名称列表后，可以通过创建CIFilter对象并调用<code>attributes</code>方法来检索滤镜的属性：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CIFilter</span> *myFilter = [<span class="built_in">CIFilter</span> filterWithName:<span class="string">@"&lt;# Filter Name Here #&gt;"</span>];</span><br><span class="line"><span class="built_in">NSDictionary</span> *myFilterAttributes = [myFilter attributes];</span><br></pre></td></tr></table></figure></p>
+<p>Attributes包括例如：名称， 分类名， 类名，最小值，最大值。可以参考<a href="https://developer.apple.com/documentation/coreimage/cifilter?language=objc" target="_blank" rel="noopener">CIFilter Class Reference</a>。</p>
+<h3 id="二、配置滤镜的属性字典"><a href="#二、配置滤镜的属性字典" class="headerlink" title="二、配置滤镜的属性字典"></a>二、配置滤镜的属性字典</h3><p>如果您的应用程序提供了一个用户界面，它可以查询一个滤镜的字典来创建和更新用户界面。例如，布尔值的滤镜属性需要一个复选框或类似的用户界面元素，而在一个范围内连续变化的属性可以使用一个滑块。您可以使用最大和最小值作为文本标签的基础。默认属性设置将指定用户界面中的初始设置。</p>
+<p>滤镜名称和属性提供了构建用户界面所需的所有信息，用户界面允许用户选择筛选器并控制其输入参数。滤镜的属性告诉您滤镜有多少输入参数、参数名称、数据类型和最小值、最大值和默认值。</p>
+<p>清单4-1显示了获取滤镜名称和根据功能类别构建滤镜字典的代码。代码从这些分类中检索滤镜—<code>kCICategoryGeometryAdjustment</code>、<code>kCICategoryDistortionEffect</code>、<code>kCICategorySharpen</code>和<code>kCICategoryBlur</code>—但是根据app-defined功能类别构建字典，如失真和焦点。功能类别对于在菜单中组织过滤器名称是有用的，这对用户来说是有意义的。代码不会遍历所有可能的核心图像筛选器类别，但您可以通过遵循相同的流程轻松地扩展此代码。</p>
+<p><em>4-1 通过功能类别创建滤镜字典的代码</em><br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSMutableDictionary</span> *filtersByCategory = [<span class="built_in">NSMutableDictionary</span> dictionary];</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSMutableArray</span> *filterNames = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line">[filterNames addObjectsFromArray:</span><br><span class="line">[<span class="built_in">CIFilter</span> filterNamesInCategory:kCICategoryGeometryAdjustment]];</span><br><span class="line">[filterNames addObjectsFromArray:</span><br><span class="line">[<span class="built_in">CIFilter</span> filterNamesInCategory:kCICategoryDistortionEffect]];</span><br><span class="line">filtersByCategory[<span class="string">@"Distortion"</span>] = [<span class="keyword">self</span> buildFilterDictionary: filterNames];</span><br><span class="line"></span><br><span class="line">[filterNames removeAllObjects];</span><br><span class="line">[filterNames addObjectsFromArray:</span><br><span class="line">[<span class="built_in">CIFilter</span> filterNamesInCategory:kCICategorySharpen]];</span><br><span class="line">[filterNames addObjectsFromArray:</span><br><span class="line">[<span class="built_in">CIFilter</span> filterNamesInCategory:kCICategoryBlur]];</span><br><span class="line">filtersByCategory[<span class="string">@"Focus"</span>] = [<span class="keyword">self</span> buildFilterDictionary: filterNames];</span><br></pre></td></tr></table></figure></p>
+<p>清单4-2显示了清单4-1所示的<code>buildFilterDictionary</code>例程。这个例程为函数类别中的每个滤镜构建一个属性字典。每一行代码的详细解释如下所示。</p>
+<p><em>4-2 通过功能名称创建滤镜字典</em><br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSMutableDictionary</span> *)buildFilterDictionary:(<span class="built_in">NSArray</span> *)filterClassNames  <span class="comment">// 1</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">NSMutableDictionary</span> *filters = [<span class="built_in">NSMutableDictionary</span> dictionary];</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">NSString</span> *className <span class="keyword">in</span> filterClassNames) &#123;                         <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">CIFilter</span> *filter = [<span class="built_in">CIFilter</span> filterWithName:className];             <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (filter) &#123;</span><br><span class="line">filters[className] = [filter attributes];                       <span class="comment">// 4</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"could not create '%@' filter"</span>, className);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> filters;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>以一个滤镜名称数组作为输入参数。回想一下清单4-1，这个数组可以是多个Core Image筛选器类别中的滤镜名称的串联。在本例中，数组基于应用程序设置的功能类别(失真或焦点)。</li>
+<li>遍历滤镜名称数组。</li>
+<li>为滤镜名称获取滤镜对象。</li>
+<li>检索滤镜的属性字典并将其添加到例程返回的字典中。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/18/三、Core-Image-–-Auto-Enhancing-Image（自动增强图片）/" rel="next" title="三、Core Image – Auto Enhancing Image（自动增强图片）">
+                <i class="fa fa-chevron-left"></i> 三、Core Image – Auto Enhancing Image（自动增强图片）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/03/关于OC中extern的使用场景/" rel="prev" title="关于OC中extern的使用场景">
+                关于OC中extern的使用场景 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、获取滤镜和属性列表"><span class="nav-number">1.</span> <span class="nav-text">一、获取滤镜和属性列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、配置滤镜的属性字典"><span class="nav-number">2.</span> <span class="nav-text">二、配置滤镜的属性字典</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

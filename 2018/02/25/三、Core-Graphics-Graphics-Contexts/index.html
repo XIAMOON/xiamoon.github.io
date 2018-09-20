@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="图形上下文表示绘图目标。 它包含绘图参数和绘图系统需要执行任何后续绘图命令的所有特定于设备的信息。 图形上下文定义了基本绘图属性，例如绘制时使用的颜色，裁剪区域，线宽和样式信息，字体信息，合成选项等。 您可以通过使用Quartz上下文创建功能或通过使用其中一个Mac OS X框架或iOS中的UIKit框架提供的更高级别的功能来获取图形上下文。 Quartz提供各种Quartz图形上下文的功能，包括">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三、Core Graphics - Graphics Contexts">
+<meta property="og:url" content="http://yoursite.com/2018/02/25/三、Core-Graphics-Graphics-Contexts/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="图形上下文表示绘图目标。 它包含绘图参数和绘图系统需要执行任何后续绘图命令的所有特定于设备的信息。 图形上下文定义了基本绘图属性，例如绘制时使用的颜色，裁剪区域，线宽和样式信息，字体信息，合成选项等。 您可以通过使用Quartz上下文创建功能或通过使用其中一个Mac OS X框架或iOS中的UIKit框架提供的更高级别的功能来获取图形上下文。 Quartz提供各种Quartz图形上下文的功能，包括">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/source/cg3_p_1.gif">
+<meta property="og:image" content="http://yoursite.com/source/cg3_p_2.jpg">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.418Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三、Core Graphics - Graphics Contexts">
+<meta name="twitter:description" content="图形上下文表示绘图目标。 它包含绘图参数和绘图系统需要执行任何后续绘图命令的所有特定于设备的信息。 图形上下文定义了基本绘图属性，例如绘制时使用的颜色，裁剪区域，线宽和样式信息，字体信息，合成选项等。 您可以通过使用Quartz上下文创建功能或通过使用其中一个Mac OS X框架或iOS中的UIKit框架提供的更高级别的功能来获取图形上下文。 Quartz提供各种Quartz图形上下文的功能，包括">
+<meta name="twitter:image" content="http://yoursite.com/source/cg3_p_1.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/25/三、Core-Graphics-Graphics-Contexts/"/>
+
+
+
+
+
+  <title>三、Core Graphics - Graphics Contexts | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/三、Core-Graphics-Graphics-Contexts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">三、Core Graphics - Graphics Contexts</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T00:00:00+08:00">
+                2018-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Core-Graphics/" itemprop="url" rel="index">
+                    <span itemprop="name">Core Graphics</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>图形上下文表示绘图目标。 它包含绘图参数和绘图系统需要执行任何后续绘图命令的所有特定于设备的信息。 图形上下文定义了基本绘图属性，例如绘制时使用的颜色，裁剪区域，线宽和样式信息，字体信息，合成选项等。</p>
+<p>您可以通过使用Quartz上下文创建功能或通过使用其中一个Mac OS X框架或iOS中的UIKit框架提供的更高级别的功能来获取图形上下文。 Quartz提供各种Quartz图形上下文的功能，包括位图和PDF，可用于创建自定义内容。</p>
+<p>本章介绍如何为各种绘图目标创建图形上下文。 图形上下文通过数据类型CGContextRef（它是不透明数据类型）在代码中表示。 获取图形上下文后，您可以使用Quartz 2D函数绘制上下文，在上下文中执行操作（如转换），并更改图形状态参数，例如线宽和填充颜色。</p>
+<h3 id="在iOS中绘制视图图形上下文"><a href="#在iOS中绘制视图图形上下文" class="headerlink" title="在iOS中绘制视图图形上下文"></a>在iOS中绘制视图图形上下文</h3><p>要在iOS应用程序中绘制屏幕，您可以设置一个<a href="https://developer.apple.com/documentation/uikit/uiview" target="_blank" rel="noopener">UIView</a>对象并实现其<a href="https://developer.apple.com/documentation/uikit/uiview/1622529-drawrect" target="_blank" rel="noopener">drawRect:</a>方法来执行绘图。 当视图在屏幕上可见并且其内容需要更新时，视图的<code>drawRect:</code>方法将会被调用。 在调用自定义<code>drawRect:</code>方法之前，视图对象会自动配置其绘图环境，以便您的代码可以立即开始绘制。 作为此配置的一部分，<code>UIView</code>对象为当前绘图环境创建一个图形上下文（一个<a href="https://developer.apple.com/documentation/coregraphics/cgcontextref" target="_blank" rel="noopener">CGContextRef</a> opaque类型）。 您可以在<code>drawRect:</code>方法中通过调用UIKit的<a href="https://developer.apple.com/documentation/uikit/1623918-uigraphicsgetcurrentcontext" target="_blank" rel="noopener">UIGraphicsGetCurrentContext</a>函数来获取此图形上下文。</p>
+<h3 id="在Mac-OS-X中创建窗口图形上下文"><a href="#在Mac-OS-X中创建窗口图形上下文" class="headerlink" title="在Mac OS X中创建窗口图形上下文"></a>在Mac OS X中创建窗口图形上下文</h3><p>略…</p>
+<h3 id="创建PDF图形上下文"><a href="#创建PDF图形上下文" class="headerlink" title="创建PDF图形上下文"></a>创建PDF图形上下文</h3><p>略…</p>
+<h3 id="创建位图图形上下文"><a href="#创建位图图形上下文" class="headerlink" title="创建位图图形上下文"></a>创建位图图形上下文</h3><p>一个位图图形上下文接受指向内存缓冲区的指针，该缓冲区包含这个位图的存储空间。 当您绘制到位图图形上下文中时，缓冲区将被更新。 释放图形上下文后，您将以指定的像素格式完全更新位图。</p>
+<blockquote>
+<p><strong>注意：</strong>位图图形上下文有时用于离屏绘制。 当您决定为此来使用位图图形上下文之前，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_layers/dq_layers.html#//apple_ref/doc/uid/TP30001066-CH219-TPXREF101" target="_blank" rel="noopener">Core Graphics Layer Drawing</a>。 CGLayer对象（<code>CGLayerRef</code>）针对离屏绘制进行了优化，因为在任何可能的情况下，Quartz缓存video card上的图层。</p>
+</blockquote>
+<blockquote>
+<p><strong>iOS注意：</strong>iOS应用程序应使用<a href="https://developer.apple.com/documentation/uikit/1623912-uigraphicsbeginimagecontextwitho" target="_blank" rel="noopener">UIGraphicsBeginImageContextWithOptions</a>函数，而不是使用此处描述的低级Quartz函数。 如果您的应用程序使用Quartz创建了屏幕外位图，则位图图形上下文使用的坐标系是默认的Quartz坐标系。 相反，如果您的应用程序通过调用函数<code>UIGraphicsBeginImageContextWithOptions</code>创建图像上下文，则UIKit将与上下文的坐标系统使用相同的转换，这与UIView对象的图形上下文相同。 这允许您的应用程序使用相同的绘图代码，无需担心不同的坐标系。 虽然您的应用程序可以手动调整坐标转换矩阵以获得正确的结果，但在实践中，将会没有性能优势。</p>
+</blockquote>
+<p>您可以使用函数<code>CGBitmapContextCreate</code>来创建位图图形上下文。 此功能需要以下参数：</p>
+<ul>
+<li><code>data</code>。 在你希望绘制渲染的内存中提供一个指向目标的指针。该内存块的大小应至少为（<code>bytesPerRow * height</code>）字节。</li>
+<li><code>width</code>。 指定位图的宽度（以像素为单位）。</li>
+<li><code>height</code>。指定位图的高度（以像素为单位）。</li>
+<li><p><code>bitsPerComponent</code>。 指定在内存中用于像素的每个组件的位数。 例如，对于32位像素格式和RGB颜色空间，您可以为每个组件指定一个8位的值。 请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-BCIBHHBB" target="_blank" rel="noopener">Supported Pixel Formats</a>。</p>
+<blockquote>
+<p>提示：当您创建位图图形上下文时，如果确保<code>data</code>和<code>bytesPerRow</code>为16字节对齐，则将获得最佳性能。</p>
+</blockquote>
+</li>
+<li><p><code>颜色空间</code>。 用于位图上下文的颜色空间。 您可以在创建位图图形上下文时提供Gray，RGB，CMYK或NULL颜色空间。 有关颜色空间和颜色管理原则的详细信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/csintro/csintro_intro/csintro_intro.html#//apple_ref/doc/uid/TP30001148" target="_blank" rel="noopener">Color Management Overview</a>。 有关在Quartz中创建和使用颜色空间的信息，请参阅<a href="">Color and Color Spaces</a>。 有关支持的颜色空间的信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-TPXREF101" target="_blank" rel="noopener">Bitmap Images and Image Masks</a>章节中的<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-CJBHEGIB" target="_blank" rel="noopener">Color Spaces and Bitmap Layout</a>。</p>
+</li>
+<li><code>bitmapInfo</code>。位图布局信息，表示为<code>CGBitmapInfo</code>常量，用于指定位图是否应包含alpha组件，像素中的alpha组件（如果有的话）的相对位置，是否预先生成alpha组件，以及颜色组件是整数还是浮点值。 有关这些常量是什么，什么时候使用这些常量，以及用于位图图形上下文和图像的Quartz支持的像素格式的这些详细信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-TPXREF101" target="_blank" rel="noopener">Bitmap Images and Image Masks</a>章节中的<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-CJBHEGIB" target="_blank" rel="noopener">Color Spaces and Bitmap Layout</a>。</li>
+</ul>
+<p>清单2-5显示了如何创建位图图形上下文。 当您绘制到生成的位图图形上下文时，Quartz将您的绘图作为位图数据记录在指定的内存块中。 清单下面列出每个编号代码行的详细说明。</p>
+<p><strong>清单2-5</strong> 创建位图图形上下文<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGContextRef</span> MyCreateBitmapContext (<span class="keyword">int</span> pixelsWide,</span><br><span class="line"><span class="keyword">int</span> pixelsHigh)</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">CGContextRef</span>    context = <span class="literal">NULL</span>;</span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> colorSpace;</span><br><span class="line"><span class="keyword">void</span> *          bitmapData;</span><br><span class="line"><span class="keyword">int</span>             bitmapByteCount;</span><br><span class="line"><span class="keyword">int</span>             bitmapBytesPerRow;</span><br><span class="line"></span><br><span class="line">bitmapBytesPerRow   = (pixelsWide * <span class="number">4</span>);<span class="comment">// 1</span></span><br><span class="line">bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);</span><br><span class="line"></span><br><span class="line">colorSpace = <span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceGenericRGB);<span class="comment">// 2</span></span><br><span class="line">bitmapData = calloc( bitmapByteCount, <span class="keyword">sizeof</span>(uint8_t) );<span class="comment">// 3</span></span><br><span class="line"><span class="keyword">if</span> (bitmapData == <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">fprintf (stderr, <span class="string">"Memory not allocated!"</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line">context = <span class="built_in">CGBitmapContextCreate</span> (bitmapData,<span class="comment">// 4</span></span><br><span class="line">pixelsWide,</span><br><span class="line">pixelsHigh,</span><br><span class="line"><span class="number">8</span>,      <span class="comment">// bits per component</span></span><br><span class="line">bitmapBytesPerRow,</span><br><span class="line">colorSpace,</span><br><span class="line">kCGImageAlphaPremultipliedLast);</span><br><span class="line"><span class="keyword">if</span> (context== <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">free (bitmapData);<span class="comment">// 5</span></span><br><span class="line">fprintf (stderr, <span class="string">"Context not created!"</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">CGColorSpaceRelease</span>( colorSpace );<span class="comment">// 6</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> context;<span class="comment">// 7</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面是代码所做的事：</p>
+<ol>
+<li>声明一个变量来表示每行的字节数。 该示例中位图中的每个像素由4个字节表示; 每个红色，绿色，蓝色和阿尔法都有8位。</li>
+<li>创建一个通用的RGB颜色空间。 您也可以创建一个CMYK颜色空间。 有关更多信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_color/dq_color.html#//apple_ref/doc/uid/TP30001066-CH205-TPXREF101" target="_blank" rel="noopener">Color and Color Spaces</a>，以及有关通用色彩空间与依赖于设备的颜色空间的讨论。</li>
+<li>调用<code>calloc</code>函数来创建和清除存储位图数据的内存块。 此示例创建一个32位RGBA位图（即，每像素32位的数组，每个像素包含红，绿，蓝和阿尔法信息的8位）。 位图中的每个像素占用4个字节的内存。 在Mac OS X 10.6和iOS 4中，可以省略此步骤 - 如果将NULL作为位图数据传递，Quartz会自动为位图分配空间。</li>
+<li>创建位图图形上下文，提供位图数据，位图的宽度和高度，每个组件的位数，每行的字节数，颜色空间以及指定位图是否应包含Alpha通道的常数和像素中的相对位置。常数<code>kCGImageAlphaPremultipliedLast</code>表示α分量存储在每个像素的最后一个字节中，并且颜色分量已经乘以此Alpha值。 有关预乘α的更多信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_color/dq_color.html#//apple_ref/doc/uid/TP30001066-CH205-TPXREF119" target="_blank" rel="noopener">The Alpha Value</a>。</li>
+<li>如果由于某种原因未创建上下文，则释放分配给位图数据的内存。</li>
+<li>释放颜色空间。</li>
+<li>返回位图图形上下文。当不再需要时，调用者必须释放图形上下文。</li>
+</ol>
+<p>清单2-6显示了调用MyCreateBitmapContext创建位图图形上下文的代码，使用位图图形上下文来创建CGImage对象，然后将生成的图像绘制到窗口图形上下文。 图2-3显示了绘制到窗口的图像。 清单下面列出每个编号代码行的详细说明。<br><strong>清单2-6</strong> 绘制到位图图形上下文<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGRect</span> myBoundingBox;<span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">myBoundingBox = <span class="built_in">CGRectMake</span> (<span class="number">0</span>, <span class="number">0</span>, myWidth, myHeight);<span class="comment">// 2</span></span><br><span class="line">myBitmapContext = MyCreateBitmapContext (<span class="number">400</span>, <span class="number">300</span>);<span class="comment">// 3</span></span><br><span class="line"><span class="comment">// ********** Your drawing code here ********** // 4</span></span><br><span class="line"><span class="built_in">CGContextSetRGBFillColor</span> (myBitmapContext, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"><span class="built_in">CGContextFillRect</span> (myBitmapContext, <span class="built_in">CGRectMake</span> (<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>, <span class="number">100</span> ));</span><br><span class="line"><span class="built_in">CGContextSetRGBFillColor</span> (myBitmapContext, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">.5</span>);</span><br><span class="line"><span class="built_in">CGContextFillRect</span> (myBitmapContext, <span class="built_in">CGRectMake</span> (<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">200</span> ));</span><br><span class="line">myImage = <span class="built_in">CGBitmapContextCreateImage</span> (myBitmapContext);<span class="comment">// 5</span></span><br><span class="line"><span class="built_in">CGContextDrawImage</span>(myContext, myBoundingBox, myImage);<span class="comment">// 6</span></span><br><span class="line"><span class="keyword">char</span> *bitmapData = <span class="built_in">CGBitmapContextGetData</span>(myBitmapContext); <span class="comment">// 7</span></span><br><span class="line"><span class="built_in">CGContextRelease</span> (myBitmapContext);<span class="comment">// 8</span></span><br><span class="line"><span class="keyword">if</span> (bitmapData) free(bitmapData); <span class="comment">// 9</span></span><br><span class="line"><span class="built_in">CGImageRelease</span>(myImage);</span><br></pre></td></tr></table></figure></p>
+<p>下面是这些代码所做的事：</p>
+<ol>
+<li>声明一个变量来存储边界框的起点和尺寸，Quartz将绘制从位图图形上下文创建的图像。</li>
+<li>将边框的原点设置为（0,0），并将宽度和高度设置为先前声明的变量，但其声明未显示在此代码中。</li>
+<li>调用应用程序提供的函数<code>MyCreateBitmapContext</code>（参见清单2-5）来创建一个400像素宽和300像素高的位图上下文。 您可以使用适合您的应用程序的任何维度创建位图图形上下文。</li>
+<li>调用Quartz 2D函数来绘制位图图形上下文。 您将使用适合您的应用程序的绘图代码替换此代码和接下来的四行代码。</li>
+<li>从位图图形上下文创建Quartz 2D图像（<code>CGImageRef</code>）。</li>
+<li>将图像绘制到由边界框指定的窗口图形上下文中的位置。 边界框指定用于绘制图像的用户空间中的位置和尺寸。<br>此示例不显示窗口图形上下文的创建。 有关如何创建一个的信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-CJBDCHAC" target="_blank" rel="noopener">Creating a Window Graphics Context in Mac OS X</a>。</li>
+<li>获取与位图图形上下文相关联的位图数据。</li>
+<li>当不再需要时，释放位图图形上下文。</li>
+<li>释放位图数据（如果存在）。</li>
+<li>当不再需要时释放图像。</li>
+</ol>
+<p><strong>图2-3</strong> 从位图图形上下文创建并绘制到窗口图形上下文的图像<br><img src="/source/cg3_p_1.gif" alt=""></p>
+<h3 id="支持的像素格式"><a href="#支持的像素格式" class="headerlink" title="支持的像素格式"></a>支持的像素格式</h3><p>表2-1总结了支持位图图形上下文，相关联的颜色空间（<code>cs</code>）以及格式首次可用的Mac OS X版本 的像素格式。 像素格式被指定为bit per pixel（bpp）和bit per component（bpc）。 该表还包括与该像素格式相关联的位图信息常数。 有关每个位图信息格式常量表示的详细信息，请参阅<a href="https://developer.apple.com/documentation/coregraphics/cgimage" target="_blank" rel="noopener">CGImage Reference</a>。</p>
+<p><strong>表2-1</strong> 位图图形上下文支持的像素格式<br>| 颜色空间 | 像素格式和位图信息常量 | 可用性 |<br>|:——|:——|:— |<br>| Null | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaNone | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| RGB | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| RGB | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |</p>
+<h3 id="抗锯齿"><a href="#抗锯齿" class="headerlink" title="抗锯齿"></a>抗锯齿</h3><p>位图图形上下文支持抗锯齿功能，这是人工修正当您绘制文字或形状时您有时在位图图像中看到的锯齿状（或别名）边缘的过程。 当位图的分辨率显著低于您的眼睛的分辨率时，会发生这些锯齿状边缘。 为了使对象在位图中显得平滑，Quartz对于围绕形状轮廓的像素使用不同的颜色。 通过以这种方式混合颜色，形状看起来平滑。 您可以在图2-4中看到使用抗锯齿的效果。 您可以通过调用函数<code>CGContextSetShouldAntialias</code>来关闭特定位图图形上下文的反锯齿。 抗锯齿设置是图形状态的一部分。</p>
+<p>您可以通过使用函数<code>CGContextSetAllowsAntialiasing</code>来控制是否允许特定图形上下文的反锯齿。 给函数传<code>true</code>可以允许反锯齿; <code>false</code>不允许反锯齿。 此设置不是图形状态的一部分。 当上下文和图形状态设置设置为<code>true</code>时，Quartz会执行抗锯齿。</p>
+<p><strong>图2-4</strong> 混叠和反锯齿图的比较<br><img src="/source/cg3_p_2.jpg" alt=""></p>
+<h3 id="获取打印图形上下文"><a href="#获取打印图形上下文" class="headerlink" title="获取打印图形上下文"></a>获取打印图形上下文</h3><p>Mac OS X中的Cocoa应用程序通过定制<a href="https://developer.apple.com/documentation/appkit/nsview" target="_blank" rel="noopener">NSView</a>子类实现打印。 通过调用其<a href="https://developer.apple.com/documentation/appkit/nsview/1483705-printview" target="_blank" rel="noopener">print:</a>方法，可以看到打印的视图。 然后，该视图将创建一个针对打印机的图形上下文，并调用其<a href="https://developer.apple.com/documentation/appkit/nsview/1483686-drawrect" target="_blank" rel="noopener">drawRect:</a>方法。 您的应用程序使用相同的绘图代码绘制到用于绘制到屏幕的打印机。 它还可以自定义<code>drawRect:</code>将图像调用到与发送到屏幕的打印机不同的打印机。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/11/二、Core-Graphics-Overview-of-Quartz-2D/" rel="next" title="二、Core Graphics - Overview of Quartz 2D">
+                <i class="fa fa-chevron-left"></i> 二、Core Graphics - Overview of Quartz 2D
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/25/四、Core-Graphics-Paths/" rel="prev" title="四、Core Graphics - Paths">
+                四、Core Graphics - Paths <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#在iOS中绘制视图图形上下文"><span class="nav-number">1.</span> <span class="nav-text">在iOS中绘制视图图形上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在Mac-OS-X中创建窗口图形上下文"><span class="nav-number">2.</span> <span class="nav-text">在Mac OS X中创建窗口图形上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建PDF图形上下文"><span class="nav-number">3.</span> <span class="nav-text">创建PDF图形上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建位图图形上下文"><span class="nav-number">4.</span> <span class="nav-text">创建位图图形上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持的像素格式"><span class="nav-number">5.</span> <span class="nav-text">支持的像素格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抗锯齿"><span class="nav-number">6.</span> <span class="nav-text">抗锯齿</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取打印图形上下文"><span class="nav-number">7.</span> <span class="nav-text">获取打印图形上下文</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

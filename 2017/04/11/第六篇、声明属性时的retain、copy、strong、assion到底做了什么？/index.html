@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1、先抛出一个问题：NSString属性为什么要用copy？用strong可以吗？照例先看例子：例子(1)：12345678910111213141516@interface ViewController ()@property (nonatomic, strong) NSString *strongString;@property (nonatomic, copy) NSString *copy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第六篇、声明属性时的retain、copy、strong、assion到底做了什么？">
+<meta property="og:url" content="http://yoursite.com/2017/04/11/第六篇、声明属性时的retain、copy、strong、assion到底做了什么？/index.html">
+<meta property="og:site_name" content="李乾的博客">
+<meta property="og:description" content="1、先抛出一个问题：NSString属性为什么要用copy？用strong可以吗？照例先看例子：例子(1)：12345678910111213141516@interface ViewController ()@property (nonatomic, strong) NSString *strongString;@property (nonatomic, copy) NSString *copy">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-20T07:11:47.422Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第六篇、声明属性时的retain、copy、strong、assion到底做了什么？">
+<meta name="twitter:description" content="1、先抛出一个问题：NSString属性为什么要用copy？用strong可以吗？照例先看例子：例子(1)：12345678910111213141516@interface ViewController ()@property (nonatomic, strong) NSString *strongString;@property (nonatomic, copy) NSString *copy">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/11/第六篇、声明属性时的retain、copy、strong、assion到底做了什么？/"/>
+
+
+
+
+
+  <title>第六篇、声明属性时的retain、copy、strong、assion到底做了什么？ | 李乾的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李乾的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海攻城狮一枚</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/11/第六篇、声明属性时的retain、copy、strong、assion到底做了什么？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第六篇、声明属性时的retain、copy、strong、assion到底做了什么？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-11T00:00:00+08:00">
+                2017-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS面试总结及研究/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS面试总结及研究</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1、先抛出一个问题：NSString属性为什么要用copy？用strong可以吗？"><a href="#1、先抛出一个问题：NSString属性为什么要用copy？用strong可以吗？" class="headerlink" title="1、先抛出一个问题：NSString属性为什么要用copy？用strong可以吗？"></a>1、先抛出一个问题：NSString属性为什么要用copy？用strong可以吗？</h3><p>照例先看例子：<br>例子(1)：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSString</span> *strongString;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *copyedString;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSString</span> *str = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"123"</span>];</span><br><span class="line"><span class="keyword">self</span>.strongString = str;</span><br><span class="line"><span class="keyword">self</span>.copyedString = str;</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"str：%@，%#x，%p"</span>, str, str, &amp;str);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"strongString：%@，%#x，%p"</span>, _strongString, _strongString, &amp;_strongString);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"copyedString：%@，%#x，%p"</span>, _copyedString, _copyedString, &amp;_copyedString);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>打印结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str：123，0x3332313，0x16fd0df28</span><br><span class="line">strongString：123，0x3332313，0x117f0a318</span><br><span class="line">copyedString：123，0x3332313，0x117f0a320</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>分析：可以看出，当str是不可变的时候，strongString和copyedString指向的内存和str指向的内存是一样的，相当于<code>浅拷贝</code>，如果str的值变化了，那么strongString和copyedString必定会跟着变化(一般而言，我们是不希望出现这个情况的)，但是由于str是不可变的，所以就不会出现那个情况。所以，这个时候，用strong和copy都是可以的。</p>
+</blockquote>
+<hr>
+<p>例子(2)：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSMutableString</span> *str = [<span class="built_in">NSMutableString</span> stringWithFormat:<span class="string">@"123"</span>];</span><br><span class="line"><span class="keyword">self</span>.strongString = str;</span><br><span class="line"><span class="keyword">self</span>.copyedString = str;</span><br><span class="line"><span class="comment">// 修改str的值</span></span><br><span class="line">[str appendString:<span class="string">@"abc"</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"str：%@，%#x，%p"</span>, str, str, &amp;str);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"strongString：%@，%#x，%p"</span>, _strongString, _strongString, &amp;_strongString);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"copyedString：%@，%#x，%p"</span>, _copyedString, _copyedString, &amp;_copyedString);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>打印结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str：123abc，0x7426db00，0x16fdadf28</span><br><span class="line">strongString：123abc，0x7426db00，0x100209c58</span><br><span class="line">copyedString：123，0x3332313，0x100209c60</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>分析：可以看出，当str是不可变的时候，strongString所指向的内存和str所指向的内存是一样的<code>(浅拷贝)</code>；但是copyedString所指向的内存却和str所指向的内存不一样，也就是说当用self.copyedString = str赋值时，copyedString进行了<code>深拷贝</code>，对str这个指针也进行了拷贝，但是拷贝后的指针所存储的值还是abc。所以之后str的值发生变化时，strongString会跟着变化，但是copyedString还是保留原值。一般来说我们是希望原值改变后不会影响到到新值。</p>
+</blockquote>
+<p><strong>总结</strong>：<br>1、声明NSString类型的属性时，为了安全起见，最好用copy。<br>2、<code>浅拷贝</code>：简单的值拷贝，指针(地址)却没有拷贝，新值所指向的地址等于原值指向的地址，所以原值发生改变会影响到新值。<br><code>深拷贝</code>：值拷贝+指针(地址)拷贝，新值所指向的地址是一块新开辟的内存地址，所以原值发生改变不会影响到新值。<br><code>3、为什么str是不可变字符串的时候，self.copyedString = str是浅拷贝，而str是可变字符串的时候，self.copyedString = str是深拷贝拷贝？
+我猜想这是苹果为了优化性能而故意为之吧。str是不可变字符串的时候，因为str不会发生改变，所以用浅拷贝。str是可变字符串的时候，因为str会发生改变，所以用深拷贝。
+而显然，浅拷贝时，只是增加了引用计数，而深拷贝需要额外开辟内存空间。所以，为了更节省内存空间，才会这样做。</code></p>
+<h3 id="2、由1来深入理解copy和strong内部的set方法做了什么。"><a href="#2、由1来深入理解copy和strong内部的set方法做了什么。" class="headerlink" title="2、由1来深入理解copy和strong内部的set方法做了什么。"></a>2、由1来深入理解copy和strong内部的set方法做了什么。</h3><p>虽然说copy是深拷贝，strong是浅拷贝，但是我们需要知道为什么会这样。显然是在self.copyedString = str赋值这一步跟self.strongString = str有所不同。也就是用这两个关键字修饰的属性，在set方法时所做的事情不同。</p>
+<h3 id="3、不同修饰词的set方法。下面的release代码都是在MRC下。ARC下的release系统会帮我们做。"><a href="#3、不同修饰词的set方法。下面的release代码都是在MRC下。ARC下的release系统会帮我们做。" class="headerlink" title="3、不同修饰词的set方法。下面的release代码都是在MRC下。ARC下的release系统会帮我们做。"></a>3、不同修饰词的set方法。下面的release代码都是在MRC下。ARC下的release系统会帮我们做。</h3><p>(1) copy<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *copyedString;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setCopyedString:(<span class="built_in">NSString</span> *)newStr &#123;</span><br><span class="line"><span class="keyword">if</span> (_copyedString != newStr)&#123; <span class="comment">// 判断是否需要重新赋值</span></span><br><span class="line">[_copyedString release]; <span class="comment">// 释放旧引用，计数器-1</span></span><br><span class="line">_copyedString = [newStr <span class="keyword">copy</span>]; <span class="comment">// 重新赋值，使用copy</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意：[newStr copy];所干的事情是：假设newStr的地址是p1，值是@”123”，那么[newStr copy]是先开辟一块新的内存空间p2(p2 ≠ p1)，值为@”123”，然后让_copyedString = p2。也就是_copyedString的值是新的内存空间地址p2，p2所存储的值为@”123”。这是完完全全的深拷贝。旧值的retainCount 不变。</p>
+</blockquote>
+<p>(2) retain<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">retain</span>) <span class="built_in">NSString</span> *retainedString;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setRetainedString:(<span class="built_in">NSString</span> *)newStr &#123;</span><br><span class="line"><span class="keyword">if</span> (_retainedString != newStr)&#123; <span class="comment">// 判断是否需要重新赋值</span></span><br><span class="line">[_retainedString release]; <span class="comment">// 释放旧引用，计数器-1</span></span><br><span class="line">_retainedString = [newStr <span class="keyword">retain</span>]; <span class="comment">// 重新赋值，retainCount +1</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意：[newStr retain];所干的事情是：假设newStr的地址是p1，值是@”123”，那么[newStr retain]是让_retainedString = p1。也就是_retainedString的值是内存空间地址p1，p1所存储的值为@”123”。这可以看做是一种浅拷贝。</p>
+</blockquote>
+<p>(3) strong (ARC下)</p>
+<blockquote>
+<p>strong相当于MRC下的retain，和浅拷贝有相同的效果，指针并没有被拷贝，被赋值的那个旧值的retainCount被+1。</p>
+</blockquote>
+<p>(4) assign 普通数据类型。数据存储在栈区，不需要手动去管理内存，系统自动管理<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> num;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">15</span>;</span><br><span class="line"><span class="keyword">self</span>.num = a;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setNum:(<span class="keyword">int</span>)num &#123;</span><br><span class="line">_num = num;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意：普通数据类型不涉及到地址，不涉及到内存管理，这里用assign直接赋值。</p>
+</blockquote>
+<p>(5) weak (ARC下)</p>
+<blockquote>
+<p>和assign很像，但是不会增加旧值的引用计数。当旧值被销毁后，新值的指针自动置为nil（发消息不会崩溃）不会成为野指针（野指针就是被指向的对象已经被销毁，但是指针却还指着那一块地址）。向野指针发送消息会崩溃。</p>
+</blockquote>
+<h3 id="4、自己做的测试"><a href="#4、自己做的测试" class="headerlink" title="4、自己做的测试"></a>4、自己做的测试</h3><p><a href="/source/summary6_sample_1.zip">代码下载</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/10/第五篇，浅复制和深复制的区别/" rel="next" title="第五篇、浅复制和深复制的区别">
+                <i class="fa fa-chevron-left"></i> 第五篇、浅复制和深复制的区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/01/第七篇、《OC高级编程》读后笔记，未完待续…/" rel="prev" title="第七篇、《OC高级编程》读后笔记，未完待续…">
+                第七篇、《OC高级编程》读后笔记，未完待续… <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar/avatar.jpeg"
+                alt="李乾" />
+            
+              <p class="site-author-name" itemprop="name">李乾</p>
+              <p class="site-description motion-element" itemprop="description">人生不止眼前的苟且 还有诗和远方</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xiamoon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、先抛出一个问题：NSString属性为什么要用copy？用strong可以吗？"><span class="nav-number">1.</span> <span class="nav-text">1、先抛出一个问题：NSString属性为什么要用copy？用strong可以吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、由1来深入理解copy和strong内部的set方法做了什么。"><span class="nav-number">2.</span> <span class="nav-text">2、由1来深入理解copy和strong内部的set方法做了什么。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、不同修饰词的set方法。下面的release代码都是在MRC下。ARC下的release系统会帮我们做。"><span class="nav-number">3.</span> <span class="nav-text">3、不同修饰词的set方法。下面的release代码都是在MRC下。ARC下的release系统会帮我们做。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、自己做的测试"><span class="nav-number">4.</span> <span class="nav-text">4、自己做的测试</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李乾</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
