@@ -2000,7 +2000,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/CocoaAsyncSocket-Wiki-Intro-GCDAsyncSocket/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/CocoaAsyncSocket-Wiki-CommonPitfalls/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李乾">
@@ -2019,7 +2019,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/05/30/CocoaAsyncSocket-Wiki-Intro-GCDAsyncSocket/" itemprop="url">CocoaAsyncSocket - Wiki - Intro_GCDAsyncSocket</a></h1>
+                <a class="post-title-link" href="/2017/05/30/CocoaAsyncSocket-Wiki-CommonPitfalls/" itemprop="url">CocoaAsyncSocket - Wiki - CommonPitfalls</a></h1>
         
 
         <div class="post-meta">
@@ -2094,50 +2094,70 @@
         
           
             <blockquote>
-<p><a href="https://github.com/robbiehanson/CocoaAsyncSocket/wiki/Intro_GCDAsyncSocket" target="_blank" rel="noopener">原文链接</a></p>
+<p><a href="https://github.com/robbiehanson/CocoaAsyncSocket/wiki/CommonPitfalls" target="_blank" rel="noopener">原文链接</a></p>
 </blockquote>
-<h3 id="GCDAsyncSocket简介"><a href="#GCDAsyncSocket简介" class="headerlink" title="GCDAsyncSocket简介"></a>GCDAsyncSocket简介</h3><p><strong>GCDAsyncSocket</strong>是一个TCP库。 它建在GCD之上。</p>
-<p>该页提供了对这个库的介绍。</p>
-<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p><code>The most common way to initialize an instance is simply like this:</code><br>初始化一个实例的最常用的方法是这样：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket = [[GCDAsyncSocket alloc] initWithDelegate:<span class="keyword">self</span> delegateQueue:dispatch_get_main_queue()];</span><br></pre></td></tr></table></figure></p>
-<p>为了让GCDAsyncSocket调用委托方法，必须使用delegate和delegate_queue。上面的代码指定了“self”作为委托，并指示库调用主线程上的所有委托方法。</p>
-<p>设置代理可能是一个很熟悉的操作。然而，提供一个delegateQueue可能是一个心得概念。大多数典型的库都是单线程的。当调用委托方法的时候，他们只是调用它。这些库假设您的代理代码也是单线程的。或者库可能是内部的多线程，但是它们假设您的代理代码只是单线程的，并且只能在主线程上运行。所以他们总是在主线程上调用所有的委托方法。</p>
-<p><code>GCDAsyncSocket, on the other hand, was designed for performance. It allows you to receive delegate callbacks on dedicated gcd queues of your choosing. This allows it to be used in high-performance servers, and can support thousands upon thousands of concurrent connections. But it also helps in typical applications. Want your UI to be a bit snappier? Ever considered moving that network processing code off the UI thread? Even today&#39;s mobile devices have multiple CPU cores... perhaps it&#39;s time to start taking advantage of them.</code><br>另一方面，GCDAsyncSocket是为性能而设计的。它允许您在您选择的专用gcd队列中接收委托回调。这允许它在高性能服务器中使用，并且可以支持成千上万的并发连接。但它也有助于典型应用。想要你的用户界面快点吗？曾经考虑过移动网络处理代码的UI线程？即使今天的移动设备有多个CPU内核，或许现在是开始利用它们的时候了。</p>
-<h4 id="配置（Configuration）"><a href="#配置（Configuration）" class="headerlink" title="配置（Configuration）"></a>配置（Configuration）</h4><p>大多数情况下，无需配置。有各种配置选项（如头文件所述），但它们主要用于高级用例。</p>
-<p>注意：安全（TLS / SSL）是您要稍后配置的。这些协议实际上运行在TCP之上（它们不是TCP本身的一部分）。</p>
-<h4 id="连接（Connecting）"><a href="#连接（Connecting）" class="headerlink" title="连接（Connecting）"></a>连接（Connecting）</h4><p>最常见的连接方式是：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSError</span> *err = <span class="literal">nil</span>;</span><br><span class="line"><span class="keyword">if</span> (![socket connectToHost:<span class="string">@"deusty.com"</span> onPort:<span class="number">80</span> error:&amp;err]) <span class="comment">// Asynchronous!</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// If there was an error, it's likely something like "already connected" or "no delegate set"</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"I goofed: %@"</span>, err);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>连接方法是异步的。什么意思？意思是当你调用连接方法时，它们开始后台操作连接到所需的主机/端口，然后立即返回。这个异步后台操作最终会成功或失败。无论哪种结果，都会调用相关联的委托方法：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)socket:(GCDAsyncSocket *)sender didConnectToHost:(<span class="built_in">NSString</span> *)host port:(<span class="built_in">UInt16</span>)port</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"Cool, I'm connected! That was easy."</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>所以如果连接方法是异步的，它为什么会返回一个布尔值或者返回错误？只有一种情况这个方法会返回NO，就是如果明显有某些东西来阻止它启动连接操作。比如，如果socket已经连接好了，或者没有设置代理。</p>
-<p>实际上有几种不同的连接方式可供你使用。 他们为您提供不同的选择，如：</p>
-<ul>
-<li>可以指定连接超时。<br><em>例如：如果在5秒内没有连接，就算失败</em></li>
-<li>可以指定要连接的接口<br><em>例如：使用蓝牙连接，或使用WiFi连接，无论有线连接是否可用。</em></li>
-<li>提供原始socket地址而不是名称/端口对<br><em>例如：我使用NSNetService解决了一个地址，我只想连接到该地址。</em></li>
-</ul>
-<h4 id="读-和-写"><a href="#读-和-写" class="headerlink" title="读 和 写"></a>读 和 写</h4><p>这个库的最佳功能之一是“队列化的读/写操作”。什么意思？一个快速的代码示例可以最好地解释它：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSError</span> *err = <span class="literal">nil</span>;</span><br><span class="line"><span class="keyword">if</span> (![socket connectToHost:<span class="string">@"deusty.com"</span> onPort:<span class="number">80</span> error:&amp;err]) <span class="comment">// Asynchronous!</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// If there was an error, it's likely something like "already connected" or "no delegate set"</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"I goofed: %@"</span>, err);</span><br><span class="line"><span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// At this point the socket is NOT connected.</span></span><br><span class="line"><span class="comment">// But I can start writing to it anyway!</span></span><br><span class="line"><span class="comment">// The library will queue all my write operations,</span></span><br><span class="line"><span class="comment">// and after the socket connects, it will automatically start executing my writes!</span></span><br><span class="line">[socket writeData:request1 withTimeout:<span class="number">-1</span> tag:<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// In fact, I know I have 2 requests.</span></span><br><span class="line"><span class="comment">// Why not just get them both out of the way now?</span></span><br><span class="line">[socket writeData:request2 withTimeout:<span class="number">-1</span> tag:<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// Heck, while I'm at it, I might as well queue up the read for the first response.</span></span><br><span class="line">[socket readDataToLength:responseHeaderLength withTimeout:<span class="number">-1</span> tag:TAG_RESPONSE_HEADER];</span><br></pre></td></tr></table></figure></p>
-<p>你可能注意到了<code>tag</code>参数。它是关于什么的呢？好，这一切都是为了方便你。你指定的<code>tag</code>参数并没有通过socket发送或者读取。<code>tag</code>参数只是通过各种委托方法回传给你。它旨在帮助简化代理方法中的代码。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(<span class="keyword">long</span>)tag</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (tag == <span class="number">1</span>)</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"First request sent"</span>);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (tag == <span class="number">2</span>)</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"Second request sent"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>当在读取时，Tags最为有用：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define TAG_WELCOME 10</span></span><br><span class="line"><span class="meta">#define TAG_CAPABILITIES 11</span></span><br><span class="line"><span class="meta">#define TAG_MSG 12</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)socket:(GCDAsyncSocket *)sender didReadData:(<span class="built_in">NSData</span> *)data withTag:(<span class="keyword">long</span>)tag</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (tag == TAG_WELCOME)</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// Ignore welcome message</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (tag == TAG_CAPABILITIES)</span><br><span class="line">&#123;</span><br><span class="line">[<span class="keyword">self</span> processCapabilities:data];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (tag == TAG_MSG)</span><br><span class="line">&#123;</span><br><span class="line">[<span class="keyword">self</span> processMessage:data];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>Capabilities：功能</p>
-</blockquote>
-<p><code>You see, the TCP protocol is modeled on the concept of a single continuous stream of unlimited length.</code><br>您可以看到，TCP协议是以无限长度的<strong>单个连续流</strong>的概念建模的。<br>了解这一点至关重要 - 事实上，我们看到的这是<strong>造成困惑的第一原因</strong>。</p>
-<p>想象一下你试着通过socket来发送一些信息。所以你像这样做(伪代码)：</p>
+<h3 id="常见缺陷"><a href="#常见缺陷" class="headerlink" title="常见缺陷"></a>常见缺陷</h3><p><strong>常见缺陷 - 不要成为受害者</strong><br><code>Over the years we&#39;ve noticed that many issues arrise from general confusion about the TCP protocol. Arm yourself with knowledge so you don&#39;t lose time in the future.</code><br>多年来，我们注意到许多问题源于对TCP协议的一般混淆。用自己的知识掌握自己，以便将来不会失去时间。</p>
+<h3 id="TCP是流"><a href="#TCP是流" class="headerlink" title="TCP是流"></a>TCP是流</h3><p><code>The TCP protocol is modeled on the concept of a single continuous stream of unlimited length. This is a very important concept to understand, and is the number one cause of confusion that we see.</code><br>TCP协议是以无限长度的<strong>单个连续流</strong>的概念建模的。这是一个非常重要的理解，是我们看到的<strong>第一个混乱的原因</strong>。</p>
+<p>这到底是什么意思，它是如何影响开发人员的？</p>
+<p>想像一下，您正试图通过socket发送一些消息。 所以你这样做（伪代码）：</p>
 <blockquote>
 <p>socket.write(“Hi Sandy.”);<br>socket.write(“Are you busy tonight?”);</p>
 </blockquote>
-<p>这些数据时如何在另一端展示的呢？如果您认为另一端将以两个单独的读取方式接收两个单独的句子，那么您刚好踩到了一个常见的坑。深呼吸！不要怕！你的状况并不是很糟糕；这只是一个常见的坑。通过阅读<a href="https://github.com/robbiehanson/CocoaAsyncSocket/wiki/CommonPitfalls" target="_blank" rel="noopener">Common Pitfalls</a>页面可以找到解决方法。</p>
-<p>现在我们已经跳出了坑，你可能会想到这些读取方法。下面是少数几个方法：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)readDataToLength:(<span class="built_in">NSUInteger</span>)length withTimeout:(<span class="built_in">NSTimeInterval</span>)timeout tag:(<span class="keyword">long</span>)tag;</span><br><span class="line">- (<span class="keyword">void</span>)readDataToData:(<span class="built_in">NSData</span> *)data withTimeout:(<span class="built_in">NSTimeInterval</span>)timeout tag:(<span class="keyword">long</span>)tag;</span><br></pre></td></tr></table></figure></p>
-<p>第一个方法，<code>readDataToLength</code>，通过给定的长度读取和返回数据。让我们看一个例子：</p>
-<p>您正在编写协议的客户端，其中服务器以固定长度的头发送响应。所有的响应头正好是8个字节。前4个字节包含各种标志等。后4个字节包含响应数据的长度，是可变的。所以你可能像这样来编码：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)socket:(GCDAsyncSocket *)sender didReadData:(<span class="built_in">NSData</span> *)data withTag:(<span class="keyword">long</span>)tag</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (tag == TAG_FIXED_LENGTH_HEADER)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">int</span> bodyLength = [<span class="keyword">self</span> parseHeader:data];</span><br><span class="line">[socket readDataToLength:bodyLength withTimeout:<span class="number">-1</span> tag:TAG_RESPONSE_BODY];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (tag == TAG_RESPONSE_BODY)</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// Process the response</span></span><br><span class="line">[<span class="keyword">self</span> handleResponseBody:data];</span><br><span class="line"></span><br><span class="line"><span class="comment">// Start reading the next response</span></span><br><span class="line">[socket readDataToLength:headerLength withTimeout:<span class="number">-1</span> tag:TAG_FIXED_LENGTH_HEADER];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>让我们来看看另外一个例子。毕竟，并不是所有的协议都使用固定长度的头。HTTP就是一种这样的协议。</p>
-<p>一个典型的HTTP响应是像这样的：</p>
+<p><code>How does the data show up on the other end? If you think the other end will receive two separate sentences in two separate reads, then you&#39;ve just fallen victim to a common pitfall! Gasp! Read on.</code><br>数据如何显示在另一端？ 如果您认为另一端将以两个单独的读取方式接收两个单独的句子，那么您刚刚成为一个常见的陷阱的受害者！ 深呼吸！ 继续阅读。</p>
+<p>TCP不将写作视为单独的数据。 TCP将所有写入视为单个连续流的一部分。所以当你发出上面的写入时，TCP将简单地将数据复制到缓冲区中：</p>
 <blockquote>
-<p>HTTP/1.1 200 OK<br>Date: Thu, 24 Nov 2011 02:18:50 GMT<br>Server: Apache/2.2.3 (CentOS)<br>X-Powered-By: PHP/5.1.6<br>Content-Length: 5233<br>Content-Type: text/html; charset=UTF-8</p>
+<p>TCP_Buffer = “Hi Sandy.Are you busy tonight?”</p>
 </blockquote>
-<p>这只是一个例子。可能会有任何数量的header字段。换句话说，HTTP的头是一个可变的长度。我们怎么来理解它？</p>
-<p>那么HTTP协议已经作了解释。header的每一行都是以CRLF(回车，换行：\r\n)来终止的。此外，header的末尾标有2个背对背CRLF。并且通过“Content-Length”头域指定body的长度。所以我们可以像这样做：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)socket:(GCDAsyncSocket *)sender didReadData:(<span class="built_in">NSData</span> *)data withTag:(<span class="keyword">long</span>)tag</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (tag == HTTP_HEADER)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">int</span> bodyLength = [<span class="keyword">self</span> parseHttpHeader:data];</span><br><span class="line">[socket readDataToLength:bodyLength withTimeout:<span class="number">-1</span> tag:HTTP_BODY];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (tag == HTTP_BODY)</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// Process response</span></span><br><span class="line">[<span class="keyword">self</span> processHttpBody:data];</span><br><span class="line"></span><br><span class="line"><span class="comment">// Read header of next response</span></span><br><span class="line"><span class="built_in">NSData</span> *term = [<span class="string">@"\r\n\r\n"</span> dataUsingEncoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">[socket readDataToData:term withTimeout:<span class="number">-1</span> tag:HTTP_HEADER];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>我已经列出了两个可行的读取方法。有近10种不同的阅读方法。它们提供更高级的选项，例如指定maxLength，或提供您自己的读缓冲区。</p>
-<h4 id="编写服务器（Writing-a-server）"><a href="#编写服务器（Writing-a-server）" class="headerlink" title="编写服务器（Writing a server）"></a>编写服务器（Writing a server）</h4><p>GCDAsyncSocket同时允许你创建一个服务器，然后接受将要到来的连接。它看起来是这样的：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">listenSocket = [[GCDAsyncSocket alloc] initWithDelegate:<span class="keyword">self</span> delegateQueue:dispatch_get_main_queue()];</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSError</span> *error = <span class="literal">nil</span>;</span><br><span class="line"><span class="keyword">if</span> (![listenSocket acceptOnPort:port error:&amp;error])</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"I goofed: %@"</span>, error);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)socket:(GCDAsyncSocket *)sender didAcceptNewSocket:(GCDAsyncSocket *)newSocket</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// The "sender" parameter is the listenSocket we created.</span></span><br><span class="line"><span class="comment">// The "newSocket" is a new instance of GCDAsyncSocket.</span></span><br><span class="line"><span class="comment">// It represents the accepted incoming client connection.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Do server stuff with newSocket...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>就是那么简单！如果想看更具体的例子，请参阅仓库随附的“EchoServer”示例项目。</p>
+<p>然后尽快发送数据。为了通过网络发送数据，TCP和其他网络协议将需要把该数据分割成可通过介质（以太网，WiFi等）传输的小块。<br>为了这样做，TCP可能以任何其认为合适的方式分解数据。 以下是一些数据可能被拆分和发送的示例：</p>
+<ol>
+<li>“Hi San” , “dy.Ar” , “e you “ , “busy to” , “night?”</li>
+<li>“Hi Sandy.Are you busy” , “ tonight?”</li>
+<li>“Hi Sandy.Are you busy tonight?”</li>
+</ol>
+<p>上述示例还演示了数据将如何到达另一端。我们来考虑一下例子1。</p>
+<p>Sandy发出了一个socket.read()命令，并且正在等待数据到达。所以她第一次读取到的结果可能是“Hi San”。Sandy可能会开始处理这些数据。而当应用程序处理数据时，TCP流继续接收第二和第三个数据包。Sandy然后发出另一个socket.read()命令，这一次她得到“dy.Are you”。</p>
+<p>这突出了TCP的连续流性质。TCP协议在开发人员API级别上绝对没有数据包或数据分离的概念。</p>
+<p><code>But isn&#39;t this a major shortcoming? How do all those other protocols that use TCP work?</code><br>但这不是一个主要的缺点吗？所有使用TCP的其他协议如何工作？</p>
+<p>HTTP是一个很好的例子，因为它很简单，因为大多数人都看过它。当客户端连接到服务器并发送请求时，它以非常具体的方式执行。它发送一个HTTP头，头部的每一行都用CRLF（回车符，换行符）终止。就像这样：</p>
+<blockquote>
+<p>GET /page.html HTTP/1.1<br>Host: google.com</p>
+</blockquote>
+<p><code>Since the protocol specifies the terminators, it is easy to read data from a TCP socket until the terminators are reached.</code><br>此外，HTTP标头的结尾用两个连续的CRLF发出信号。由于协议规定了终结器，因此很容易从TCP socket读取数据，直到达到终止符。</p>
+<p>然后服务器发送响应：</p>
+<blockquote>
+<p>HTTP/1.1 200 OK<br>Content-Length: 216</p>
+</blockquote>
+<blockquote>
+<p>{ Exactly 216 bytes of data go here }</p>
+</blockquote>
+<p>再次，HTTP协议使得使用TCP变得容易。读取数据，直到您获得背靠背CRLF。 那是你的标题。然后从头解析内容长度，现在你可以简单地读取一定数量的字节。回到我们的原始示例，我们可以简单地使用指定的终止符来发送消息：</p>
+<blockquote>
+<p>socket.write(“Hi Sandy.\n”);<br>socket.write(“Are you busy tonight?\n”);</p>
+</blockquote>
+<p>而如果Sandy正在使用AsyncSocket，她会幸运的！因为AsyncSocket提供了真正易于使用的读取方法，允许您指定要查找的终止符。AsyncSocket为您提供其余的功能，并且会在两个单独的读取中提供两个单独的句子！</p>
+<h3 id="写（Writes）"><a href="#写（Writes）" class="headerlink" title="写（Writes）"></a>写（Writes）</h3><p><strong>当您将数据写入TCP套接字时会发生什么？</strong>当写入完成时，是否意味着对方收到该数据？我们至少可以假定计算机已经发送了数据？ 答案是NO和NO。</p>
+<p><code>Recall two things:</code><br>回想两件事情：</p>
+<ul>
+<li>发送和接收的所有数据必须分成小块，以便通过网络发送。</li>
+<li>TCP处理许多复杂的问题，如重新发送丢失的数据包，并提供按顺序的传送，以便信息以正确的顺序到达。</li>
+</ul>
+<blockquote>
+<p>a lot of <code>complicated</code> <code>issues</code>：许多<code>复杂的</code> <code>问题</code><br>providing <code>in-order</code> delivery：提供<code>按顺序的</code>传送</p>
+</blockquote>
+<p>因此，当您发出写入时，数据将被简单地复制到OS网络堆栈中的底层缓冲区中。在那一点上，TCP软件将开始其魔力，其中包括前面提到的所有酷的东西，如：</p>
+<ul>
+<li>将数据分成小块，以便可以通过网络发送数据</li>
+<li>确保丢失的碎片得到适当的重发</li>
+<li>确保您的数据以正确的顺序到达远程目标</li>
+<li>提防网络拥塞</li>
+<li>使用花式算法尽可能快地完成所有这些</li>
+</ul>
+<p>所以当你发出命令“写这个数据”时，操作系统会回应“我有你的数据，我将尽我力量把这个传递给远程目的地”。</p>
+<p>但是<strong>我怎么知道远程目的地何时收到我的数据？</strong></p>
+<p>这正是大多数人遇到问题的地方。下面有一个好的思考方式来理解它：</p>
+<p>想象一下，你想给朋友发一封信。不是电子邮件，而是传统的慢邮。你知道，通过邮局。所以你写信并把它放在你的邮箱里。然后邮递员来了，拿走你的邮件。<code>You can rest assured at this point that the post office will make every effort to deliver the letter to your friend.</code>在这一点上你可以放心，邮局会竭尽全力把信交给你的朋友。但是如果你的朋友收到信件，你是怎么知道的？我想如果这封信回来了，盖上“返回发件人”，你可以肯定你的朋友没有收到。但是如果这封信没有回来呢？是否足以知道它已经投递到您朋友的邮箱？(假设这是一封非常非常重要的信。) 答案是否定的。可能这封信从来都没有被拿出过邮箱。也可能它的室友收到它然后意外地把它扔掉了。如果这个室友负责任，并把信留在你的朋友桌上？那够了吗？如果你的朋友在度假，你的信在一堆垃圾邮件中丢失了怎么办？所以真正知道你的朋友收到这封信的唯一方法是当你收到他的答复。</p>
+<p>这是sockets的一个很好的比喻。当您将数据写入socket时，就像把信放在邮箱中。操作系统就像当地的邮递员一样，拿起这封信。将信件路由到目的地的巨型邮局系统就像网络。而向你的朋友邮箱中投递你的信的邮递员就像你的朋友的电脑上的操作系统。然后由朋友电脑上的应用程序读取操作系统中的数据并处理它（从邮箱中取出信件，并实际读取）。</p>
+<p>那么如何知道远程目的地何时收到我的数据？这不是TCP可以告诉你的。最多只能告诉你，这封信已经提交给他们的邮箱。它不能告诉你应用程序是否读取该数据并进行处理。也许远端的应用程序崩溃了。或者也许远程用户在有机会读取数据之前退出应用程序。或者远程用户可能会遭受停电。这是篇长篇小说，如果需要，由应用层来回答这个问题。</p>
 
           
         
