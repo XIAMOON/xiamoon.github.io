@@ -300,6 +300,171 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/03/关于OC中extern的使用场景/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/03/关于OC中extern的使用场景/" itemprop="url">关于OC中extern的使用场景</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T00:00:00+08:00">
+                2018-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一般来说，我们如何定义一个全局变量以供其他类有权限使用它的值？</p>
+<ol>
+<li>在.h文件中定义一个属性，并且在.m文件中要赋值。</li>
+<li>在.h文件中定义一个宏：#define。</li>
+<li>用<code>extern</code>。</li>
+</ol>
+<blockquote>
+<p>通常情况下，除非要创建一个类，一般我们不会使用方法<code>1</code>。<br>方法<code>2</code>也不用说了，很明白。</p>
+</blockquote>
+<h3 id="一、现在说一下方法3："><a href="#一、现在说一下方法3：" class="headerlink" title="一、现在说一下方法3："></a>一、现在说一下方法<code>3</code>：</h3><p><code>extern</code>表示变量可以被外部访问和赋值。<br>用法如下：<br>.h文件中<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> accepterSendText;</span><br></pre></td></tr></table></figure></p>
+<p>.m文件中：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> accepterSendText = <span class="string">@"hi~我领到了你的愿望~"</span>;</span><br></pre></td></tr></table></figure></p>
+<h3 id="二、extern与-define的区别"><a href="#二、extern与-define的区别" class="headerlink" title="二、extern与#define的区别"></a>二、extern与#define的区别</h3><p><code>define</code>只是简单地替换，又称作宏定义、预处理命令。其不能保证在共享单例中取得一样的内存地址。<br><code>extern</code>会分配内存空间，提示编译器遇到此变量和函数时在其他模块寻找其定义。</p>
+<blockquote>
+<p>所以如果需要作为dictionary的key的话，使用extern NSString * const的写法，要比@””的写法（也就是用#define）更好。前者比较时用<code>isEqual:</code>就行了，直接比较地址；后者需要<code>isEqualToString:</code>即比较字符串的所有字符是否相等。</p>
+</blockquote>
+<p>参考：<a href="https://blog.csdn.net/gaoyuqiang30/article/details/48389369" target="_blank" rel="noopener">extern与define 区别</a></p>
+<h3 id="三、OC中的FOUNDATION-EXTERN、FOUNDATION-EXPORT"><a href="#三、OC中的FOUNDATION-EXTERN、FOUNDATION-EXPORT" class="headerlink" title="三、OC中的FOUNDATION_EXTERN、FOUNDATION_EXPORT"></a>三、OC中的FOUNDATION_EXTERN、FOUNDATION_EXPORT</h3><p>这个其实跟extern、import差不多。不过OC中兼容了C和C++，见代码：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#if defined(__cplusplus)</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXTERN extern <span class="meta-string">"C"</span></span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXTERN extern</span></span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#if TARGET_OS_WIN32</span></span><br><span class="line"><span class="meta">#if defined(NSBUILDINGFOUNDATION)</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXPORT FOUNDATION_EXTERN __declspec(dllexport)</span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXPORT FOUNDATION_EXTERN __declspec(dllimport)</span></span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"><span class="meta">#define FOUNDATION_IMPORT FOUNDATION_EXTERN __declspec(dllimport)</span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXPORT  FOUNDATION_EXTERN</span></span><br><span class="line"><span class="meta">#define FOUNDATION_IMPORT FOUNDATION_EXTERN</span></span><br><span class="line"><span class="meta">#endif</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="四、引申：比较-”abc”和用NSString生成的abc"><a href="#四、引申：比较-”abc”和用NSString生成的abc" class="headerlink" title="四、引申：比较@”abc”和用NSString生成的abc"></a>四、引申：比较@”abc”和用NSString生成的abc</h3><p>写了一段代码测试：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *str1 = <span class="string">@"abc"</span>;</span><br><span class="line"><span class="built_in">NSString</span> *str2 = [[<span class="built_in">NSString</span> alloc] initWithString:<span class="string">@"abc"</span>];</span><br><span class="line"><span class="built_in">NSString</span> *str3 = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"abc"</span>];</span><br><span class="line"><span class="built_in">NSString</span> *str4 = [[<span class="built_in">NSString</span> alloc] initWithFormat:<span class="string">@"abc"</span>];</span><br><span class="line"><span class="built_in">NSMutableString</span> *str5 = [[<span class="built_in">NSMutableString</span> alloc] initWithString:<span class="string">@"a"</span>];</span><br><span class="line">[str5 appendString:<span class="string">@"bc"</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> (^logString) (<span class="built_in">NSString</span> *str) = ^(<span class="built_in">NSString</span> *str) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"&gt;&gt;&gt;%p, %p"</span>, &amp;str, str);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">logString(str1);</span><br><span class="line">logString(str2);</span><br><span class="line">logString(str3);</span><br><span class="line">logString(str4);</span><br><span class="line">logString(str5);</span><br></pre></td></tr></table></figure></p>
+<p>log如下：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0x100b18820</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0x100b18820</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0xa000000006362613</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0xa000000006362613</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0x107b2d880</span></span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>str2与str1完全相同：编译器也警告：让我用声明str1的方式声明str2。</li>
+<li>所有的字符串在内存中的地址都是一样的，也就是说，如果用<code>isEqual:</code>来比较的话他们都相等。</li>
+<li>所以，用任何一种方法声明都可以。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/18/四、Core-Image-–-Querying-the-System-for-Filters（获取系统滤镜）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -647,6 +812,176 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/二、Core-Image-–-Detecting-Faces-in-an-Image（在图片中检测人脸/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/17/二、Core-Image-–-Detecting-Faces-in-an-Image（在图片中检测人脸/" itemprop="url">二、Core Image – Detecting Faces in an Image（在图片中检测人脸</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T00:00:00+08:00">
+                2018-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Core-Image/" itemprop="url" rel="index">
+                    <span itemprop="name">Core Image</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Core Image可以在图像中分析和发现人脸。它执行人脸检测，而不是识别。人脸检测是识别包含人脸特征的矩形，而人脸识别则是识别人脸(John, Mary，意思就是识别出不一样的人。等等)。当核心图像检测到人脸后，它可以提供人脸特征的信息，比如眼睛和嘴巴位置。它还可以在视频中追踪识别人脸的位置。</p>
+<blockquote>
+<p>注意：人脸检测不同于人脸识别。前者表示检测出是人脸的部分，包括眼睛、鼻子、嘴的位置，而后者表示识别出不同的人脸。后者的要求更高一些。<br><img src="/source/CI2_p_1.png" alt=""></p>
+</blockquote>
+<p>当你知道一张图片中人脸的位置之后，你可以做很多有趣的事情，比如裁减或者调整人脸部分。或者</p>
+<ul>
+<li>只把滤镜用于人脸部分，比如美颜。</li>
+<li>在人脸附近添加贴纸。</li>
+</ul>
+<blockquote>
+<p>注意：人脸检测只在iOS v5.0和OS X V10.7之后提供。</p>
+</blockquote>
+<h3 id="一、Detecting-Faces"><a href="#一、Detecting-Faces" class="headerlink" title="一、Detecting Faces"></a>一、Detecting Faces</h3><p>使用<code>CIDetector</code>类来进行人脸检测。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CIContext</span> *context = [<span class="built_in">CIContext</span> context]; <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">NSDictionary</span> *opts = @&#123;<span class="built_in">CIDetectorAccuracy</span> : <span class="built_in">CIDetectorAccuracyHigh</span>&#125;; <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">CIDetector</span> *detector = [<span class="built_in">CIDetector</span> detectorOfType:<span class="built_in">CIDetectorTypeFace</span> context:context options:opts]; <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NSDictionary</span> *opts2 = @&#123;<span class="built_in">CIDetectorImageOrientation</span> : [[myImage properties] valueForKey:kCGImagePropertyOrientation]&#125;; <span class="comment">// 4</span></span><br><span class="line"><span class="built_in">NSArray</span> *features = [detector featuresInImage:myImage options:opts2];</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>创建带有默认选项的上下文。您可以使用在<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_tasks/ci_tasks.html#//apple_ref/doc/uid/TP30001185-CH3-TPXREF101" target="_blank" rel="noopener">Processing Image</a>中描述的任何上下文创建函数。当您创建检测器时，您还可以选择提供nil而不是context。</li>
+<li>创建一个选项字典来指定检测器的精度。您可以指定低或高精确度。低准确度(CIDetectorAccuracyLow)是快速的;在本例中显示的高准确度是彻底的，但较慢。</li>
+<li>为人脸创建一个检测器。你能创造出的唯一一种探测器是人脸。</li>
+<li>设置一个查找faces的选项字典。让核心图像知道图像的方向是很重要的，这样探测器就知道在哪里可以找到直立的脸。大多数时候，您将从图像本身读取图像定位，然后将该值提供给options字典。</li>
+<li>使用检测器查找图像中的特征。您提供的图像必须是一个CIImage对象。Core Image返回一个CIFeature对象数组，每个对象表示图像中的一张脸。</li>
+</ol>
+<p>在你得到一张脸的数组之后，你可能想要找出它们的特征，比如眼睛和嘴的位置。下一节将描述如何进行。</p>
+<h3 id="二、Getting-Face-and-Face-Feature-Bounds"><a href="#二、Getting-Face-and-Face-Feature-Bounds" class="headerlink" title="二、Getting Face and Face Feature Bounds"></a>二、Getting Face and Face Feature Bounds</h3><p>脸部特征包括：</p>
+<ul>
+<li>左右眼的位置</li>
+<li>嘴的位置</li>
+<li>tracking ID和tracking帧数，用于Core Image跟踪视频片段中的人脸(可在iOS v6.0和稍后的OS X v10.8中使用)</li>
+</ul>
+<p>当您从一个<code>CIDetector</code>对象获得了一系列的面部特征后，您就可以遍历该数组以检查每个面的边界和每个特征。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="built_in">CIFaceFeature</span> *f <span class="keyword">in</span> features) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, <span class="built_in">NSStringFromRect</span>(f.bounds));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (f.hasLeftEyePosition) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"Left eye %g %g"</span>, f.leftEyePosition.x, f.leftEyePosition.y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (f.hasRightEyePosition) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"Right eye %g %g"</span>, f.rightEyePosition.x, f.rightEyePosition.y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (f.hasMouthPosition) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"Mouth %g %g"</span>, f.mouthPosition.x, f.mouthPosition.y);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/一、Core-Image-–-Processing-Images/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -908,7 +1243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/二、Core-Image-–-Detecting-Faces-in-an-Image（在图片中检测人脸/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/11/（开篇）Core-Image-–-Introduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李乾">
@@ -927,7 +1262,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/17/二、Core-Image-–-Detecting-Faces-in-an-Image（在图片中检测人脸/" itemprop="url">二、Core Image – Detecting Faces in an Image（在图片中检测人脸</a></h1>
+                <a class="post-title-link" href="/2018/03/11/（开篇）Core-Image-–-Introduction/" itemprop="url">（开篇）Core Image – Introduction</a></h1>
         
 
         <div class="post-meta">
@@ -939,8 +1274,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T00:00:00+08:00">
-                2018-03-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T00:00:00+08:00">
+                2018-03-11
               </time>
             
 
@@ -1001,36 +1336,21 @@
       
         
           
-            <p>Core Image可以在图像中分析和发现人脸。它执行人脸检测，而不是识别。人脸检测是识别包含人脸特征的矩形，而人脸识别则是识别人脸(John, Mary，意思就是识别出不一样的人。等等)。当核心图像检测到人脸后，它可以提供人脸特征的信息，比如眼睛和嘴巴位置。它还可以在视频中追踪识别人脸的位置。</p>
-<blockquote>
-<p>注意：人脸检测不同于人脸识别。前者表示检测出是人脸的部分，包括眼睛、鼻子、嘴的位置，而后者表示识别出不同的人脸。后者的要求更高一些。<br><img src="/source/CI2_p_1.png" alt=""></p>
-</blockquote>
-<p>当你知道一张图片中人脸的位置之后，你可以做很多有趣的事情，比如裁减或者调整人脸部分。或者</p>
+            <h3 id="关于Core-Image"><a href="#关于Core-Image" class="headerlink" title="关于Core Image"></a>关于Core Image</h3><p><code>Core Image</code>是一种图像分析和处理的技术，它被设计用来提供实时的图片和视频处理。它使用GPU或CPU渲染路径，从核心图形、核心视频和图像I/O框架中对图像数据类型进行操作。Core Image通过提供一个易于使用的应用程序编程接口(API)来隐藏底层图形处理的细节。您不需要知道OpenGL、OpenGL ES或Metal的详细信息就可以利用GPU的功能，也不需要了解关于Grand Central Dispatch (GCD)的任何信息，从而获得多核处理的好处。Core Image已经为您处理好了这些细节。</p>
+<h3 id="初步了解"><a href="#初步了解" class="headerlink" title="初步了解"></a>初步了解</h3><p>Core Image框架提供：</p>
 <ul>
-<li>只把滤镜用于人脸部分，比如美颜。</li>
-<li>在人脸附近添加贴纸。</li>
-</ul>
-<blockquote>
-<p>注意：人脸检测只在iOS v5.0和OS X V10.7之后提供。</p>
+<li>访问内置的图像处理滤镜</li>
+<li>面部检测能力</li>
+<li>支持自动图像增强</li>
+<li>将多个过滤器链接在一起以创建自定义效果的能力</li>
+<li>支持创建运行在GPU上的自定义滤镜</li>
+<li>基于反馈的图像处理功能<blockquote>
+<p>在macOS上，Core Image还提供了一种打包自定义滤镜的方法，供其他应用程序使用。</p>
 </blockquote>
-<h3 id="一、Detecting-Faces"><a href="#一、Detecting-Faces" class="headerlink" title="一、Detecting Faces"></a>一、Detecting Faces</h3><p>使用<code>CIDetector</code>类来进行人脸检测。<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CIContext</span> *context = [<span class="built_in">CIContext</span> context]; <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">NSDictionary</span> *opts = @&#123;<span class="built_in">CIDetectorAccuracy</span> : <span class="built_in">CIDetectorAccuracyHigh</span>&#125;; <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">CIDetector</span> *detector = [<span class="built_in">CIDetector</span> detectorOfType:<span class="built_in">CIDetectorTypeFace</span> context:context options:opts]; <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NSDictionary</span> *opts2 = @&#123;<span class="built_in">CIDetectorImageOrientation</span> : [[myImage properties] valueForKey:kCGImagePropertyOrientation]&#125;; <span class="comment">// 4</span></span><br><span class="line"><span class="built_in">NSArray</span> *features = [detector featuresInImage:myImage options:opts2];</span><br></pre></td></tr></table></figure></p>
-<ol>
-<li>创建带有默认选项的上下文。您可以使用在<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/CoreImaging/ci_tasks/ci_tasks.html#//apple_ref/doc/uid/TP30001185-CH3-TPXREF101" target="_blank" rel="noopener">Processing Image</a>中描述的任何上下文创建函数。当您创建检测器时，您还可以选择提供nil而不是context。</li>
-<li>创建一个选项字典来指定检测器的精度。您可以指定低或高精确度。低准确度(CIDetectorAccuracyLow)是快速的;在本例中显示的高准确度是彻底的，但较慢。</li>
-<li>为人脸创建一个检测器。你能创造出的唯一一种探测器是人脸。</li>
-<li>设置一个查找faces的选项字典。让核心图像知道图像的方向是很重要的，这样探测器就知道在哪里可以找到直立的脸。大多数时候，您将从图像本身读取图像定位，然后将该值提供给options字典。</li>
-<li>使用检测器查找图像中的特征。您提供的图像必须是一个CIImage对象。Core Image返回一个CIFeature对象数组，每个对象表示图像中的一张脸。</li>
-</ol>
-<p>在你得到一张脸的数组之后，你可能想要找出它们的特征，比如眼睛和嘴的位置。下一节将描述如何进行。</p>
-<h3 id="二、Getting-Face-and-Face-Feature-Bounds"><a href="#二、Getting-Face-and-Face-Feature-Bounds" class="headerlink" title="二、Getting Face and Face Feature Bounds"></a>二、Getting Face and Face Feature Bounds</h3><p>脸部特征包括：</p>
-<ul>
-<li>左右眼的位置</li>
-<li>嘴的位置</li>
-<li>tracking ID和tracking帧数，用于Core Image跟踪视频片段中的人脸(可在iOS v6.0和稍后的OS X v10.8中使用)</li>
+</li>
 </ul>
-<p>当您从一个<code>CIDetector</code>对象获得了一系列的面部特征后，您就可以遍历该数组以检查每个面的边界和每个特征。</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="built_in">CIFaceFeature</span> *f <span class="keyword">in</span> features) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, <span class="built_in">NSStringFromRect</span>(f.bounds));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (f.hasLeftEyePosition) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"Left eye %g %g"</span>, f.leftEyePosition.x, f.leftEyePosition.y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (f.hasRightEyePosition) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"Right eye %g %g"</span>, f.rightEyePosition.x, f.rightEyePosition.y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (f.hasMouthPosition) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"Mouth %g %g"</span>, f.mouthPosition.x, f.mouthPosition.y);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h4 id="核心图像是一种高效的、易用的图像处理和分析的框架"><a href="#核心图像是一种高效的、易用的图像处理和分析的框架" class="headerlink" title="核心图像是一种高效的、易用的图像处理和分析的框架"></a>核心图像是一种高效的、易用的图像处理和分析的框架</h4><p>Core Image提供了数百个内置过滤器。通过为滤镜的输入参数提供键值对来设置滤镜。一个滤镜的输出可以是另一个滤镜的输入，这样就可以将多个滤镜连接在一起，从而产生惊人的效果。如果您创建了一个您想要再次使用的复合效果，您可以子类化<code>CIFilter</code>来保留这个创建过程。</p>
+<h4 id="创建和分发定制的内核和滤镜"><a href="#创建和分发定制的内核和滤镜" class="headerlink" title="创建和分发定制的内核和滤镜"></a>创建和分发定制的内核和滤镜</h4>
           
         
       
@@ -1242,161 +1562,6 @@
 </blockquote>
 <h3 id="加载与创建纹理"><a href="#加载与创建纹理" class="headerlink" title="加载与创建纹理"></a>加载与创建纹理</h3><h4 id="1-使用纹理之前要做的第一件事是把它们加载到我们的应用中。纹理图像可能被储存为各种各样的格式，每种都有自己的数据结构和排列，所以我们如何才能把这些图像加载到应用中呢？一个解决方案是选一个需要的文件格式，比如-PNG，然后自己写一个图像加载器，把图像转化为字节序列。写自己的图像加载器虽然不难，但仍然挺麻烦的，而且如果要支持更多文件格式呢？你就不得不为每种你希望支持的格式写加载器了。"><a href="#1-使用纹理之前要做的第一件事是把它们加载到我们的应用中。纹理图像可能被储存为各种各样的格式，每种都有自己的数据结构和排列，所以我们如何才能把这些图像加载到应用中呢？一个解决方案是选一个需要的文件格式，比如-PNG，然后自己写一个图像加载器，把图像转化为字节序列。写自己的图像加载器虽然不难，但仍然挺麻烦的，而且如果要支持更多文件格式呢？你就不得不为每种你希望支持的格式写加载器了。" class="headerlink" title="1. 使用纹理之前要做的第一件事是把它们加载到我们的应用中。纹理图像可能被储存为各种各样的格式，每种都有自己的数据结构和排列，所以我们如何才能把这些图像加载到应用中呢？一个解决方案是选一个需要的文件格式，比如.PNG，然后自己写一个图像加载器，把图像转化为字节序列。写自己的图像加载器虽然不难，但仍然挺麻烦的，而且如果要支持更多文件格式呢？你就不得不为每种你希望支持的格式写加载器了。"></a>1. 使用纹理之前要做的第一件事是把它们加载到我们的应用中。纹理图像可能被储存为各种各样的格式，每种都有自己的数据结构和排列，所以我们如何才能把这些图像加载到应用中呢？一个解决方案是选一个需要的文件格式，比如.PNG，然后自己写一个图像加载器，把图像转化为字节序列。写自己的图像加载器虽然不难，但仍然挺麻烦的，而且如果要支持更多文件格式呢？你就不得不为每种你希望支持的格式写加载器了。</h4><p>另一个解决方案也许是一种更好的选择，使用一个支持多种流行格式的图像加载库来为我们解决这个问题。比如说我们要用的stb_image.h库。</p>
 
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/11/（开篇）Core-Image-–-Introduction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李乾">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李乾的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/11/（开篇）Core-Image-–-Introduction/" itemprop="url">（开篇）Core Image – Introduction</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T00:00:00+08:00">
-                2018-03-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Core-Image/" itemprop="url" rel="index">
-                    <span itemprop="name">Core Image</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="关于Core-Image"><a href="#关于Core-Image" class="headerlink" title="关于Core Image"></a>关于Core Image</h3><p><code>Core Image</code>是一种图像分析和处理的技术，它被设计用来提供实时的图片和视频处理。它使用GPU或CPU渲染路径，从核心图形、核心视频和图像I/O框架中对图像数据类型进行操作。Core Image通过提供一个易于使用的应用程序编程接口(API)来隐藏底层图形处理的细节。您不需要知道OpenGL、OpenGL ES或Metal的详细信息就可以利用GPU的功能，也不需要了解关于Grand Central Dispatch (GCD)的任何信息，从而获得多核处理的好处。Core Image已经为您处理好了这些细节。</p>
-<h3 id="初步了解"><a href="#初步了解" class="headerlink" title="初步了解"></a>初步了解</h3><p>Core Image框架提供：</p>
-<ul>
-<li>访问内置的图像处理滤镜</li>
-<li>面部检测能力</li>
-<li>支持自动图像增强</li>
-<li>将多个过滤器链接在一起以创建自定义效果的能力</li>
-<li>支持创建运行在GPU上的自定义滤镜</li>
-<li>基于反馈的图像处理功能<blockquote>
-<p>在macOS上，Core Image还提供了一种打包自定义滤镜的方法，供其他应用程序使用。</p>
-</blockquote>
-</li>
-</ul>
-<h4 id="核心图像是一种高效的、易用的图像处理和分析的框架"><a href="#核心图像是一种高效的、易用的图像处理和分析的框架" class="headerlink" title="核心图像是一种高效的、易用的图像处理和分析的框架"></a>核心图像是一种高效的、易用的图像处理和分析的框架</h4><p>Core Image提供了数百个内置过滤器。通过为滤镜的输入参数提供键值对来设置滤镜。一个滤镜的输出可以是另一个滤镜的输入，这样就可以将多个滤镜连接在一起，从而产生惊人的效果。如果您创建了一个您想要再次使用的复合效果，您可以子类化<code>CIFilter</code>来保留这个创建过程。</p>
-<h4 id="创建和分发定制的内核和滤镜"><a href="#创建和分发定制的内核和滤镜" class="headerlink" title="创建和分发定制的内核和滤镜"></a>创建和分发定制的内核和滤镜</h4>
           
         
       
@@ -1920,152 +2085,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/（三）《LearnOpenGL-CN》-你好窗口/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李乾">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李乾的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/08/（三）《LearnOpenGL-CN》-你好窗口/" itemprop="url">（三）《LearnOpenGL CN》-- 你好窗口</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T00:00:00+08:00">
-                2018-03-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Learn-OpenGL-CN/" itemprop="url" rel="index">
-                    <span itemprop="name">Learn OpenGL CN</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-双缓冲-Double-Buffer"><a href="#1-双缓冲-Double-Buffer" class="headerlink" title="1. 双缓冲(Double Buffer)"></a>1. 双缓冲(Double Buffer)</h4><p>应用程序使用单缓冲绘图时可能会存在图像闪烁的问题。 这是因为生成的图像不是一下子被绘制出来的，而是按照从左到右，由上而下逐像素地绘制而成的。最终图像不是在瞬间显示给用户，而是通过一步一步生成的，这会导致渲染的结果很不真实。为了规避这些问题，我们应用双缓冲渲染窗口应用程序。前缓冲保存着最终输出的图像，它会在屏幕上显示；而所有的的渲染指令都会在后缓冲上绘制。当所有的渲染指令执行完毕后，我们交换(Swap)前缓冲和后缓冲，这样图像就立即呈显出来，之前提到的不真实感就消除了。<br><br></p>
-<ol start="2">
-<li>你应该能够回忆起来我们在 OpenGL 这节教程的内容，glClearColor函数是一个状态设置函数，而glClear函数则是一个状态使用的函数，它使用了当前的状态来获取应该清除为的颜色。</li>
-</ol>
-<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><p><a href="/source/learnOpenGL3_sample.zip">代码下载</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2120,7 +2139,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2142,7 +2161,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

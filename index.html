@@ -300,6 +300,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/20/Hexo遇到的坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/20/Hexo遇到的坑/" itemprop="url">Hexo遇到的坑</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T15:43:10+08:00">
+                2018-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/其他/" itemprop="url" rel="index">
+                    <span itemprop="name">其他</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、"><a href="#一、" class="headerlink" title="一、"></a>一、</h3><p>写blog过程中，在执行<code>hexo g</code>时突然报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">FATAL Something&apos;s wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html</span><br><span class="line">Template render error: (unknown path) [Line 3, Column 158]</span><br><span class="line">expected variable end</span><br><span class="line">at Object._prettifyError (/Users/liqian/博客/hexo-blog/node_modules/nunjucks/src/lib.js:36:11)</span><br><span class="line">at Template.render (/Users/liqian/博客/hexo-blog/node_modules/nunjucks/src/environment.js:524:21)</span><br><span class="line">at Environment.renderString (/Users/liqian/博客/hexo-blog/node_modules/nunjucks/src/environment.js:362:17)</span><br><span class="line">at Promise (/Users/liqian/博客/hexo-blog/node_modules/hexo/lib/extend/tag.js:66:9)</span><br><span class="line">at Promise._execute (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/debuggability.js:313:9)</span><br><span class="line">at Promise._resolveFromExecutor (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/promise.js:483:18)</span><br><span class="line">at new Promise (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/promise.js:79:10)</span><br><span class="line">at Tag.render (/Users/liqian/博客/hexo-blog/node_modules/hexo/lib/extend/tag.js:64:10)</span><br><span class="line">at Object.tagFilter [as onRenderEnd] (/Users/liqian/博客/hexo-blog/node_modules/hexo/lib/hexo/post.js:230:16)</span><br><span class="line">at Promise.then.then.result (/Users/liqian/博客/hexo-blog/node_modules/hexo/lib/hexo/render.js:65:19)</span><br><span class="line">at tryCatcher (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/util.js:16:23)</span><br><span class="line">at Promise._settlePromiseFromHandler (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/promise.js:512:31)</span><br><span class="line">at Promise._settlePromise (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/promise.js:569:18)</span><br><span class="line">at Promise._settlePromise0 (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/promise.js:614:10)</span><br><span class="line">at Promise._settlePromises (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/promise.js:694:18)</span><br><span class="line">at _drainQueueStep (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/async.js:138:12)</span><br><span class="line">at _drainQueue (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/async.js:131:9)</span><br><span class="line">at Async._drainQueues (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/async.js:147:5)</span><br><span class="line">at Immediate.Async.drainQueues (/Users/liqian/博客/hexo-blog/node_modules/bluebird/js/release/async.js:17:14)</span><br><span class="line">at runCallback (timers.js:694:18)</span><br><span class="line">at tryOnImmediate (timers.js:665:5)</span><br><span class="line">at processImmediate (timers.js:647:5)</span><br></pre></td></tr></table></figure></p>
+<p>我以为是node或者npm突然出了问题，因为每次在执行时hexo命令时，老是有一些warning<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">WARN  ===============================================================</span><br><span class="line">WARN  ========================= ATTENTION! ==========================</span><br><span class="line">WARN  ===============================================================</span><br><span class="line">WARN   NexT repository is moving here: https://github.com/theme-next </span><br><span class="line">WARN  ===============================================================</span><br><span class="line">WARN   It&apos;s rebase to v6.0.0 and future maintenance will resume there</span><br><span class="line">WARN  ===============================================================</span><br></pre></td></tr></table></figure></p>
+<p>还有：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">found 1 low severity vulnerability</span><br><span class="line">run `npm audit fix` to fix them, or `npm audit` for details</span><br></pre></td></tr></table></figure></p>
+<p>等等。但是我没有想到是文章部分出了错，因为我对node什么的一窍不通，只能通过google来配置各项操作。<br>于是稀里糊涂的百度了一下，这里发觉百度还是及其不靠谱的。</p>
+<p>于是：</p>
+<h4 id="1-我想到了重新配置node和npm"><a href="#1-我想到了重新配置node和npm" class="headerlink" title="1. 我想到了重新配置node和npm"></a>1. 我想到了重新配置node和npm</h4><p>google了一下如何卸载node。貌似比较麻烦，详情请自行google，文章一大把。<br>然后通过brew重新安装node。由于我最开始的版本的node是通过去官网下载pkg包手动安装的，所以，卸载的时候可能没有卸载干净，导致安装node的时候并不顺利（所以以后尽量都用brew来安装）。<br>不顺利的地方：终端里会弹出来一些帮助你解决的命令，包括override啥的，就是覆盖掉原来没卸载干净的文件。这里当然是照做啊，然后你会遇到报错：/usr/local/…等地方的文件不能被覆盖，因为只能读不能写。我的解决办法是在finder中找到这个文件夹删掉，然后再重新执行安装及override命令。这个循环可能要重复几次才能完全重装好。</p>
+<h4 id="2-重新安装hexo"><a href="#2-重新安装hexo" class="headerlink" title="2. 重新安装hexo"></a>2. 重新安装hexo</h4><p>安装好之后，这个坑依然还是存在。此时我淡定下来，开始google：<code>expected variable end     at Object._prettifyError</code>，google搜索的内容非常重要，决定你是否能一下子就找到答案，同时提醒大家不要用百度搜索这类问题。<br>由于我搜索的内容很好，到岸一下子就把我带到了<code>https://github.com/hexojs/hexo/issues/2384</code>github的hexo的issues里了。自己想想，恍然大悟，既然是配置hexo的过程中出错了，当然第一步就是到其github的issues里找答案啊。</p>
+<h4 id="3-问题解决了"><a href="#3-问题解决了" class="headerlink" title="3. 问题解决了"></a>3. 问题解决了</h4><p>在issues里，有人提了一个跟我一样的问题，在comment里看到作者的回复：<strong>The <code>双大括号</code> is nunjucks syntax, therefore please avoid using them in posts.</strong></p>
+<blockquote>
+<p>这里我不能直接打出<code>双大括号</code>，不然我这篇文章就会造成这个问题<br>于是，我快速的去查看了一下我的post。我记得是在添加了某一篇post之后遇到的这个问题，于是立马打开那篇post，发觉果然出现了<code>双大括号</code>这种东西。瞬间改掉，重新执行<code>hexo g</code>问题消失了。</p>
+</blockquote>
+<h3 id="二、总结"><a href="#二、总结" class="headerlink" title="二、总结"></a>二、总结</h3><ol>
+<li>遇到问题了不要乱猜，需要有规则、有步骤、有条理的去分析问题。</li>
+<li>像我这种突然遇到问题的，就应该用二分法、排除法来解决。因为我是在突然发布谋篇文章之后出现的问题，那我的就应该先把这篇文章删除之后重试一遍。</li>
+<li>找这种技术问题一定要用google。搜索内容需要不断变化才能快速找到答案。同时有限到github的issues里去找答案。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/Git-使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1799,171 +1956,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/03/关于OC中extern的使用场景/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李乾">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李乾的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/03/关于OC中extern的使用场景/" itemprop="url">关于OC中extern的使用场景</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-03T00:00:00+08:00">
-                2018-04-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/其他/" itemprop="url" rel="index">
-                    <span itemprop="name">其他</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>一般来说，我们如何定义一个全局变量以供其他类有权限使用它的值？</p>
-<ol>
-<li>在.h文件中定义一个属性，并且在.m文件中要赋值。</li>
-<li>在.h文件中定义一个宏：#define。</li>
-<li>用<code>extern</code>。</li>
-</ol>
-<blockquote>
-<p>通常情况下，除非要创建一个类，一般我们不会使用方法<code>1</code>。<br>方法<code>2</code>也不用说了，很明白。</p>
-</blockquote>
-<h3 id="一、现在说一下方法3："><a href="#一、现在说一下方法3：" class="headerlink" title="一、现在说一下方法3："></a>一、现在说一下方法<code>3</code>：</h3><p><code>extern</code>表示变量可以被外部访问和赋值。<br>用法如下：<br>.h文件中<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> accepterSendText;</span><br></pre></td></tr></table></figure></p>
-<p>.m文件中：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> accepterSendText = <span class="string">@"hi~我领到了你的愿望~"</span>;</span><br></pre></td></tr></table></figure></p>
-<h3 id="二、extern与-define的区别"><a href="#二、extern与-define的区别" class="headerlink" title="二、extern与#define的区别"></a>二、extern与#define的区别</h3><p><code>define</code>只是简单地替换，又称作宏定义、预处理命令。其不能保证在共享单例中取得一样的内存地址。<br><code>extern</code>会分配内存空间，提示编译器遇到此变量和函数时在其他模块寻找其定义。</p>
-<blockquote>
-<p>所以如果需要作为dictionary的key的话，使用extern NSString * const的写法，要比@””的写法（也就是用#define）更好。前者比较时用<code>isEqual:</code>就行了，直接比较地址；后者需要<code>isEqualToString:</code>即比较字符串的所有字符是否相等。</p>
-</blockquote>
-<p>参考：<a href="https://blog.csdn.net/gaoyuqiang30/article/details/48389369" target="_blank" rel="noopener">extern与define 区别</a></p>
-<h3 id="三、OC中的FOUNDATION-EXTERN、FOUNDATION-EXPORT"><a href="#三、OC中的FOUNDATION-EXTERN、FOUNDATION-EXPORT" class="headerlink" title="三、OC中的FOUNDATION_EXTERN、FOUNDATION_EXPORT"></a>三、OC中的FOUNDATION_EXTERN、FOUNDATION_EXPORT</h3><p>这个其实跟extern、import差不多。不过OC中兼容了C和C++，见代码：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#if defined(__cplusplus)</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXTERN extern <span class="meta-string">"C"</span></span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXTERN extern</span></span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#if TARGET_OS_WIN32</span></span><br><span class="line"><span class="meta">#if defined(NSBUILDINGFOUNDATION)</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXPORT FOUNDATION_EXTERN __declspec(dllexport)</span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXPORT FOUNDATION_EXTERN __declspec(dllimport)</span></span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"><span class="meta">#define FOUNDATION_IMPORT FOUNDATION_EXTERN __declspec(dllimport)</span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define FOUNDATION_EXPORT  FOUNDATION_EXTERN</span></span><br><span class="line"><span class="meta">#define FOUNDATION_IMPORT FOUNDATION_EXTERN</span></span><br><span class="line"><span class="meta">#endif</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="四、引申：比较-”abc”和用NSString生成的abc"><a href="#四、引申：比较-”abc”和用NSString生成的abc" class="headerlink" title="四、引申：比较@”abc”和用NSString生成的abc"></a>四、引申：比较@”abc”和用NSString生成的abc</h3><p>写了一段代码测试：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *str1 = <span class="string">@"abc"</span>;</span><br><span class="line"><span class="built_in">NSString</span> *str2 = [[<span class="built_in">NSString</span> alloc] initWithString:<span class="string">@"abc"</span>];</span><br><span class="line"><span class="built_in">NSString</span> *str3 = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"abc"</span>];</span><br><span class="line"><span class="built_in">NSString</span> *str4 = [[<span class="built_in">NSString</span> alloc] initWithFormat:<span class="string">@"abc"</span>];</span><br><span class="line"><span class="built_in">NSMutableString</span> *str5 = [[<span class="built_in">NSMutableString</span> alloc] initWithString:<span class="string">@"a"</span>];</span><br><span class="line">[str5 appendString:<span class="string">@"bc"</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> (^logString) (<span class="built_in">NSString</span> *str) = ^(<span class="built_in">NSString</span> *str) &#123;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"&gt;&gt;&gt;%p, %p"</span>, &amp;str, str);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">logString(str1);</span><br><span class="line">logString(str2);</span><br><span class="line">logString(str3);</span><br><span class="line">logString(str4);</span><br><span class="line">logString(str5);</span><br></pre></td></tr></table></figure></p>
-<p>log如下：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0x100b18820</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0x100b18820</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0xa000000006362613</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0xa000000006362613</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">0x16f623920</span>, <span class="number">0x107b2d880</span></span><br></pre></td></tr></table></figure></p>
-<ol>
-<li>str2与str1完全相同：编译器也警告：让我用声明str1的方式声明str2。</li>
-<li>所有的字符串在内存中的地址都是一样的，也就是说，如果用<code>isEqual:</code>来比较的话他们都相等。</li>
-<li>所以，用任何一种方法声明都可以。</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2018,7 +2010,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2040,7 +2032,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -300,6 +300,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/（三）《LearnOpenGL-CN》-你好窗口/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/08/（三）《LearnOpenGL-CN》-你好窗口/" itemprop="url">（三）《LearnOpenGL CN》-- 你好窗口</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T00:00:00+08:00">
+                2018-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Learn-OpenGL-CN/" itemprop="url" rel="index">
+                    <span itemprop="name">Learn OpenGL CN</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-双缓冲-Double-Buffer"><a href="#1-双缓冲-Double-Buffer" class="headerlink" title="1. 双缓冲(Double Buffer)"></a>1. 双缓冲(Double Buffer)</h4><p>应用程序使用单缓冲绘图时可能会存在图像闪烁的问题。 这是因为生成的图像不是一下子被绘制出来的，而是按照从左到右，由上而下逐像素地绘制而成的。最终图像不是在瞬间显示给用户，而是通过一步一步生成的，这会导致渲染的结果很不真实。为了规避这些问题，我们应用双缓冲渲染窗口应用程序。前缓冲保存着最终输出的图像，它会在屏幕上显示；而所有的的渲染指令都会在后缓冲上绘制。当所有的渲染指令执行完毕后，我们交换(Swap)前缓冲和后缓冲，这样图像就立即呈显出来，之前提到的不真实感就消除了。<br><br></p>
+<ol start="2">
+<li>你应该能够回忆起来我们在 OpenGL 这节教程的内容，glClearColor函数是一个状态设置函数，而glClear函数则是一个状态使用的函数，它使用了当前的状态来获取应该清除为的颜色。</li>
+</ol>
+<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><p><a href="/source/learnOpenGL3_sample.zip">代码下载</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/07/（二）《LearnOpenGL-CN》–-创建窗口/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -760,6 +906,207 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/三、Core-Graphics-Graphics-Contexts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/25/三、Core-Graphics-Graphics-Contexts/" itemprop="url">三、Core Graphics - Graphics Contexts</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T00:00:00+08:00">
+                2018-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Core-Graphics/" itemprop="url" rel="index">
+                    <span itemprop="name">Core Graphics</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>图形上下文表示绘图目标。 它包含绘图参数和绘图系统需要执行任何后续绘图命令的所有特定于设备的信息。 图形上下文定义了基本绘图属性，例如绘制时使用的颜色，裁剪区域，线宽和样式信息，字体信息，合成选项等。</p>
+<p>您可以通过使用Quartz上下文创建功能或通过使用其中一个Mac OS X框架或iOS中的UIKit框架提供的更高级别的功能来获取图形上下文。 Quartz提供各种Quartz图形上下文的功能，包括位图和PDF，可用于创建自定义内容。</p>
+<p>本章介绍如何为各种绘图目标创建图形上下文。 图形上下文通过数据类型CGContextRef（它是不透明数据类型）在代码中表示。 获取图形上下文后，您可以使用Quartz 2D函数绘制上下文，在上下文中执行操作（如转换），并更改图形状态参数，例如线宽和填充颜色。</p>
+<h3 id="在iOS中绘制视图图形上下文"><a href="#在iOS中绘制视图图形上下文" class="headerlink" title="在iOS中绘制视图图形上下文"></a>在iOS中绘制视图图形上下文</h3><p>要在iOS应用程序中绘制屏幕，您可以设置一个<a href="https://developer.apple.com/documentation/uikit/uiview" target="_blank" rel="noopener">UIView</a>对象并实现其<a href="https://developer.apple.com/documentation/uikit/uiview/1622529-drawrect" target="_blank" rel="noopener">drawRect:</a>方法来执行绘图。 当视图在屏幕上可见并且其内容需要更新时，视图的<code>drawRect:</code>方法将会被调用。 在调用自定义<code>drawRect:</code>方法之前，视图对象会自动配置其绘图环境，以便您的代码可以立即开始绘制。 作为此配置的一部分，<code>UIView</code>对象为当前绘图环境创建一个图形上下文（一个<a href="https://developer.apple.com/documentation/coregraphics/cgcontextref" target="_blank" rel="noopener">CGContextRef</a> opaque类型）。 您可以在<code>drawRect:</code>方法中通过调用UIKit的<a href="https://developer.apple.com/documentation/uikit/1623918-uigraphicsgetcurrentcontext" target="_blank" rel="noopener">UIGraphicsGetCurrentContext</a>函数来获取此图形上下文。</p>
+<h3 id="在Mac-OS-X中创建窗口图形上下文"><a href="#在Mac-OS-X中创建窗口图形上下文" class="headerlink" title="在Mac OS X中创建窗口图形上下文"></a>在Mac OS X中创建窗口图形上下文</h3><p>略…</p>
+<h3 id="创建PDF图形上下文"><a href="#创建PDF图形上下文" class="headerlink" title="创建PDF图形上下文"></a>创建PDF图形上下文</h3><p>略…</p>
+<h3 id="创建位图图形上下文"><a href="#创建位图图形上下文" class="headerlink" title="创建位图图形上下文"></a>创建位图图形上下文</h3><p>一个位图图形上下文接受指向内存缓冲区的指针，该缓冲区包含这个位图的存储空间。 当您绘制到位图图形上下文中时，缓冲区将被更新。 释放图形上下文后，您将以指定的像素格式完全更新位图。</p>
+<blockquote>
+<p><strong>注意：</strong>位图图形上下文有时用于离屏绘制。 当您决定为此来使用位图图形上下文之前，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_layers/dq_layers.html#//apple_ref/doc/uid/TP30001066-CH219-TPXREF101" target="_blank" rel="noopener">Core Graphics Layer Drawing</a>。 CGLayer对象（<code>CGLayerRef</code>）针对离屏绘制进行了优化，因为在任何可能的情况下，Quartz缓存video card上的图层。</p>
+</blockquote>
+<blockquote>
+<p><strong>iOS注意：</strong>iOS应用程序应使用<a href="https://developer.apple.com/documentation/uikit/1623912-uigraphicsbeginimagecontextwitho" target="_blank" rel="noopener">UIGraphicsBeginImageContextWithOptions</a>函数，而不是使用此处描述的低级Quartz函数。 如果您的应用程序使用Quartz创建了屏幕外位图，则位图图形上下文使用的坐标系是默认的Quartz坐标系。 相反，如果您的应用程序通过调用函数<code>UIGraphicsBeginImageContextWithOptions</code>创建图像上下文，则UIKit将与上下文的坐标系统使用相同的转换，这与UIView对象的图形上下文相同。 这允许您的应用程序使用相同的绘图代码，无需担心不同的坐标系。 虽然您的应用程序可以手动调整坐标转换矩阵以获得正确的结果，但在实践中，将会没有性能优势。</p>
+</blockquote>
+<p>您可以使用函数<code>CGBitmapContextCreate</code>来创建位图图形上下文。 此功能需要以下参数：</p>
+<ul>
+<li><code>data</code>。 在你希望绘制渲染的内存中提供一个指向目标的指针。该内存块的大小应至少为（<code>bytesPerRow * height</code>）字节。</li>
+<li><code>width</code>。 指定位图的宽度（以像素为单位）。</li>
+<li><code>height</code>。指定位图的高度（以像素为单位）。</li>
+<li><p><code>bitsPerComponent</code>。 指定在内存中用于像素的每个组件的位数。 例如，对于32位像素格式和RGB颜色空间，您可以为每个组件指定一个8位的值。 请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-BCIBHHBB" target="_blank" rel="noopener">Supported Pixel Formats</a>。</p>
+<blockquote>
+<p>提示：当您创建位图图形上下文时，如果确保<code>data</code>和<code>bytesPerRow</code>为16字节对齐，则将获得最佳性能。</p>
+</blockquote>
+</li>
+<li><p><code>颜色空间</code>。 用于位图上下文的颜色空间。 您可以在创建位图图形上下文时提供Gray，RGB，CMYK或NULL颜色空间。 有关颜色空间和颜色管理原则的详细信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/csintro/csintro_intro/csintro_intro.html#//apple_ref/doc/uid/TP30001148" target="_blank" rel="noopener">Color Management Overview</a>。 有关在Quartz中创建和使用颜色空间的信息，请参阅<a href="">Color and Color Spaces</a>。 有关支持的颜色空间的信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-TPXREF101" target="_blank" rel="noopener">Bitmap Images and Image Masks</a>章节中的<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-CJBHEGIB" target="_blank" rel="noopener">Color Spaces and Bitmap Layout</a>。</p>
+</li>
+<li><code>bitmapInfo</code>。位图布局信息，表示为<code>CGBitmapInfo</code>常量，用于指定位图是否应包含alpha组件，像素中的alpha组件（如果有的话）的相对位置，是否预先生成alpha组件，以及颜色组件是整数还是浮点值。 有关这些常量是什么，什么时候使用这些常量，以及用于位图图形上下文和图像的Quartz支持的像素格式的这些详细信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-TPXREF101" target="_blank" rel="noopener">Bitmap Images and Image Masks</a>章节中的<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-CJBHEGIB" target="_blank" rel="noopener">Color Spaces and Bitmap Layout</a>。</li>
+</ul>
+<p>清单2-5显示了如何创建位图图形上下文。 当您绘制到生成的位图图形上下文时，Quartz将您的绘图作为位图数据记录在指定的内存块中。 清单下面列出每个编号代码行的详细说明。</p>
+<p><strong>清单2-5</strong> 创建位图图形上下文<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGContextRef</span> MyCreateBitmapContext (<span class="keyword">int</span> pixelsWide,</span><br><span class="line"><span class="keyword">int</span> pixelsHigh)</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">CGContextRef</span>    context = <span class="literal">NULL</span>;</span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> colorSpace;</span><br><span class="line"><span class="keyword">void</span> *          bitmapData;</span><br><span class="line"><span class="keyword">int</span>             bitmapByteCount;</span><br><span class="line"><span class="keyword">int</span>             bitmapBytesPerRow;</span><br><span class="line"></span><br><span class="line">bitmapBytesPerRow   = (pixelsWide * <span class="number">4</span>);<span class="comment">// 1</span></span><br><span class="line">bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);</span><br><span class="line"></span><br><span class="line">colorSpace = <span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceGenericRGB);<span class="comment">// 2</span></span><br><span class="line">bitmapData = calloc( bitmapByteCount, <span class="keyword">sizeof</span>(uint8_t) );<span class="comment">// 3</span></span><br><span class="line"><span class="keyword">if</span> (bitmapData == <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">fprintf (stderr, <span class="string">"Memory not allocated!"</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line">context = <span class="built_in">CGBitmapContextCreate</span> (bitmapData,<span class="comment">// 4</span></span><br><span class="line">pixelsWide,</span><br><span class="line">pixelsHigh,</span><br><span class="line"><span class="number">8</span>,      <span class="comment">// bits per component</span></span><br><span class="line">bitmapBytesPerRow,</span><br><span class="line">colorSpace,</span><br><span class="line">kCGImageAlphaPremultipliedLast);</span><br><span class="line"><span class="keyword">if</span> (context== <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">free (bitmapData);<span class="comment">// 5</span></span><br><span class="line">fprintf (stderr, <span class="string">"Context not created!"</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">CGColorSpaceRelease</span>( colorSpace );<span class="comment">// 6</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> context;<span class="comment">// 7</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面是代码所做的事：</p>
+<ol>
+<li>声明一个变量来表示每行的字节数。 该示例中位图中的每个像素由4个字节表示; 每个红色，绿色，蓝色和阿尔法都有8位。</li>
+<li>创建一个通用的RGB颜色空间。 您也可以创建一个CMYK颜色空间。 有关更多信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_color/dq_color.html#//apple_ref/doc/uid/TP30001066-CH205-TPXREF101" target="_blank" rel="noopener">Color and Color Spaces</a>，以及有关通用色彩空间与依赖于设备的颜色空间的讨论。</li>
+<li>调用<code>calloc</code>函数来创建和清除存储位图数据的内存块。 此示例创建一个32位RGBA位图（即，每像素32位的数组，每个像素包含红，绿，蓝和阿尔法信息的8位）。 位图中的每个像素占用4个字节的内存。 在Mac OS X 10.6和iOS 4中，可以省略此步骤 - 如果将NULL作为位图数据传递，Quartz会自动为位图分配空间。</li>
+<li>创建位图图形上下文，提供位图数据，位图的宽度和高度，每个组件的位数，每行的字节数，颜色空间以及指定位图是否应包含Alpha通道的常数和像素中的相对位置。常数<code>kCGImageAlphaPremultipliedLast</code>表示α分量存储在每个像素的最后一个字节中，并且颜色分量已经乘以此Alpha值。 有关预乘α的更多信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_color/dq_color.html#//apple_ref/doc/uid/TP30001066-CH205-TPXREF119" target="_blank" rel="noopener">The Alpha Value</a>。</li>
+<li>如果由于某种原因未创建上下文，则释放分配给位图数据的内存。</li>
+<li>释放颜色空间。</li>
+<li>返回位图图形上下文。当不再需要时，调用者必须释放图形上下文。</li>
+</ol>
+<p>清单2-6显示了调用MyCreateBitmapContext创建位图图形上下文的代码，使用位图图形上下文来创建CGImage对象，然后将生成的图像绘制到窗口图形上下文。 图2-3显示了绘制到窗口的图像。 清单下面列出每个编号代码行的详细说明。<br><strong>清单2-6</strong> 绘制到位图图形上下文<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGRect</span> myBoundingBox;<span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">myBoundingBox = <span class="built_in">CGRectMake</span> (<span class="number">0</span>, <span class="number">0</span>, myWidth, myHeight);<span class="comment">// 2</span></span><br><span class="line">myBitmapContext = MyCreateBitmapContext (<span class="number">400</span>, <span class="number">300</span>);<span class="comment">// 3</span></span><br><span class="line"><span class="comment">// ********** Your drawing code here ********** // 4</span></span><br><span class="line"><span class="built_in">CGContextSetRGBFillColor</span> (myBitmapContext, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"><span class="built_in">CGContextFillRect</span> (myBitmapContext, <span class="built_in">CGRectMake</span> (<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>, <span class="number">100</span> ));</span><br><span class="line"><span class="built_in">CGContextSetRGBFillColor</span> (myBitmapContext, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">.5</span>);</span><br><span class="line"><span class="built_in">CGContextFillRect</span> (myBitmapContext, <span class="built_in">CGRectMake</span> (<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">200</span> ));</span><br><span class="line">myImage = <span class="built_in">CGBitmapContextCreateImage</span> (myBitmapContext);<span class="comment">// 5</span></span><br><span class="line"><span class="built_in">CGContextDrawImage</span>(myContext, myBoundingBox, myImage);<span class="comment">// 6</span></span><br><span class="line"><span class="keyword">char</span> *bitmapData = <span class="built_in">CGBitmapContextGetData</span>(myBitmapContext); <span class="comment">// 7</span></span><br><span class="line"><span class="built_in">CGContextRelease</span> (myBitmapContext);<span class="comment">// 8</span></span><br><span class="line"><span class="keyword">if</span> (bitmapData) free(bitmapData); <span class="comment">// 9</span></span><br><span class="line"><span class="built_in">CGImageRelease</span>(myImage);</span><br></pre></td></tr></table></figure></p>
+<p>下面是这些代码所做的事：</p>
+<ol>
+<li>声明一个变量来存储边界框的起点和尺寸，Quartz将绘制从位图图形上下文创建的图像。</li>
+<li>将边框的原点设置为（0,0），并将宽度和高度设置为先前声明的变量，但其声明未显示在此代码中。</li>
+<li>调用应用程序提供的函数<code>MyCreateBitmapContext</code>（参见清单2-5）来创建一个400像素宽和300像素高的位图上下文。 您可以使用适合您的应用程序的任何维度创建位图图形上下文。</li>
+<li>调用Quartz 2D函数来绘制位图图形上下文。 您将使用适合您的应用程序的绘图代码替换此代码和接下来的四行代码。</li>
+<li>从位图图形上下文创建Quartz 2D图像（<code>CGImageRef</code>）。</li>
+<li>将图像绘制到由边界框指定的窗口图形上下文中的位置。 边界框指定用于绘制图像的用户空间中的位置和尺寸。<br>此示例不显示窗口图形上下文的创建。 有关如何创建一个的信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-CJBDCHAC" target="_blank" rel="noopener">Creating a Window Graphics Context in Mac OS X</a>。</li>
+<li>获取与位图图形上下文相关联的位图数据。</li>
+<li>当不再需要时，释放位图图形上下文。</li>
+<li>释放位图数据（如果存在）。</li>
+<li>当不再需要时释放图像。</li>
+</ol>
+<p><strong>图2-3</strong> 从位图图形上下文创建并绘制到窗口图形上下文的图像<br><img src="/source/cg3_p_1.gif" alt=""></p>
+<h3 id="支持的像素格式"><a href="#支持的像素格式" class="headerlink" title="支持的像素格式"></a>支持的像素格式</h3><p>表2-1总结了支持位图图形上下文，相关联的颜色空间（<code>cs</code>）以及格式首次可用的Mac OS X版本 的像素格式。 像素格式被指定为bit per pixel（bpp）和bit per component（bpc）。 该表还包括与该像素格式相关联的位图信息常数。 有关每个位图信息格式常量表示的详细信息，请参阅<a href="https://developer.apple.com/documentation/coregraphics/cgimage" target="_blank" rel="noopener">CGImage Reference</a>。</p>
+<p><strong>表2-1</strong> 位图图形上下文支持的像素格式<br>| 颜色空间 | 像素格式和位图信息常量 | 可用性 |<br>|:——|:——|:— |<br>| Null | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaNone | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| RGB | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| RGB | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |</p>
+<h3 id="抗锯齿"><a href="#抗锯齿" class="headerlink" title="抗锯齿"></a>抗锯齿</h3><p>位图图形上下文支持抗锯齿功能，这是人工修正当您绘制文字或形状时您有时在位图图像中看到的锯齿状（或别名）边缘的过程。 当位图的分辨率显著低于您的眼睛的分辨率时，会发生这些锯齿状边缘。 为了使对象在位图中显得平滑，Quartz对于围绕形状轮廓的像素使用不同的颜色。 通过以这种方式混合颜色，形状看起来平滑。 您可以在图2-4中看到使用抗锯齿的效果。 您可以通过调用函数<code>CGContextSetShouldAntialias</code>来关闭特定位图图形上下文的反锯齿。 抗锯齿设置是图形状态的一部分。</p>
+<p>您可以通过使用函数<code>CGContextSetAllowsAntialiasing</code>来控制是否允许特定图形上下文的反锯齿。 给函数传<code>true</code>可以允许反锯齿; <code>false</code>不允许反锯齿。 此设置不是图形状态的一部分。 当上下文和图形状态设置设置为<code>true</code>时，Quartz会执行抗锯齿。</p>
+<p><strong>图2-4</strong> 混叠和反锯齿图的比较<br><img src="/source/cg3_p_2.jpg" alt=""></p>
+<h3 id="获取打印图形上下文"><a href="#获取打印图形上下文" class="headerlink" title="获取打印图形上下文"></a>获取打印图形上下文</h3><p>Mac OS X中的Cocoa应用程序通过定制<a href="https://developer.apple.com/documentation/appkit/nsview" target="_blank" rel="noopener">NSView</a>子类实现打印。 通过调用其<a href="https://developer.apple.com/documentation/appkit/nsview/1483705-printview" target="_blank" rel="noopener">print:</a>方法，可以看到打印的视图。 然后，该视图将创建一个针对打印机的图形上下文，并调用其<a href="https://developer.apple.com/documentation/appkit/nsview/1483686-drawrect" target="_blank" rel="noopener">drawRect:</a>方法。 您的应用程序使用相同的绘图代码绘制到用于绘制到屏幕的打印机。 它还可以自定义<code>drawRect:</code>将图像调用到与发送到屏幕的打印机不同的打印机。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/四、Core-Graphics-Paths/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -915,207 +1262,6 @@
 <p><em>Table 3-2 Line join style</em><br>| Style | Appearance | Description |<br>| :—: | :—: | :—: |<br>| Miter join | <img src="/source/cg4_p_11.gif" alt=""> | Quartz将两段笔画的外边缘延伸到一个角度，就像在画框中一样。如果线段以太尖的角度相交，则使用斜角连接。如果一个线段的长度除以线段的宽度大于斜线的限制，那么它的线段就太锋利了。 |<br>| Round join | <img src="/source/cg4_p_12.gif" alt=""> | Quartz画出一个半圆的圆弧，直径等于端点上的线宽。封闭的区域填满了。 |<br>| Bevel join | <img src="/source/cg4_p_13.gif" alt=""> | Quartz完成了两个部分的对接帽。在线段的两端所产生的缺口被一个三角形填满。 |</p>
 <p><em>line cap</em>指定了<code>CGContextStrokePath</code>用于绘制该行端点的方法。Quartz支持表3-3所述的线帽样式。默认样式是<em>butt cap</em>。</p>
 <p><em>Table 3-3 Line cap styles</em><br>| Style | Appearance | Description |<br>| :—: | :—: | :—:|<br>| Butt cap |||<br>| Round cap |||<br>| Projecting square cap |||</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/三、Core-Graphics-Graphics-Contexts/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李乾">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李乾的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/25/三、Core-Graphics-Graphics-Contexts/" itemprop="url">三、Core Graphics - Graphics Contexts</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T00:00:00+08:00">
-                2018-02-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Core-Graphics/" itemprop="url" rel="index">
-                    <span itemprop="name">Core Graphics</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>图形上下文表示绘图目标。 它包含绘图参数和绘图系统需要执行任何后续绘图命令的所有特定于设备的信息。 图形上下文定义了基本绘图属性，例如绘制时使用的颜色，裁剪区域，线宽和样式信息，字体信息，合成选项等。</p>
-<p>您可以通过使用Quartz上下文创建功能或通过使用其中一个Mac OS X框架或iOS中的UIKit框架提供的更高级别的功能来获取图形上下文。 Quartz提供各种Quartz图形上下文的功能，包括位图和PDF，可用于创建自定义内容。</p>
-<p>本章介绍如何为各种绘图目标创建图形上下文。 图形上下文通过数据类型CGContextRef（它是不透明数据类型）在代码中表示。 获取图形上下文后，您可以使用Quartz 2D函数绘制上下文，在上下文中执行操作（如转换），并更改图形状态参数，例如线宽和填充颜色。</p>
-<h3 id="在iOS中绘制视图图形上下文"><a href="#在iOS中绘制视图图形上下文" class="headerlink" title="在iOS中绘制视图图形上下文"></a>在iOS中绘制视图图形上下文</h3><p>要在iOS应用程序中绘制屏幕，您可以设置一个<a href="https://developer.apple.com/documentation/uikit/uiview" target="_blank" rel="noopener">UIView</a>对象并实现其<a href="https://developer.apple.com/documentation/uikit/uiview/1622529-drawrect" target="_blank" rel="noopener">drawRect:</a>方法来执行绘图。 当视图在屏幕上可见并且其内容需要更新时，视图的<code>drawRect:</code>方法将会被调用。 在调用自定义<code>drawRect:</code>方法之前，视图对象会自动配置其绘图环境，以便您的代码可以立即开始绘制。 作为此配置的一部分，<code>UIView</code>对象为当前绘图环境创建一个图形上下文（一个<a href="https://developer.apple.com/documentation/coregraphics/cgcontextref" target="_blank" rel="noopener">CGContextRef</a> opaque类型）。 您可以在<code>drawRect:</code>方法中通过调用UIKit的<a href="https://developer.apple.com/documentation/uikit/1623918-uigraphicsgetcurrentcontext" target="_blank" rel="noopener">UIGraphicsGetCurrentContext</a>函数来获取此图形上下文。</p>
-<h3 id="在Mac-OS-X中创建窗口图形上下文"><a href="#在Mac-OS-X中创建窗口图形上下文" class="headerlink" title="在Mac OS X中创建窗口图形上下文"></a>在Mac OS X中创建窗口图形上下文</h3><p>略…</p>
-<h3 id="创建PDF图形上下文"><a href="#创建PDF图形上下文" class="headerlink" title="创建PDF图形上下文"></a>创建PDF图形上下文</h3><p>略…</p>
-<h3 id="创建位图图形上下文"><a href="#创建位图图形上下文" class="headerlink" title="创建位图图形上下文"></a>创建位图图形上下文</h3><p>一个位图图形上下文接受指向内存缓冲区的指针，该缓冲区包含这个位图的存储空间。 当您绘制到位图图形上下文中时，缓冲区将被更新。 释放图形上下文后，您将以指定的像素格式完全更新位图。</p>
-<blockquote>
-<p><strong>注意：</strong>位图图形上下文有时用于离屏绘制。 当您决定为此来使用位图图形上下文之前，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_layers/dq_layers.html#//apple_ref/doc/uid/TP30001066-CH219-TPXREF101" target="_blank" rel="noopener">Core Graphics Layer Drawing</a>。 CGLayer对象（<code>CGLayerRef</code>）针对离屏绘制进行了优化，因为在任何可能的情况下，Quartz缓存video card上的图层。</p>
-</blockquote>
-<blockquote>
-<p><strong>iOS注意：</strong>iOS应用程序应使用<a href="https://developer.apple.com/documentation/uikit/1623912-uigraphicsbeginimagecontextwitho" target="_blank" rel="noopener">UIGraphicsBeginImageContextWithOptions</a>函数，而不是使用此处描述的低级Quartz函数。 如果您的应用程序使用Quartz创建了屏幕外位图，则位图图形上下文使用的坐标系是默认的Quartz坐标系。 相反，如果您的应用程序通过调用函数<code>UIGraphicsBeginImageContextWithOptions</code>创建图像上下文，则UIKit将与上下文的坐标系统使用相同的转换，这与UIView对象的图形上下文相同。 这允许您的应用程序使用相同的绘图代码，无需担心不同的坐标系。 虽然您的应用程序可以手动调整坐标转换矩阵以获得正确的结果，但在实践中，将会没有性能优势。</p>
-</blockquote>
-<p>您可以使用函数<code>CGBitmapContextCreate</code>来创建位图图形上下文。 此功能需要以下参数：</p>
-<ul>
-<li><code>data</code>。 在你希望绘制渲染的内存中提供一个指向目标的指针。该内存块的大小应至少为（<code>bytesPerRow * height</code>）字节。</li>
-<li><code>width</code>。 指定位图的宽度（以像素为单位）。</li>
-<li><code>height</code>。指定位图的高度（以像素为单位）。</li>
-<li><p><code>bitsPerComponent</code>。 指定在内存中用于像素的每个组件的位数。 例如，对于32位像素格式和RGB颜色空间，您可以为每个组件指定一个8位的值。 请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-BCIBHHBB" target="_blank" rel="noopener">Supported Pixel Formats</a>。</p>
-<blockquote>
-<p>提示：当您创建位图图形上下文时，如果确保<code>data</code>和<code>bytesPerRow</code>为16字节对齐，则将获得最佳性能。</p>
-</blockquote>
-</li>
-<li><p><code>颜色空间</code>。 用于位图上下文的颜色空间。 您可以在创建位图图形上下文时提供Gray，RGB，CMYK或NULL颜色空间。 有关颜色空间和颜色管理原则的详细信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/csintro/csintro_intro/csintro_intro.html#//apple_ref/doc/uid/TP30001148" target="_blank" rel="noopener">Color Management Overview</a>。 有关在Quartz中创建和使用颜色空间的信息，请参阅<a href="">Color and Color Spaces</a>。 有关支持的颜色空间的信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-TPXREF101" target="_blank" rel="noopener">Bitmap Images and Image Masks</a>章节中的<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-CJBHEGIB" target="_blank" rel="noopener">Color Spaces and Bitmap Layout</a>。</p>
-</li>
-<li><code>bitmapInfo</code>。位图布局信息，表示为<code>CGBitmapInfo</code>常量，用于指定位图是否应包含alpha组件，像素中的alpha组件（如果有的话）的相对位置，是否预先生成alpha组件，以及颜色组件是整数还是浮点值。 有关这些常量是什么，什么时候使用这些常量，以及用于位图图形上下文和图像的Quartz支持的像素格式的这些详细信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-TPXREF101" target="_blank" rel="noopener">Bitmap Images and Image Masks</a>章节中的<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_images/dq_images.html#//apple_ref/doc/uid/TP30001066-CH212-CJBHEGIB" target="_blank" rel="noopener">Color Spaces and Bitmap Layout</a>。</li>
-</ul>
-<p>清单2-5显示了如何创建位图图形上下文。 当您绘制到生成的位图图形上下文时，Quartz将您的绘图作为位图数据记录在指定的内存块中。 清单下面列出每个编号代码行的详细说明。</p>
-<p><strong>清单2-5</strong> 创建位图图形上下文<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGContextRef</span> MyCreateBitmapContext (<span class="keyword">int</span> pixelsWide,</span><br><span class="line"><span class="keyword">int</span> pixelsHigh)</span><br><span class="line">&#123;</span><br><span class="line"><span class="built_in">CGContextRef</span>    context = <span class="literal">NULL</span>;</span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> colorSpace;</span><br><span class="line"><span class="keyword">void</span> *          bitmapData;</span><br><span class="line"><span class="keyword">int</span>             bitmapByteCount;</span><br><span class="line"><span class="keyword">int</span>             bitmapBytesPerRow;</span><br><span class="line"></span><br><span class="line">bitmapBytesPerRow   = (pixelsWide * <span class="number">4</span>);<span class="comment">// 1</span></span><br><span class="line">bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);</span><br><span class="line"></span><br><span class="line">colorSpace = <span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceGenericRGB);<span class="comment">// 2</span></span><br><span class="line">bitmapData = calloc( bitmapByteCount, <span class="keyword">sizeof</span>(uint8_t) );<span class="comment">// 3</span></span><br><span class="line"><span class="keyword">if</span> (bitmapData == <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">fprintf (stderr, <span class="string">"Memory not allocated!"</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line">context = <span class="built_in">CGBitmapContextCreate</span> (bitmapData,<span class="comment">// 4</span></span><br><span class="line">pixelsWide,</span><br><span class="line">pixelsHigh,</span><br><span class="line"><span class="number">8</span>,      <span class="comment">// bits per component</span></span><br><span class="line">bitmapBytesPerRow,</span><br><span class="line">colorSpace,</span><br><span class="line">kCGImageAlphaPremultipliedLast);</span><br><span class="line"><span class="keyword">if</span> (context== <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">free (bitmapData);<span class="comment">// 5</span></span><br><span class="line">fprintf (stderr, <span class="string">"Context not created!"</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">CGColorSpaceRelease</span>( colorSpace );<span class="comment">// 6</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> context;<span class="comment">// 7</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>下面是代码所做的事：</p>
-<ol>
-<li>声明一个变量来表示每行的字节数。 该示例中位图中的每个像素由4个字节表示; 每个红色，绿色，蓝色和阿尔法都有8位。</li>
-<li>创建一个通用的RGB颜色空间。 您也可以创建一个CMYK颜色空间。 有关更多信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_color/dq_color.html#//apple_ref/doc/uid/TP30001066-CH205-TPXREF101" target="_blank" rel="noopener">Color and Color Spaces</a>，以及有关通用色彩空间与依赖于设备的颜色空间的讨论。</li>
-<li>调用<code>calloc</code>函数来创建和清除存储位图数据的内存块。 此示例创建一个32位RGBA位图（即，每像素32位的数组，每个像素包含红，绿，蓝和阿尔法信息的8位）。 位图中的每个像素占用4个字节的内存。 在Mac OS X 10.6和iOS 4中，可以省略此步骤 - 如果将NULL作为位图数据传递，Quartz会自动为位图分配空间。</li>
-<li>创建位图图形上下文，提供位图数据，位图的宽度和高度，每个组件的位数，每行的字节数，颜色空间以及指定位图是否应包含Alpha通道的常数和像素中的相对位置。常数<code>kCGImageAlphaPremultipliedLast</code>表示α分量存储在每个像素的最后一个字节中，并且颜色分量已经乘以此Alpha值。 有关预乘α的更多信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_color/dq_color.html#//apple_ref/doc/uid/TP30001066-CH205-TPXREF119" target="_blank" rel="noopener">The Alpha Value</a>。</li>
-<li>如果由于某种原因未创建上下文，则释放分配给位图数据的内存。</li>
-<li>释放颜色空间。</li>
-<li>返回位图图形上下文。当不再需要时，调用者必须释放图形上下文。</li>
-</ol>
-<p>清单2-6显示了调用MyCreateBitmapContext创建位图图形上下文的代码，使用位图图形上下文来创建CGImage对象，然后将生成的图像绘制到窗口图形上下文。 图2-3显示了绘制到窗口的图像。 清单下面列出每个编号代码行的详细说明。<br><strong>清单2-6</strong> 绘制到位图图形上下文<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGRect</span> myBoundingBox;<span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line">myBoundingBox = <span class="built_in">CGRectMake</span> (<span class="number">0</span>, <span class="number">0</span>, myWidth, myHeight);<span class="comment">// 2</span></span><br><span class="line">myBitmapContext = MyCreateBitmapContext (<span class="number">400</span>, <span class="number">300</span>);<span class="comment">// 3</span></span><br><span class="line"><span class="comment">// ********** Your drawing code here ********** // 4</span></span><br><span class="line"><span class="built_in">CGContextSetRGBFillColor</span> (myBitmapContext, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"><span class="built_in">CGContextFillRect</span> (myBitmapContext, <span class="built_in">CGRectMake</span> (<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>, <span class="number">100</span> ));</span><br><span class="line"><span class="built_in">CGContextSetRGBFillColor</span> (myBitmapContext, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">.5</span>);</span><br><span class="line"><span class="built_in">CGContextFillRect</span> (myBitmapContext, <span class="built_in">CGRectMake</span> (<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">200</span> ));</span><br><span class="line">myImage = <span class="built_in">CGBitmapContextCreateImage</span> (myBitmapContext);<span class="comment">// 5</span></span><br><span class="line"><span class="built_in">CGContextDrawImage</span>(myContext, myBoundingBox, myImage);<span class="comment">// 6</span></span><br><span class="line"><span class="keyword">char</span> *bitmapData = <span class="built_in">CGBitmapContextGetData</span>(myBitmapContext); <span class="comment">// 7</span></span><br><span class="line"><span class="built_in">CGContextRelease</span> (myBitmapContext);<span class="comment">// 8</span></span><br><span class="line"><span class="keyword">if</span> (bitmapData) free(bitmapData); <span class="comment">// 9</span></span><br><span class="line"><span class="built_in">CGImageRelease</span>(myImage);</span><br></pre></td></tr></table></figure></p>
-<p>下面是这些代码所做的事：</p>
-<ol>
-<li>声明一个变量来存储边界框的起点和尺寸，Quartz将绘制从位图图形上下文创建的图像。</li>
-<li>将边框的原点设置为（0,0），并将宽度和高度设置为先前声明的变量，但其声明未显示在此代码中。</li>
-<li>调用应用程序提供的函数<code>MyCreateBitmapContext</code>（参见清单2-5）来创建一个400像素宽和300像素高的位图上下文。 您可以使用适合您的应用程序的任何维度创建位图图形上下文。</li>
-<li>调用Quartz 2D函数来绘制位图图形上下文。 您将使用适合您的应用程序的绘图代码替换此代码和接下来的四行代码。</li>
-<li>从位图图形上下文创建Quartz 2D图像（<code>CGImageRef</code>）。</li>
-<li>将图像绘制到由边界框指定的窗口图形上下文中的位置。 边界框指定用于绘制图像的用户空间中的位置和尺寸。<br>此示例不显示窗口图形上下文的创建。 有关如何创建一个的信息，请参阅<a href="https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-CJBDCHAC" target="_blank" rel="noopener">Creating a Window Graphics Context in Mac OS X</a>。</li>
-<li>获取与位图图形上下文相关联的位图数据。</li>
-<li>当不再需要时，释放位图图形上下文。</li>
-<li>释放位图数据（如果存在）。</li>
-<li>当不再需要时释放图像。</li>
-</ol>
-<p><strong>图2-3</strong> 从位图图形上下文创建并绘制到窗口图形上下文的图像<br><img src="/source/cg3_p_1.gif" alt=""></p>
-<h3 id="支持的像素格式"><a href="#支持的像素格式" class="headerlink" title="支持的像素格式"></a>支持的像素格式</h3><p>表2-1总结了支持位图图形上下文，相关联的颜色空间（<code>cs</code>）以及格式首次可用的Mac OS X版本 的像素格式。 像素格式被指定为bit per pixel（bpp）和bit per component（bpc）。 该表还包括与该像素格式相关联的位图信息常数。 有关每个位图信息格式常量表示的详细信息，请参阅<a href="https://developer.apple.com/documentation/coregraphics/cgimage" target="_blank" rel="noopener">CGImage Reference</a>。</p>
-<p><strong>表2-1</strong> 位图图形上下文支持的像素格式<br>| 颜色空间 | 像素格式和位图信息常量 | 可用性 |<br>|:——|:——|:— |<br>| Null | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaNone | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| Gray | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| RGB | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |<br>| RGB | 8 bpp, 8 bpc, kCGImageAlphaOnly | Mac OS X, iOS |</p>
-<h3 id="抗锯齿"><a href="#抗锯齿" class="headerlink" title="抗锯齿"></a>抗锯齿</h3><p>位图图形上下文支持抗锯齿功能，这是人工修正当您绘制文字或形状时您有时在位图图像中看到的锯齿状（或别名）边缘的过程。 当位图的分辨率显著低于您的眼睛的分辨率时，会发生这些锯齿状边缘。 为了使对象在位图中显得平滑，Quartz对于围绕形状轮廓的像素使用不同的颜色。 通过以这种方式混合颜色，形状看起来平滑。 您可以在图2-4中看到使用抗锯齿的效果。 您可以通过调用函数<code>CGContextSetShouldAntialias</code>来关闭特定位图图形上下文的反锯齿。 抗锯齿设置是图形状态的一部分。</p>
-<p>您可以通过使用函数<code>CGContextSetAllowsAntialiasing</code>来控制是否允许特定图形上下文的反锯齿。 给函数传<code>true</code>可以允许反锯齿; <code>false</code>不允许反锯齿。 此设置不是图形状态的一部分。 当上下文和图形状态设置设置为<code>true</code>时，Quartz会执行抗锯齿。</p>
-<p><strong>图2-4</strong> 混叠和反锯齿图的比较<br><img src="/source/cg3_p_2.jpg" alt=""></p>
-<h3 id="获取打印图形上下文"><a href="#获取打印图形上下文" class="headerlink" title="获取打印图形上下文"></a>获取打印图形上下文</h3><p>Mac OS X中的Cocoa应用程序通过定制<a href="https://developer.apple.com/documentation/appkit/nsview" target="_blank" rel="noopener">NSView</a>子类实现打印。 通过调用其<a href="https://developer.apple.com/documentation/appkit/nsview/1483705-printview" target="_blank" rel="noopener">print:</a>方法，可以看到打印的视图。 然后，该视图将创建一个针对打印机的图形上下文，并调用其<a href="https://developer.apple.com/documentation/appkit/nsview/1483686-drawrect" target="_blank" rel="noopener">drawRect:</a>方法。 您的应用程序使用相同的绘图代码绘制到用于绘制到屏幕的打印机。 它还可以自定义<code>drawRect:</code>将图像调用到与发送到屏幕的打印机不同的打印机。</p>
 
           
         
@@ -2027,212 +2173,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/CocoaAsyncSocket-Wiki-CommonPitfalls/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李乾">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李乾的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/30/CocoaAsyncSocket-Wiki-CommonPitfalls/" itemprop="url">CocoaAsyncSocket - Wiki - CommonPitfalls</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T00:00:00+08:00">
-                2017-05-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS译文/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS译文</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p><a href="https://github.com/robbiehanson/CocoaAsyncSocket/wiki/CommonPitfalls" target="_blank" rel="noopener">原文链接</a></p>
-</blockquote>
-<h3 id="常见缺陷"><a href="#常见缺陷" class="headerlink" title="常见缺陷"></a>常见缺陷</h3><p><strong>常见缺陷 - 不要成为受害者</strong><br><code>Over the years we&#39;ve noticed that many issues arrise from general confusion about the TCP protocol. Arm yourself with knowledge so you don&#39;t lose time in the future.</code><br>多年来，我们注意到许多问题源于对TCP协议的一般混淆。用自己的知识掌握自己，以便将来不会失去时间。</p>
-<h3 id="TCP是流"><a href="#TCP是流" class="headerlink" title="TCP是流"></a>TCP是流</h3><p><code>The TCP protocol is modeled on the concept of a single continuous stream of unlimited length. This is a very important concept to understand, and is the number one cause of confusion that we see.</code><br>TCP协议是以无限长度的<strong>单个连续流</strong>的概念建模的。这是一个非常重要的理解，是我们看到的<strong>第一个混乱的原因</strong>。</p>
-<p>这到底是什么意思，它是如何影响开发人员的？</p>
-<p>想像一下，您正试图通过socket发送一些消息。 所以你这样做（伪代码）：</p>
-<blockquote>
-<p>socket.write(“Hi Sandy.”);<br>socket.write(“Are you busy tonight?”);</p>
-</blockquote>
-<p><code>How does the data show up on the other end? If you think the other end will receive two separate sentences in two separate reads, then you&#39;ve just fallen victim to a common pitfall! Gasp! Read on.</code><br>数据如何显示在另一端？ 如果您认为另一端将以两个单独的读取方式接收两个单独的句子，那么您刚刚成为一个常见的陷阱的受害者！ 深呼吸！ 继续阅读。</p>
-<p>TCP不将写作视为单独的数据。 TCP将所有写入视为单个连续流的一部分。所以当你发出上面的写入时，TCP将简单地将数据复制到缓冲区中：</p>
-<blockquote>
-<p>TCP_Buffer = “Hi Sandy.Are you busy tonight?”</p>
-</blockquote>
-<p>然后尽快发送数据。为了通过网络发送数据，TCP和其他网络协议将需要把该数据分割成可通过介质（以太网，WiFi等）传输的小块。<br>为了这样做，TCP可能以任何其认为合适的方式分解数据。 以下是一些数据可能被拆分和发送的示例：</p>
-<ol>
-<li>“Hi San” , “dy.Ar” , “e you “ , “busy to” , “night?”</li>
-<li>“Hi Sandy.Are you busy” , “ tonight?”</li>
-<li>“Hi Sandy.Are you busy tonight?”</li>
-</ol>
-<p>上述示例还演示了数据将如何到达另一端。我们来考虑一下例子1。</p>
-<p>Sandy发出了一个socket.read()命令，并且正在等待数据到达。所以她第一次读取到的结果可能是“Hi San”。Sandy可能会开始处理这些数据。而当应用程序处理数据时，TCP流继续接收第二和第三个数据包。Sandy然后发出另一个socket.read()命令，这一次她得到“dy.Are you”。</p>
-<p>这突出了TCP的连续流性质。TCP协议在开发人员API级别上绝对没有数据包或数据分离的概念。</p>
-<p><code>But isn&#39;t this a major shortcoming? How do all those other protocols that use TCP work?</code><br>但这不是一个主要的缺点吗？所有使用TCP的其他协议如何工作？</p>
-<p>HTTP是一个很好的例子，因为它很简单，因为大多数人都看过它。当客户端连接到服务器并发送请求时，它以非常具体的方式执行。它发送一个HTTP头，头部的每一行都用CRLF（回车符，换行符）终止。就像这样：</p>
-<blockquote>
-<p>GET /page.html HTTP/1.1<br>Host: google.com</p>
-</blockquote>
-<p><code>Since the protocol specifies the terminators, it is easy to read data from a TCP socket until the terminators are reached.</code><br>此外，HTTP标头的结尾用两个连续的CRLF发出信号。由于协议规定了终结器，因此很容易从TCP socket读取数据，直到达到终止符。</p>
-<p>然后服务器发送响应：</p>
-<blockquote>
-<p>HTTP/1.1 200 OK<br>Content-Length: 216</p>
-</blockquote>
-<blockquote>
-<p>{ Exactly 216 bytes of data go here }</p>
-</blockquote>
-<p>再次，HTTP协议使得使用TCP变得容易。读取数据，直到您获得背靠背CRLF。 那是你的标题。然后从头解析内容长度，现在你可以简单地读取一定数量的字节。回到我们的原始示例，我们可以简单地使用指定的终止符来发送消息：</p>
-<blockquote>
-<p>socket.write(“Hi Sandy.\n”);<br>socket.write(“Are you busy tonight?\n”);</p>
-</blockquote>
-<p>而如果Sandy正在使用AsyncSocket，她会幸运的！因为AsyncSocket提供了真正易于使用的读取方法，允许您指定要查找的终止符。AsyncSocket为您提供其余的功能，并且会在两个单独的读取中提供两个单独的句子！</p>
-<h3 id="写（Writes）"><a href="#写（Writes）" class="headerlink" title="写（Writes）"></a>写（Writes）</h3><p><strong>当您将数据写入TCP套接字时会发生什么？</strong>当写入完成时，是否意味着对方收到该数据？我们至少可以假定计算机已经发送了数据？ 答案是NO和NO。</p>
-<p><code>Recall two things:</code><br>回想两件事情：</p>
-<ul>
-<li>发送和接收的所有数据必须分成小块，以便通过网络发送。</li>
-<li>TCP处理许多复杂的问题，如重新发送丢失的数据包，并提供按顺序的传送，以便信息以正确的顺序到达。</li>
-</ul>
-<blockquote>
-<p>a lot of <code>complicated</code> <code>issues</code>：许多<code>复杂的</code> <code>问题</code><br>providing <code>in-order</code> delivery：提供<code>按顺序的</code>传送</p>
-</blockquote>
-<p>因此，当您发出写入时，数据将被简单地复制到OS网络堆栈中的底层缓冲区中。在那一点上，TCP软件将开始其魔力，其中包括前面提到的所有酷的东西，如：</p>
-<ul>
-<li>将数据分成小块，以便可以通过网络发送数据</li>
-<li>确保丢失的碎片得到适当的重发</li>
-<li>确保您的数据以正确的顺序到达远程目标</li>
-<li>提防网络拥塞</li>
-<li>使用花式算法尽可能快地完成所有这些</li>
-</ul>
-<p>所以当你发出命令“写这个数据”时，操作系统会回应“我有你的数据，我将尽我力量把这个传递给远程目的地”。</p>
-<p>但是<strong>我怎么知道远程目的地何时收到我的数据？</strong></p>
-<p>这正是大多数人遇到问题的地方。下面有一个好的思考方式来理解它：</p>
-<p>想象一下，你想给朋友发一封信。不是电子邮件，而是传统的慢邮。你知道，通过邮局。所以你写信并把它放在你的邮箱里。然后邮递员来了，拿走你的邮件。<code>You can rest assured at this point that the post office will make every effort to deliver the letter to your friend.</code>在这一点上你可以放心，邮局会竭尽全力把信交给你的朋友。但是如果你的朋友收到信件，你是怎么知道的？我想如果这封信回来了，盖上“返回发件人”，你可以肯定你的朋友没有收到。但是如果这封信没有回来呢？是否足以知道它已经投递到您朋友的邮箱？(假设这是一封非常非常重要的信。) 答案是否定的。可能这封信从来都没有被拿出过邮箱。也可能它的室友收到它然后意外地把它扔掉了。如果这个室友负责任，并把信留在你的朋友桌上？那够了吗？如果你的朋友在度假，你的信在一堆垃圾邮件中丢失了怎么办？所以真正知道你的朋友收到这封信的唯一方法是当你收到他的答复。</p>
-<p>这是sockets的一个很好的比喻。当您将数据写入socket时，就像把信放在邮箱中。操作系统就像当地的邮递员一样，拿起这封信。将信件路由到目的地的巨型邮局系统就像网络。而向你的朋友邮箱中投递你的信的邮递员就像你的朋友的电脑上的操作系统。然后由朋友电脑上的应用程序读取操作系统中的数据并处理它（从邮箱中取出信件，并实际读取）。</p>
-<p>那么如何知道远程目的地何时收到我的数据？这不是TCP可以告诉你的。最多只能告诉你，这封信已经提交给他们的邮箱。它不能告诉你应用程序是否读取该数据并进行处理。也许远端的应用程序崩溃了。或者也许远程用户在有机会读取数据之前退出应用程序。或者远程用户可能会遭受停电。这是篇长篇小说，如果需要，由应用层来回答这个问题。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2287,7 +2227,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2309,7 +2249,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
