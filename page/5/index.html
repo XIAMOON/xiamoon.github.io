@@ -300,6 +300,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/07/第四篇，Category-和-Extension/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李乾">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李乾的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/07/第四篇，Category-和-Extension/" itemprop="url">第四篇、Category 和 Extension</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-07T00:00:00+08:00">
+                2017-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS面试总结及研究/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS面试总结及研究</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、Category"><a href="#一、Category" class="headerlink" title="一、Category"></a>一、Category</h3><blockquote>
+<p>本文属于转载加笔记补充</p>
+</blockquote>
+<h4 id="1、原文出处"><a href="#1、原文出处" class="headerlink" title="1、原文出处"></a>1、原文出处</h4><p><a href="http://tech.meituan.com/DiveIntoCategory.html" target="_blank" rel="noopener">原文链接</a><br><a href="http://tech.meituan.com/" target="_blank" rel="noopener">相关技术博客</a></p>
+<h4 id="2、原文摘抄-笔记"><a href="#2、原文摘抄-笔记" class="headerlink" title="2、原文摘抄+笔记"></a>2、原文摘抄+笔记</h4><p><strong>category简介</strong></p>
+<blockquote>
+<p>category是Objective-C 2.0之后添加的语言特性，category的主要作用是为已经存在的类添加方法。除此之外，apple还推荐了category的另外两个使用场景：</p>
+<ul>
+<li>可以把类的实现分开在几个不同的文件里面。这样做有几个显而易见的好处，(a)可以减少单个文件的体积 (b)可以&gt;把不同的功能组织到不同的category里 (c)可以由多个开发者共同完成一个类 d)可以按需加载想要的category 等等。</li>
+<li>声明私有方法</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>不过除了apple推荐的使用场景，广大开发者脑洞大开，还衍生出了category的其他几个使用场景：</p>
+<ul>
+<li>模拟多继承</li>
+<li>把framework的私有方法公开</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Objective-C的这个语言特性对于纯动态语言来说可能不算什么，比如javascript，你可以随时为一个“类”或者对象添加&gt;任意方法和实例变量。但是对于不是那么“动态”的语言而言，这确实是一个了不起的特性。</p>
+</blockquote>
+<p><strong>category和extension</strong></p>
+<blockquote>
+<ul>
+<li>extension看起来很像一个匿名的category，但是extension和有名字的category几乎完全是两个东西。<br>extension在编译器决议，它就是类的一部分，在编译期和头文件里的@interface以及实现文件里的@implement一起形成一个完整的类，它伴随类的产生而产生，亦随之一起消亡。extension一般用来隐藏类的私有信息，你必须有一个类的源码才能为一个类添加extension，所以你无法为系统类如 NSString添加extension。</li>
+<li>但是category则完全不一样，它是在运行期决议的。<br>就category和extension的区别来看，我们可以推导出一个明显的事实，extension可以添加实例变量，而category是无法添加实例变量的（因为在运行期，对象的内存布局已经确定，如果添加实例变量就会破坏类的内部布局，这对编译型语言来说是灾难性的）。<br><code>疑问：那为什么就可以添加属性和方法呢？难道这不会破坏对象的内存布局？</code><br><code>答：</code></li>
+</ul>
+</blockquote>
+<h4 id="（3）总结"><a href="#（3）总结" class="headerlink" title="（3）总结"></a>（3）总结</h4><hr>
+<h3 id="二、Extension"><a href="#二、Extension" class="headerlink" title="二、Extension"></a>二、Extension</h3><p>未完待续<br>几个链接：<br><a href="http://www.cocoachina.com/ios/20170406/19001.html" target="_blank" rel="noopener">http://www.cocoachina.com/ios/20170406/19001.html</a><br><a href="http://www.jianshu.com/p/7d54b832c68b" target="_blank" rel="noopener">http://www.jianshu.com/p/7d54b832c68b</a><br><a href="http://blog.csdn.net/csdnliming147/article/details/53365159" target="_blank" rel="noopener">http://blog.csdn.net/csdnliming147/article/details/53365159</a><br><a href="http://www.cnblogs.com/Mike-zh/p/5143904.html" target="_blank" rel="noopener">http://www.cnblogs.com/Mike-zh/p/5143904.html</a></p>
+<p>百度搜索：为什么category不能添加成员变量</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/05/C语言内存分配/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1030,7 +1203,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1041,7 +1214,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1052,7 +1225,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
